@@ -15,7 +15,7 @@ class BaseTest(object):
     def teardown_class(self):
          close_driver()
 
-class Test1(BaseTest):
+class Test_GODO82(BaseTest):
     def test_82(self):
         get_driver().maximize_window()
         page = loginpage()
@@ -32,58 +32,67 @@ class Test1(BaseTest):
         page.activity_name.send_keys(NewActivityName)
         NewActivityURL = ("http://"+NewActivityName+'.com')
         page.activity_url.send_keys(NewActivityURL)
-        # page.activity_status.click()
-        # WebDriverWait(get_driver(), 5)
-        # wait = WebDriverWait(get_driver(), 15)
-        # element = wait.until(EC.text_to_be_present_in_element((By.ID, "activity_status"), "Choose Activity Status"))
         select = Select(page.activity_status)
-        select.select_by_visible_text("Active")
-        # page.branch.click()
+        NewActivityStatus = "Active"
+        select.select_by_visible_text(NewActivityStatus )
         select = Select(page.branch)
-        select.select_by_visible_text("First branch")
-        # page.starting_location.click()
+        NewActivityBranch = "First branch"
+        select.select_by_visible_text(NewActivityBranch)
         select = Select(page.starting_location)
-        select.select_by_visible_text("Hotel California")
-        # page.time_zone.click()
+        NewActivityLocation = "Hotel California"
+        select.select_by_visible_text(NewActivityLocation)
         select = Select(page.time_zone)
-        select.select_by_visible_text("Central")
-        page.activity_description.send_keys('The activity is created automatically.')
-        page.cancellation_policy.send_keys('We can cancel an event any time we want.')
-        page.sales_tax.send_keys('5')
-        page.activity_duration_days.send_keys('0')
-        page.activity_duration_hours.send_keys('2')
-        page.activity_duration_minutes.send_keys('15')
+        NewActivityTimezone = "Central"
+        select.select_by_visible_text(NewActivityTimezone)
+        NewActivityDesription = 'The activity is created automatically.'
+        page.activity_description.send_keys(NewActivityDesription)
+        NewActivityCancellationPolicy = 'We can cancel an event any time we want.'
+        page.cancellation_policy.send_keys(NewActivityCancellationPolicy)
+        NewActivitySalesTax = '5'
+        page.sales_tax.send_keys(NewActivitySalesTax)
+        NewActivityDurationDays = '0'
+        page.activity_duration_days.send_keys(NewActivityDurationDays)
+        NewActivityDurationHours = '2'
+        page.activity_duration_hours.send_keys(NewActivityDurationHours)
+        NewActivityDurationMinutes = '15'
+        page.activity_duration_minutes.send_keys(NewActivityDurationMinutes)
         select = Select(page.activity_color)
-        select.select_by_visible_text("Alabaster")
+        NewActivityColor = "Alabaster"
+        select.select_by_visible_text(NewActivityColor)
         page.ticket_maximum.clear()
-        page.ticket_maximum.send_keys('100')
+        NewActivityMaxTickets = '100'
+        page.ticket_maximum.send_keys(NewActivityMaxTickets )
         page.sell_out_alert.click()
         select = Select(page.sell_out_alert)
-        select.select_by_visible_text("80%")
+        NewActivitySellOut = "80%"
+        select.select_by_visible_text(NewActivitySellOut)
         page.alert_guide_upon_sellout.click()
         select = Select(page.alert_guide_upon_sellout)
-        select.select_by_visible_text("No")
+        NewActivityGuideUponSellout = "No"
+        select.select_by_visible_text(NewActivityGuideUponSellout)
         page.stop_booking_sold.click()
         select = Select(page.stop_booking_sold)
-        select.select_by_visible_text("1h 30 m")
-        page.ticket_minimum.send_keys('20')
-        page.minimum_not_met_alert.send_keys('10')
-        page.stop_no_sales.send_keys('10')
-        # page.stop_midnight_before.click()
-        # page.first_sale_closes_event.click()
-        # page.add_ticket_type.click()
-        page.first_ticket_type.send_keys('Adult')
-        page.first_ticket_price.send_keys('9.99')
-        # page.first_guide.click()
+        NewActivityStopbookingSold = "1h 30 m"
+        select.select_by_visible_text(NewActivityStopbookingSold)
+        NewActivityMinTickets = '20'
+        page.ticket_minimum.send_keys(NewActivityMinTickets)
+        NewActivityNotmetAlert = '10'
+        page.minimum_not_met_alert.send_keys(NewActivityNotmetAlert)
+        NewActivityStopbookingNoSales = '10'
+        page.stop_no_sales.send_keys(NewActivityStopbookingNoSales)
+        NewActivityFirstTicketType = "Adult"
+        page.first_ticket_type.send_keys(NewActivityFirstTicketType)
+        NewActivityFirstTicketPrice = '9.99'
+        page.first_ticket_price.send_keys(NewActivityFirstTicketPrice)
         select = Select(page.first_guide)
-        select.select_by_visible_text("Holly Flat")
-        # page.first_linked_activity.click()
+        NewActivityFirstGuide = "Holly Flat"
+        select.select_by_visible_text(NewActivityFirstGuide)
         select = Select(page.first_linked_activity)
+        NewActivityLinked = "AlertTest1"
         select.select_by_visible_text("AlertTest1")
         page.what_included.send_keys('Good mood.')
         page.what_know.send_keys('Everything will be fine.')
         page.what_bring.send_keys('Just bring a lot of money.')
-        # page.review_redirect.click()
         select = Select(page.review_redirect)
         select.select_by_visible_text("5 Stars")
         page.review_website.send_keys(NewActivityURL)
@@ -95,6 +104,7 @@ class Test1(BaseTest):
         wait.until(lambda driver: page.is_element_present('activity_actions'))
         text = page.activity_title.get_attribute("textContent")
         assert text == NewActivityName
+        page.edit_activity.click()
         # assert page.is_element_present('activity_actions')
         # page.activity_actions.click()
         # wait = WebDriverWait(get_driver(), 15)
