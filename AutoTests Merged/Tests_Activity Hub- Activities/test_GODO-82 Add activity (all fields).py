@@ -89,12 +89,16 @@ class Test_GODO82(BaseTest):
         select.select_by_visible_text(NewActivityFirstGuide)
         select = Select(page.first_linked_activity)
         NewActivityLinked = "AlertTest1"
-        select.select_by_visible_text("AlertTest1")
-        page.what_included.send_keys('Good mood.')
-        page.what_know.send_keys('Everything will be fine.')
-        page.what_bring.send_keys('Just bring a lot of money.')
+        select.select_by_visible_text(NewActivityLinked)
+        NewActivityWhatIncluded = 'Good mood.'
+        page.what_included.send_keys(NewActivityWhatIncluded)
+        NewActivityWhatKnow = 'Everything will be fine.'
+        page.what_know.send_keys(NewActivityWhatKnow)
+        NewActivityWhatBring = 'Just bring a lot of money.'
+        page.what_bring.send_keys(NewActivityWhatBring )
         select = Select(page.review_redirect)
-        select.select_by_visible_text("5 Stars")
+        NewActivityStarsReview = "5 Stars"
+        select.select_by_visible_text(NewActivityStarsReview)
         page.review_website.send_keys(NewActivityURL)
         page.save_button.click()
         page = ActivityHubPage()
