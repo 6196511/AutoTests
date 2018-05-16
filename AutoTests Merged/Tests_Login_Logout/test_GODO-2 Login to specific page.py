@@ -19,8 +19,8 @@ class Test1(BaseTest):
         get_driver().maximize_window()
         page = loginpage()
         page.open()
-        page.login_field.send_keys('devtester')
-        page.password_field.send_keys('nf')
+        page.login_field.send_keys('login')
+        page.password_field.send_keys('password')
         page.button.click()
         assert get_driver().current_url == 'https://dev.godo.io/customer_list.aspx'
         get_driver().quit()
