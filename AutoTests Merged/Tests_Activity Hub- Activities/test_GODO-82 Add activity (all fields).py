@@ -10,6 +10,7 @@ from string import digits
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.common.by import By
 import time
+from admin_creds import login, password
 
 class BaseTest(object):
     def teardown_class(self):
@@ -20,8 +21,8 @@ class Test_GODO82(BaseTest):
         get_driver().maximize_window()
         page = loginpage()
         page.open()
-        page.login_field.send_keys('login')
-        page.password_field.send_keys('password')
+        page.login_field.send_keys(login)
+        page.password_field.send_keys(password)
         page.button.click()
         page=ActivityHubPage()
         page.open()
@@ -109,6 +110,7 @@ class Test_GODO82(BaseTest):
         text = page.activity_title.get_attribute("textContent")
         assert text == NewActivityName
         page.edit_activity.click()
+
         # assert page.is_element_present('activity_actions')
         # page.activity_actions.click()
         # wait = WebDriverWait(get_driver(), 15)
