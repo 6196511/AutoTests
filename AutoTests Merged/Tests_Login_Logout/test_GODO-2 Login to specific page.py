@@ -2,6 +2,8 @@ from selenium.webdriver.common.by import By
 from webium import BasePage, Find
 from webium.driver import get_driver
 from webium.driver import close_driver
+from admin_creds import login, password
+
 
 
 class BaseTest(object):
@@ -19,8 +21,8 @@ class Test1(BaseTest):
         get_driver().maximize_window()
         page = loginpage()
         page.open()
-        page.login_field.send_keys('login')
-        page.password_field.send_keys('password')
+        page.login_field.send_keys(login)
+        page.password_field.send_keys(password)
         page.button.click()
         assert get_driver().current_url == 'https://dev.godo.io/customer_list.aspx'
         get_driver().quit()

@@ -1,6 +1,7 @@
 from webium.driver import get_driver
 from Login import loginpage
 from webium.driver import close_driver
+from admin_creds import login, password
 
 
 class BaseTest(object):
@@ -13,7 +14,7 @@ class Test1(BaseTest):
         get_driver().maximize_window()
         page = loginpage()
         page.open()
-        page.login_field.send_keys('login')
-        page.password_field.send_keys('password')
+        page.login_field.send_keys(login)
+        page.password_field.send_keys(password)
         page.button.click()
         get_driver().quit()
