@@ -31,7 +31,7 @@ class Test_GODO82(BaseTest):
         for i in range(1, len(page.switchers)):
             page.switchers[i].click()
         time.sleep(15)
-        NewActivityName = ("AutoTest"+''.join(choice(digits) for i in range(4)))
+        NewActivityName = ("AutoTest_"+''.join(choice(digits) for i in range(4)))
         page.activity_name.send_keys(NewActivityName)
         NewActivityURL = ("http://"+NewActivityName+'.com')
         page.activity_url.send_keys(NewActivityURL)
