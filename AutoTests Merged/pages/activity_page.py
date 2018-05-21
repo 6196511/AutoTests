@@ -1,7 +1,9 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.select import Select
-from webium import BasePage, Find
+from webium import BasePage, Find, Finds
+from selenium.webdriver.remote.webelement import WebElement
 
+switcher_OFF = "<div class='switch-button-button' style='width: 14px; height: 13px; left: -1px;'></div>"
 
 class AddEditActivityPage(BasePage):
 
@@ -25,8 +27,7 @@ class AddEditActivityPage(BasePage):
     ticket_minimum = Find(by=By.XPATH, value="//input[@id='activity_mintickets']")
     minimum_not_met_alert = Find(by=By.XPATH, value="//input[@id='activity_min_not_met_hours']")
     stop_no_sales = Find(by=By.XPATH, value="//input[@id='activity_stop_before_hours']")
-    stop_midnight_before = Find(by=By.XPATH, value="//label[contains(text(), 'Stop Booking Midnight Before')]/..//div[@class='switch-button-background']")
-    first_sale_closes_event = Find(by=By.XPATH, value="//label[contains(text(), 'First Sale Closes Event')]/..//div[@class='switch-button-background']")
+    switchers = Finds(by=By.XPATH, value="//div[@class='switch-button-button']")
     add_ticket_type = Find(by=By.XPATH, value="//a[text()='+ Add a Ticket Type']")
     first_ticket_type = Find(by=By.XPATH, value="//div[@ng-repeat='price in vm.activity.prices'][1]//input[@ng-model='price.priceName']")
     first_ticket_price = Find(by=By.XPATH, value="//div[@ng-repeat='price in vm.activity.prices'][1]//input[@ng-model='price.priceAmount']")
@@ -47,5 +48,9 @@ class AddEditActivityPage(BasePage):
     cancel_button = Find(by=By.XPATH, value="//a[text()='Cancel']")
     save_button = Find(by=By.XPATH, value="//button[@id='submitactivity']")
 
+
+
     def select(self, web_element, option):
         Select(web_element).select_by_visible_text(option)
+
+
