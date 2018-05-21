@@ -2,7 +2,7 @@ from webium.driver import get_driver
 from webium.driver import close_driver
 from Login import loginpage
 from activity_hub_page import ActivityHubPage
-from activity_page import AddEditActivityPage
+from activity_page import AddEditActivityPage, switcher_OFF
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from random import choice
@@ -28,6 +28,8 @@ class Test_GODO82(BaseTest):
         page.open()
         page.add_activity_button.click()
         page=AddEditActivityPage()
+        for i in range(1, len(page.switchers)):
+            page.switchers[i].click()
         time.sleep(15)
         NewActivityName = ("AutoTest"+''.join(choice(digits) for i in range(4)))
         page.activity_name.send_keys(NewActivityName)
@@ -152,3 +154,7 @@ class Test_GODO82(BaseTest):
         select = Select(page.review_redirect)
         assert select.first_selected_option.text == NewActivityStarsReview
         assert page.review_website.get_attribute('value') == NewActivityURL
+        for i in range(1, len(page.switchers)):
+             assert page.switchers[i].get_attribute("outerHTML") != switcher_OFF
+        for i in range(0):
+             assert page.switchers[i].get_attribute("outerHTML") == switcher_OFF
