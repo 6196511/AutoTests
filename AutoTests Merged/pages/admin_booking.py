@@ -22,6 +22,11 @@ class AdminBookingPage(BasePage):
     name_fourth_tickets_type = Find(by=By.XPATH, value="//div[@class='form-group']//tbody/tr[4]/td[1]")
     datepicker = Find(by=By.ID, value="datepicker_1")
     time = Find(by=By.XPATH, value="//select[@ng-options='item as item.time for item in vm.times']")
+    promo_code_input = Find(by=By.XPATH, value="//input[@name='promo-code']")
+    gift_certificate_input = Find(by=By.XPATH, value="//input[@name='gift-certificate']")
+    apply_discount = Find(by=By.XPATH, value="//div[text()='Apply Discount']")
+    discount_pop_up = Find(by=By.XPATH, value="//div[@class='modal-content']//div[@class='modal-body ng-binding']")
+    discount_pop_up_ok_button = Find(by=By.XPATH, value="//div[@class='modal-content']//button[text()='Ok']")
     enter_customer_information_button = Find(by=By.XPATH, value="//div[contains(text(), 'Enter Customer Information')]")
 
     # Customer Info tab.
@@ -43,7 +48,7 @@ class AdminBookingPage(BasePage):
     card_date_input = Find(by=By.XPATH, value="//input[@name='exp-date']")
     card_cvc_input = Find(by=By.XPATH, value="//input[@name='cvc']")
     card_zip_input = Find(by=By.XPATH, value="//input[@name='postal']")
-    cash_recieved = Find(by=By.XPATH, value="//input[@type='checkbox']")
+    cash_recieved = Find(by=By.XPATH, value="//input[@name='money-in-hand']")
     submit_booking_button = Find(by=By.XPATH, value="//div[contains(text(), 'Submit Booking')]")
     final_alert = Find(by=By.XPATH, value="//div[@class='modal-body ng-binding']")
     final_alert_ok_button = Find(by=By.XPATH, value="//div[@class='modal-footer']/button[text()='Ok']")
@@ -57,14 +62,13 @@ class AdminBookingPage(BasePage):
     booking_fee = Find(by=By.XPATH, value="//tr[contains(@ng-show, 'bookingfee')]/td[2]")
     grand_total = Find(by=By.XPATH, value="//tr[contains(@ng-show, 'grandTotal')]/td[2]")
 
-
     def select_activity(self, activity):
         sleep(2)
         Select(self.activity_list).select_by_visible_text(activity)
         sleep(2)
 
-    def select_date(self, year, month, day, total):
-        wait(lambda: self.grand_total.text == total, timeout_seconds=30, waiting_for="Waiting until the pricing table is updated.")
+    def select_date(self, year, month, day):
+        wait(lambda: self.grand_total.text != '$0.00', timeout_seconds=30, waiting_for="Waiting until the pricing table is updated.")
         sleep(2)
         self._driver.execute_script(
             "$('#datepicker_1').datepicker('setDate', new Date(%s, %s-1, %s));" % (year, month, day))
@@ -73,8 +77,9 @@ class AdminBookingPage(BasePage):
         Select(self.time).select_by_visible_text(time)
 
     def click_enter_customer_information(self):
-        self._driver.execute_script("$('pageslide').animate({ scrollTop: '200px' })")
+        self._driver.execute_script("$('pageslide').animate({ scrollTop: '2000px' })")
         wait(lambda: self.enter_customer_information_button.is_displayed())
+        sleep(1)
         self.enter_customer_information_button.click()
 
     def select_payment_type(self, payment_type):

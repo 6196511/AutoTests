@@ -2,7 +2,7 @@ from time import sleep
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webelement import WebElement
-from waiting import wait
+from webium.wait import wait
 from webium import BasePage, Find, Finds
 
 
@@ -63,8 +63,14 @@ class CustomerBookingPage(BasePage):
     phone_input = Find(by=By.XPATH, value="//input[@id='contactPhone']")
     email_input = Find(by=By.XPATH, value="//input[@id='contactEmail']")
     zip_input = Find(by=By.XPATH, value="//input[@id='contactZipCode']")
-    empty_space_fourth_page = Find(by=By.XPATH, value="//h4[text()='Step 4/5: Your Info']")
-    next_button_4 = Find(by=By.XPATH, value="//button[@id='contactinforbtn']")
+    empty_space_fourth_page = Find(by=By.XPATH, value="//h4[text()='Step 4: Your Info']")
+    question_inputs = Finds(by=By.XPATH, value="//textarea")
+    next_button_4 = Find(by=By.XPATH, value="//button[@id='contact-info-btn']")
+
+    # Step 5: Add-ons
+
+    addons_page = Find(by=By.XPATH, value="//div[@id='addons']")
+    next_button_5 = Find(by=By.XPATH, value="//button[@id='addon-btn']")
 
     # Final Step: Checkout
 
@@ -72,12 +78,15 @@ class CustomerBookingPage(BasePage):
     promo_code_button = Find(by=By.XPATH, value="//input[@id='discountBtnCode']")
     gift_certificate_input = Find(by=By.XPATH, value="//input[@id='gift_certificate']")
     gift_certificate_button = Find(by=By.XPATH, value="//input[@id='redeemBtnCode']")
+    discount_pop_up = Find(by=By.XPATH, value="//div[@class='bootbox-body']")
+    discount_pop_up_ok_button = Find(by=By.XPATH, value="//button[@class='btn btn-primary']")
     stripe = Find(by=By.XPATH, value="//iframe[@name='__privateStripeFrame3']")
     card_number_input = Find(by=By.XPATH, value="//input[@name='cardnumber']")
     card_date_input = Find(by=By.XPATH, value="//input[@name='exp-date']")
     card_cvc_input = Find(by=By.XPATH, value="//input[@name='cvc']")
     card_zip_input = Find(by=By.XPATH, value="//input[@name='postal']")
-    next_button_5 = Find(by=By.XPATH, value="//button[@class='btn btn-lg btn-blue']")
+    payment_notification = Find(by=By.XPATH, value="//span[@id='CcErrorMsg']")
+    next_button_6 = Find(by=By.XPATH, value="//button[@id='submit-button']")
 
     # Information on the page.
 
@@ -134,6 +143,12 @@ class CustomerBookingPage(BasePage):
             self.card_zip_input.send_keys(card_zip)
         self._driver.switch_to.default_content()
 
-    def close_window(self):
-        self._driver.quit()
+    def scroll_down(self):
+        self._driver.execute_script("$('html,body').animate({scrollTop: document.body.scrollHeight},\"fast\");")
 
+    def addons_present(self):
+        style = self.addons_page.get_attribute("style")
+        if style == "display: none;":
+            return False
+        else:
+            return True

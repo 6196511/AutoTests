@@ -16,7 +16,7 @@ class AdminBooking:
         self.navigate_to()
         self.booking_page.select_activity(tickets.activity)
         self.select_tickets(tickets)
-        self.booking_page.select_date(tickets.year, tickets.month, tickets.day, tickets.grand_total)
+        self.booking_page.select_date(tickets.year, tickets.month, tickets.day)
         self.booking_page.select_time(tickets.time)
 
     def navigate_to(self):
@@ -26,6 +26,8 @@ class AdminBooking:
     def select_tickets(self, tickets):
         if tickets.first_tickets_type is not None:
             self.booking_page.first_tickets_type.send_keys(tickets.first_tickets_type)
+            self.booking_page.empty_space_first_tab.click()
+            wait(lambda: self.booking_page.grand_total.text != '$0.00')
         if tickets.second_tickets_type is not None:
             self.booking_page.second_tickets_type.send_keys(tickets.second_tickets_type)
         if tickets.third_tickets_type is not None:
@@ -33,6 +35,24 @@ class AdminBooking:
         if tickets.fourth_tickets_type is not None:
             self.booking_page.fourth_tickets_type.send_keys(tickets.fourth_tickets_type)
         self.booking_page.empty_space_first_tab.click()
+
+    def apply_valid_promo_code(self, tickets):
+        self.enter_promo_code(tickets)
+        assert self.booking_page.discount_pop_up.text == "The promo code %s has been applied to %s." % \
+               (tickets.promo_code, tickets.activity), "Wrong discount notification: %s " % \
+                                                       self.booking_page.discount_pop_up.text
+        self.booking_page.discount_pop_up_ok_button.click()
+
+    def apply_invalid_promo_code(self, tickets):
+        self.enter_promo_code(tickets)
+        assert self.booking_page.discount_pop_up.text == "Sorry, the promo code %s is not valid for your selected events." %\
+               tickets.promo_code, "Wrong discount notification: %s " % self.booking_page.discount_pop_up.text
+        self.booking_page.discount_pop_up_ok_button.click()
+
+    def enter_promo_code(self, tickets):
+        self.booking_page.promo_code_input.send_keys(tickets.promo_code)
+        self.booking_page.apply_discount.click()
+        wait(lambda: self.booking_page.discount_pop_up.is_displayed(), waiting_for="Discount pop-up")
 
     def fill_out_customer_info(self, tickets):
         self.booking_page.click_enter_customer_information()

@@ -4,7 +4,7 @@ import pytz
 from webium import wait
 from webium.wait import wait
 
-from pages.certificate_page import CertificatePage
+from pages.admin_certificate import CertificatePage
 from pages.navigation_bar import NavigationBar
 
 
@@ -19,7 +19,7 @@ class CertificateActions:
         self.purchase_datetime = ""
         self.purchase_datetime_plus_one_minute = ""
 
-    def add_new_certificate(self, cert):
+    def select_certificate(self, cert):
         self.navigate_to()
         self.certificate_page.add_new_certificate_button.click()
         self.certificate_page.select_type(cert.certificate_type)
@@ -29,10 +29,25 @@ class CertificateActions:
         self.enter_initial_amount(cert)
         self.select_activity_and_tickets(cert)
         self.check_initial_amount(cert)
+
+    def make_successful_payment(self, cert):
         self.certificate_page.select_charge_type(cert.charge_type)
-        self.enter_payment_information(cert)
-        self.certificate_page.click_save_button()
+
+        self.enter_payment_information(cert.charge_type, cert.card_number, cert.card_date, cert.card_cvc, cert.card_zip,
+                                       cert.check_number)
         self.get_purchase_datetime()
+        self.certificate_page.click_save_button()
+
+    def make_declined_payment(self, cert):
+        self.certificate_page.select_charge_type(cert.charge_type)
+        self.enter_payment_information(cert.charge_type, cert.declined_card_number, cert.card_date, cert.card_cvc,
+                                       cert.card_zip, cert.check_number)
+        self.certificate_page.save_button.click()
+        wait(lambda: self.certificate_page.payment_alert.is_displayed(), timeout_seconds=100)
+        assert self.certificate_page.payment_alert.text == "Credit card declined: please try again.", \
+            "Wrong text on the declined alert! '%s'" % self.certificate_page.payment_alert.text
+        self.certificate_page.payment_alert_button.click()
+        wait(lambda: len(self.certificate_page.modal_pop_up) == 1)
 
     def verify_created_certificate(self, cert):
         assert self.certificate_page.first_row_name.text == cert.first_name + " " + cert.last_name, \
@@ -78,17 +93,11 @@ class CertificateActions:
             .lstrip("0").replace(" 0", " ").replace("/0", "/")
         return self.purchase_datetime, self.purchase_datetime_plus_one_minute
 
-    def enter_payment_information(self, cert):
-        if cert.charge_type == 'creditcard':
-            wait(lambda: self.certificate_page.card_number_input.is_enabled())
-            self.certificate_page.card_number_input.send_keys(cert.card_number)
-            self.certificate_page.card_date_input.send_keys(cert.card_date)
-            self.certificate_page.card_cvc_input.send_keys(cert.card_cvc)
-            self.certificate_page.card_zip_input.send_keys(cert.card_zip)
-        elif cert.charge_type == 'Check':
-            self.certificate_page.check_number_input.send_keys(cert.check_number)
-        else:
-            pass
+    def enter_payment_information(self, charge_type, card_number, card_date, card_cvc, card_zip, check_number):
+        if charge_type == 'creditcard':
+            self.certificate_page.enter_cc_info(card_number, card_date, card_cvc, card_zip)
+        elif charge_type == 'Check':
+            self.certificate_page.check_number_input.send_keys(check_number)
 
     def check_initial_amount(self, cert):
         if cert.certificate_type == "Activity Tickets":
@@ -111,6 +120,7 @@ class CertificateActions:
         if cert.certificate_type == "Specific Dollar Amount" and cert.initial_amount is not None:
             self.certificate_page.initial_amount_input.clear()
             self.certificate_page.initial_amount_input.send_keys(cert.initial_amount)
+        self.certificate_page.charge_type_label.click()
 
     def navigate_to(self):
         if self.app.current_url() != "https://dev.godo.io/giftcertificate.aspx":

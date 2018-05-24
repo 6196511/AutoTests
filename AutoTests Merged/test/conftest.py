@@ -24,14 +24,16 @@ def app(request):
     return fixture
 
 
-@pytest.fixture
+@pytest.fixture(scope="module")
 def customer(request):
     global fixture
     browser = request.config.getoption("--browser")
     fixture = Customer(browser=browser)
-    return fixture
+    yield fixture
+    fixture.destroy()
 
-@pytest.fixture(scope="session", autouse=True)
+
+@pytest.fixture(scope="module", autouse=True)
 def stop(request):
     def fin():
         fixture.session.ensure_logout()

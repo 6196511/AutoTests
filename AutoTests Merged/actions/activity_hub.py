@@ -1,6 +1,6 @@
 from time import sleep
 
-from waiting import wait
+from webium.wait import wait
 
 from pages.activity_hub_page import ActivityHubPage
 from pages.activity_page import AddEditActivityPage
@@ -20,7 +20,8 @@ class ActivityHub:
         self.navigate_to()
         self.activity_hub.add_activity_button.click()
         self.fill_out_form(activity)
-        self.activity_page.save_button.click()
+        sleep(100)
+        # self.activity_page.save_button.click()
 
     def fill_out_form(self, activity):
         sleep(5)
