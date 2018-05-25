@@ -68,7 +68,7 @@ class CustomerActions:
         self.answer_questions()
         self.booking.empty_space_fourth_page.click()
         self.booking.scroll_down()
-        wait(lambda: self.booking.next_button_4.is_displayed() and self.booking.next_button_4.is_enabled())
+        sleep(1)
         self.booking.next_button_4.click()
 
     def skip_addons(self):
