@@ -64,7 +64,7 @@ class CustomerBookingPage(BasePage):
     email_input = Find(by=By.XPATH, value="//input[@id='contactEmail']")
     zip_input = Find(by=By.XPATH, value="//input[@id='contactZipCode']")
     empty_space_fourth_page = Find(by=By.XPATH, value="//h4[text()='Step 4: Your Info']")
-    question_inputs = Finds(by=By.XPATH, value="//textarea")
+    question_inputs = Finds(by=By.XPATH, value="//input[contains(@class,'question-input')]")
     next_button_4 = Find(by=By.XPATH, value="//button[@id='contact-info-btn']")
 
     # Step 5: Add-ons
