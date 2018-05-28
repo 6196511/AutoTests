@@ -33,7 +33,11 @@ class Test_GODO83(BaseTest):
         page.edit_activity.click()
         page=AddEditActivityPage()
         for i in range(1, len(page.switchers)):
-            page.switchers[i].click()
+            if page.switchers[i].get_attribute("outerHTML") != switcher_OFF:
+                page.switchers[i].click()
+            else:
+                continue
+            break
         time.sleep(15)
         NewActivityName = ("TestEdit"+''.join(choice(digits) for i in range(4)))
         page.activity_name.clear()
