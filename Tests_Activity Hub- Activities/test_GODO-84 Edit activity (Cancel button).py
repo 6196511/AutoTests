@@ -36,11 +36,9 @@ class Test_GODO84(BaseTest):
         page=AddEditActivityPage()
         time.sleep(15)
         OldActivitySwitchers = []
-        for i in range(0, len(page.switchers)):  # FAILED because of bug 2270
+        for i in range(0, len(page.switchers)):
             OldActivitySwitcher = page.switchers[i].get_attribute("outerHTML")
-            print(OldActivitySwitcher)
             OldActivitySwitchers.append(OldActivitySwitcher)
-        print(OldActivitySwitchers)
         OldActivityName = page.activity_name.get_attribute('value')
         OldActivityURL = page.activity_url.get_attribute('value')
         select = Select(page.activity_status)
@@ -69,9 +67,6 @@ class Test_GODO84(BaseTest):
         OldActivityMinTickets = page.ticket_minimum.get_attribute('value')
         OldActivityNotmetAlert = page.minimum_not_met_alert.get_attribute('value')
         OldActivityStopbookingNoSales = page.stop_no_sales.get_attribute('value')
-        # NewActivityStopbookingNoSales = '7'
-        # page.stop_no_sales.clear()
-        # page.stop_no_sales.send_keys(NewActivityStopbookingNoSales)
         OldActivityFirstTicketType = page.first_ticket_type.get_attribute('value')
         OldActivityFirstTicketPrice = page.first_ticket_price.get_attribute('value')
         select = Select(page.first_guide)
@@ -89,7 +84,6 @@ class Test_GODO84(BaseTest):
         NewActivitySwitchers = []
         for i in range(0, len(page.switchers)):  # FAILED because of bug 2270
             NewActivitySwitcher = page.switchers[i].get_attribute("outerHTML")
-            print(NewActivitySwitcher)
             NewActivitySwitchers.append(NewActivitySwitcher)
         print(NewActivitySwitchers)
         assert OldActivitySwitchers != NewActivitySwitchers
@@ -151,9 +145,6 @@ class Test_GODO84(BaseTest):
         NewActivityNotmetAlert = '5'
         page.minimum_not_met_alert.clear()
         page.minimum_not_met_alert.send_keys(NewActivityNotmetAlert)
-        # NewActivityStopbookingNoSales = '7'
-        # page.stop_no_sales.clear()
-        # page.stop_no_sales.send_keys(NewActivityStopbookingNoSales)
         NewActivityFirstTicketType = "Senior"
         page.first_ticket_type.clear()
         page.first_ticket_type.send_keys(NewActivityFirstTicketType)
@@ -189,8 +180,6 @@ class Test_GODO84(BaseTest):
         assert page.is_element_present('activity_actions') == False
         page.search_activity_field.clear()
         page.search_activity_field.send_keys(OldActivityName)
-        # wait = WebDriverWait(get_driver(), 15)
-        # wait.until(lambda driver: page.is_element_present('activity_actions'))
         page.activity_actions.click()
         wait = WebDriverWait(get_driver(), 15)
         wait.until(lambda driver: page.is_element_present('edit_activity'))
@@ -239,5 +228,8 @@ class Test_GODO84(BaseTest):
         select = Select(page.review_redirect)
         assert select.first_selected_option.text == OldActivityStarsReview
         assert page.review_website.get_attribute('value') == OldReviewURL
-        # for i in range(0, len(page.switchers)):  #FAILED because of bug 2270
-        #      assert page.switchers[i].get_attribute("outerHTML") == switcher_OFF
+        OldActivitySwitchers1 = []
+        for i in range(0, len(page.switchers)):
+            OldActivitySwitcher1 = page.switchers[i].get_attribute("outerHTML")
+            OldActivitySwitchers1.append(OldActivitySwitcher1)
+        assert OldActivitySwitchers1 == OldActivitySwitchers
