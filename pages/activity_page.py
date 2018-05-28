@@ -3,7 +3,7 @@ from selenium.webdriver.support.select import Select
 from webium import BasePage, Find, Finds
 from selenium.webdriver.remote.webelement import WebElement
 
-switcher_OFF = "<div class='switch-button-button' style='width: 14px; height: 13px; left: -1px;'></div>"
+switcher_OFF = '<div class="switch-button-button" style="width: 14px; height: 13px; left: -1px;"></div>'
 
 class AddEditActivityPage(BasePage):
 
