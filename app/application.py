@@ -14,6 +14,8 @@ class Application:
             self.driver = webdriver.Chrome()
         elif browser == "firefox":
             self.driver = webdriver.Firefox()
+        elif browser == "ie":
+            self.driver = webdriver.Ie()
         else:
             raise ValueError("Unrecognized browser %s" % browser)
         self.driver.maximize_window()
