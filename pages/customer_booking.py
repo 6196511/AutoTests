@@ -19,24 +19,24 @@ class CustomerBookingPage(BasePage):
     # Step 1/5: Pick Tickets inputs.
 
     first_plus_button = Find(by=By.XPATH,
-                             value="//div[@class='row'][1]//div[@class='input-stepper']//button[@class='upButton']")
+                             value="//div[@class='row content'][1]//button[@class='upButton']")
     second_plus_button = Find(by=By.XPATH,
-                             value="//div[@class='row'][2]//div[@class='input-stepper']//button[@class='upButton']")
+                             value="//div[@class='row content'][2]//button[@class='upButton']")
     third_plus_button = Find(by=By.XPATH,
-                             value="//div[@class='row'][3]//div[@class='input-stepper']//button[@class='upButton']")
+                             value="//div[@class='row content'][3]//button[@class='upButton']")
     fourth_plus_button = Find(by=By.XPATH,
-                             value="//div[@class='row'][4]//div[@class='input-stepper']//button[@class='upButton']")
-    first_tickets_type_input = Find(by=By.XPATH, value="//div[@class='row'][1]//input")
-    second_tickets_type_input = Find(by=By.XPATH, value="//div[@class='row'][2]//input")
-    third_tickets_type_input = Find(by=By.XPATH, value="//div[@class='row'][3]//input")
-    fourth_tickets_type_input = Find(by=By.XPATH, value="//div[@class='row'][4]//input")
-    empty_space_first_page = Find(by=By.XPATH, value="//h4[text()='Step 1/5: Pick Tickets']")
+                             value="//div[@class='row content'][4]//button[@class='upButton']")
+    # first_tickets_type_input = Find(by=By.XPATH, value="//div[@class='row'][1]//input")
+    # second_tickets_type_input = Find(by=By.XPATH, value="//div[@class='row'][2]//input")
+    # third_tickets_type_input = Find(by=By.XPATH, value="//div[@class='row'][3]//input")
+    # fourth_tickets_type_input = Find(by=By.XPATH, value="//div[@class='row'][4]//input")
+    # empty_space_first_page = Find(by=By.XPATH, value="//h4[text()='Step 1/5: Pick Tickets']")
 
     # Titles under the pictures.
-    first_tickets_name = Find(by=By.XPATH, value="//div[@class='row'][1]//div[@class='pill-box-left']/p")
-    second_tickets_name = Find(by=By.XPATH, value="//div[@class='row'][2]//div[@class='pill-box-left']/p")
-    third_tickets_name = Find(by=By.XPATH, value="//div[@class='row'][3]//div[@class='pill-box-left']/p")
-    fourth_tickets_name = Find(by=By.XPATH, value="//div[@class='row'][4]//div[@class='pill-box-left']/p")
+    first_tickets_name = Find(by=By.XPATH, value="//div[@class='row content'][1]//div[@class='ticket-name']")
+    second_tickets_name = Find(by=By.XPATH, value="//div[@class='row content'][2]//div[@class='ticket-name']")
+    third_tickets_name = Find(by=By.XPATH, value="//div[@class='row content'][3]//div[@class='ticket-name']")
+    fourth_tickets_name = Find(by=By.XPATH, value="//div[@class='row content'][4]//div[@class='ticket-name']")
 
     # Current tickets table.
     current_tickets_first_row = Find(by=By.XPATH, value="//div[@class='ticketDetails']/p[1]")
