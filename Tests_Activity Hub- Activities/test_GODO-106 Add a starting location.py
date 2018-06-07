@@ -52,13 +52,12 @@ class Test_GODO106(BaseTest):
         NewLocationDescription = "This location has been created automatically"
         page.location_description.clear()
         page.location_description.send_keys(NewLocationDescription)
-        a = page.location_name.get_attribute('value')
         page.save_button.click()
-        page.search_location.send_keys(a)
+        page.search_location.send_keys(NewLocationName)
         time.sleep(3)
         page = LocationLink()
         for i in range(0, len(page.location_links)):
-            if a in page.location_links[i].get_attribute("textContent"):
+            if NewLocationName in page.location_links[i].get_attribute("textContent"):
                 page.location_links[i].click()
         time.sleep(5)
         page = AddStartingLocationPage()
