@@ -25,11 +25,11 @@ class Test_GODO84(BaseTest):
         page=ActivityHubPage()
         page.open()
         page.show_inactive.click()
-        time.sleep(2)
+        time.sleep(3)
         page.search_activity_field.send_keys('TestEdit')
         page.activity_actions.click()
         wait = WebDriverWait(get_driver(), 15)
-        wait.until(lambda driver: page.is_element_present('edit_activity'))
+        wait.until(lambda driver: page.is_element_present('activity_actions'))
         page.edit_activity.click()
         page=AddEditActivityPage()
         time.sleep(15)
@@ -83,7 +83,6 @@ class Test_GODO84(BaseTest):
         for i in range(0, len(page.switchers)):  # FAILED because of bug 2270
             NewActivitySwitcher = page.switchers[i].get_attribute("outerHTML")
             NewActivitySwitchers.append(NewActivitySwitcher)
-        print(NewActivitySwitchers)
         assert OldActivitySwitchers != NewActivitySwitchers
         OldActivityName = page.activity_name.get_attribute('value')
         NewActivityName = ("NoEdit"+''.join(choice(digits) for i in range(4)))
