@@ -53,7 +53,6 @@ class Test_GODO106(BaseTest):
         page.location_description.clear()
         page.location_description.send_keys(NewLocationDescription)
         a = page.location_name.get_attribute('value')
-        print(a)
         page.save_button.click()
         page.search_location.send_keys(a)
         time.sleep(3)
