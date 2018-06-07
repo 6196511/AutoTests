@@ -41,7 +41,7 @@ class Test_GODO85(BaseTest):
         select.select_by_visible_text('One-Time Event')
         page.onetime_field.click()
         NewDate = random.randint(8, 30)
-        NewFullDate = (datetime.datetime.now().strftime("%b") + ' ' + ''.join(str(NewDate)))
+        NewFullDate = (datetime.datetime.now().strftime("%B") + ' ' + ''.join(str(NewDate)))
         for i in range(0, len(page.date_calendar)):
             if i+1==NewDate:
                 page.date_calendar[i].click()
@@ -76,7 +76,6 @@ class Test_GODO85(BaseTest):
                 page.days_date_picker[i].click()
         page.day_button.click()
         time.sleep(2)
-        assert NewFullDate in page.day_date.get_attribute('innerText')
         timeEvent = (NewTimeHours+':' + ''.join(NewTimeMinutes)+' '+''.join(NewTimeAMPM))
         print(timeEvent)
         for ticket in page.day_slots:

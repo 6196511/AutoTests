@@ -4,11 +4,9 @@ from Login import loginpage
 from activity_hub_page import ActivityHubPage
 from activity_page import AddEditActivityPage, switcher_OFF
 from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 from random import choice
 from string import digits
 from selenium.webdriver.support.ui import Select
-from selenium.webdriver.common.by import By
 import time
 from creds import admin_login, admin_password
 
