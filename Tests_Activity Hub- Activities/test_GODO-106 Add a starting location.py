@@ -9,7 +9,8 @@ from selenium.webdriver.support.ui import Select
 from selenium.webdriver.common.by import By
 import time
 from creds import admin_login, admin_password
-from webium import BasePage, Find, Finds
+from webium import BasePage, Finds
+from activity_page import AddEditActivityPage
 
 class BaseTest(object):
     def teardown_class(self):
@@ -72,4 +73,11 @@ class Test_GODO106(BaseTest):
         assert page.location_city.get_attribute('value') == NewLocationCity
         assert page.location_zipcode.get_attribute('value') == NewLocationZipcode
         assert page.location_description.get_attribute('value') == NewLocationDescription
-
+        page=ActivityHubPage()
+        page.open()
+        page.add_activity_button.click()
+        page=AddEditActivityPage()
+        time.sleep(10)
+        select = Select(page.starting_location)
+        select.select_by_visible_text(NewLocationName)
+        assert select.first_selected_option.text == NewLocationName
