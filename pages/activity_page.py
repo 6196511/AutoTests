@@ -7,6 +7,7 @@ switcher_OFF = '<div class="switch-button-button" style="width: 14px; height: 13
 
 class AddEditActivityPage(BasePage):
 
+    url = 'https://dev.godo.io/activity_information.aspx'
     activity_name = Find(by=By.XPATH, value="//input[@id='activity_name']")
     activity_url = Find(by=By.XPATH, value="//input[@id='activity_Url']")
     activity_status = Find(by=By.XPATH, value="//select[@id='activity_status']")
@@ -48,6 +49,7 @@ class AddEditActivityPage(BasePage):
     cancel_button = Find(by=By.XPATH, value="//a[text()='Cancel']")
     save_button = Find(by=By.XPATH, value="//button[@id='submitactivity']")
 
+    alert_message = Find(by=By.XPATH, value="//label[@id='errormsg']")
 
 
     def select(self, web_element, option):
