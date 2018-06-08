@@ -25,7 +25,6 @@ class Test_GODO121(BaseTest):
         page=ActivityHubPage()
         page.open()
         page.show_inactive.click()
-        time.sleep(3)
         page.search_activity_field.send_keys('TestEdit')
         ExistedActivityName = page.activity_title.get_attribute("textContent")
         page.add_activity_button.click()

@@ -3,14 +3,11 @@ from webium.driver import close_driver
 from Login import loginpage
 from activity_hub_page import ActivityHubPage
 from starting_location import AddStartingLocationPage
-from random import choice
-from string import digits
-from selenium.webdriver.support.ui import Select
 from selenium.webdriver.common.by import By
 import time
 from creds import admin_login, admin_password
 from webium import BasePage, Finds
-from activity_page import AddEditActivityPage
+
 
 class BaseTest(object):
     def teardown_class(self):

@@ -25,9 +25,8 @@ class Test_GODO83(BaseTest):
         page=ActivityHubPage()
         page.open()
         page.search_activity_field.send_keys('AutoTest_')
+        time.sleep(5)
         page.activity_actions.click()
-        wait = WebDriverWait(get_driver(), 15)
-        wait.until(lambda driver: page.is_element_present('activity_actions'))
         page.edit_activity.click()
         page=AddEditActivityPage()
         time.sleep(15)
@@ -46,13 +45,13 @@ class Test_GODO83(BaseTest):
         NewActivityStatus = "Inactive"
         select.select_by_visible_text(NewActivityStatus )
         select = Select(page.branch)
-        NewActivityBranch = "Belarus Branch"
+        NewActivityBranch = "HA Branch"
         select.select_by_visible_text(NewActivityBranch)
         select = Select(page.starting_location)
         NewActivityLocation = "Chris Falvey's Place"
         select.select_by_visible_text(NewActivityLocation)
         select = Select(page.time_zone)
-        NewActivityTimezone = "Atlantic"
+        NewActivityTimezone = "Hawaii"
         select.select_by_visible_text(NewActivityTimezone)
         NewActivityDesription = 'This activity has been edited'
         page.activity_description.clear()

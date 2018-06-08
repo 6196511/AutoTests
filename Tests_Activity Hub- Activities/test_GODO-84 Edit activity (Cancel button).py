@@ -3,7 +3,6 @@ from webium.driver import close_driver
 from Login import loginpage
 from activity_hub_page import ActivityHubPage
 from activity_page import AddEditActivityPage
-from selenium.webdriver.support.wait import WebDriverWait
 from random import choice
 from string import digits
 from selenium.webdriver.support.ui import Select
@@ -25,11 +24,8 @@ class Test_GODO84(BaseTest):
         page=ActivityHubPage()
         page.open()
         page.show_inactive.click()
-        time.sleep(3)
         page.search_activity_field.send_keys('TestEdit')
         page.activity_actions.click()
-        wait = WebDriverWait(get_driver(), 15)
-        wait.until(lambda driver: page.is_element_present('activity_actions'))
         page.edit_activity.click()
         page=AddEditActivityPage()
         time.sleep(15)
@@ -172,14 +168,12 @@ class Test_GODO84(BaseTest):
         page.cancel_button.click()
         page = ActivityHubPage()
         page.show_inactive.click()
-        time.sleep(2)
         page.search_activity_field.send_keys(NewActivityName)
         assert page.is_element_present('activity_actions') == False
         page.search_activity_field.clear()
         page.search_activity_field.send_keys(OldActivityName)
+        time.sleep(5)
         page.activity_actions.click()
-        wait = WebDriverWait(get_driver(), 15)
-        wait.until(lambda driver: page.is_element_present('edit_activity'))
         text = page.activity_title.get_attribute("textContent")
         assert text == OldActivityName
         page.edit_activity.click()

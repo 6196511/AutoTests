@@ -3,7 +3,6 @@ from webium.driver import close_driver
 from Login import loginpage
 from activity_hub_page import ActivityHubPage
 from activity_page import AddEditActivityPage, switcher_OFF
-from selenium.webdriver.support.wait import WebDriverWait
 from random import choice
 from string import digits
 from selenium.webdriver.support.ui import Select
@@ -37,13 +36,13 @@ class Test_GODO82(BaseTest):
         NewActivityStatus = "Active"
         select.select_by_visible_text(NewActivityStatus )
         select = Select(page.branch)
-        NewActivityBranch = "First branch"
+        NewActivityBranch = "AlexeyBranch"
         select.select_by_visible_text(NewActivityBranch)
         select = Select(page.starting_location)
         NewActivityLocation = "Hotel California"
         select.select_by_visible_text(NewActivityLocation)
         select = Select(page.time_zone)
-        NewActivityTimezone = "Central"
+        NewActivityTimezone = "Pacific"
         select.select_by_visible_text(NewActivityTimezone)
         NewActivityDesription = 'The activity is created automatically.'
         page.activity_description.send_keys(NewActivityDesription)
@@ -104,9 +103,8 @@ class Test_GODO82(BaseTest):
         page.save_button.click()
         page = ActivityHubPage()
         page.search_activity_field.send_keys(NewActivityName)
+        time.sleep(5)
         page.activity_actions.click()
-        wait = WebDriverWait(get_driver(), 15)
-        wait.until(lambda driver: page.is_element_present('activity_actions'))
         text = page.activity_title.get_attribute("textContent")
         assert text == NewActivityName
         page.edit_activity.click()
