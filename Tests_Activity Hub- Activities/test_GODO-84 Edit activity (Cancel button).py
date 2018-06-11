@@ -25,6 +25,7 @@ class Test_GODO84(BaseTest):
         page.open()
         page.show_inactive.click()
         page.search_activity_field.send_keys('TestEdit')
+        time.sleep(5)
         page.activity_actions.click()
         page.edit_activity.click()
         page=AddEditActivityPage()
@@ -169,6 +170,7 @@ class Test_GODO84(BaseTest):
         page = ActivityHubPage()
         page.show_inactive.click()
         page.search_activity_field.send_keys(NewActivityName)
+        time.sleep(5)
         assert page.is_element_present('activity_actions') == False
         page.search_activity_field.clear()
         page.search_activity_field.send_keys(OldActivityName)
