@@ -43,6 +43,7 @@ class Test_GODO595(BaseTest):
         get_driver().refresh()
         select = Select(page.entries_per_page)
         select.select_by_visible_text('100')
+        time.sleep(5)
         L=[]
         for i in range(0, len(page.waiver_names)):
             L.append(page.waiver_names[i].get_attribute("textContent"))
