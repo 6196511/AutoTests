@@ -1,8 +1,8 @@
 import pytest
-from data.tickets import testdata_cus1, testdata_cus2
+from data.orders import customer_data, customer_declines, customer_valid_codes, customer_invalid_codes
 
 
-@pytest.mark.parametrize("tickets", testdata_cus1[0:16], ids=[repr(x) for x in testdata_cus1[0:16]])
+@pytest.mark.parametrize("tickets", customer_data, ids=[repr(x) for x in customer_data])
 def test_customer_booking(customer, tickets):
     """Order tickets via customer facing with valid credit card."""
     customer.booking.open_page(tickets)
@@ -16,7 +16,7 @@ def test_customer_booking(customer, tickets):
     customer.booking.verify_summary_details(tickets)
 
 
-@pytest.mark.parametrize("tickets", testdata_cus2, ids=[repr(x) for x in testdata_cus2])
+@pytest.mark.parametrize("tickets", customer_declines, ids=[repr(x) for x in customer_declines])
 def test_customer_declines(customer, tickets):
     """Order tickets via customer facing with invalid credit card number."""
     customer.booking.open_page(tickets)
@@ -31,7 +31,7 @@ def test_customer_declines(customer, tickets):
     customer.booking.verify_summary_details(tickets)
 
 
-@pytest.mark.parametrize("tickets", testdata_cus1[16:26], ids=[repr(x) for x in testdata_cus1[16:26]])
+@pytest.mark.parametrize("tickets", customer_valid_codes, ids=[repr(x) for x in customer_valid_codes])
 def test_customer_booking_promo_codes(customer, tickets):
     """Order tickets via customer facing with valid promo codes."""
     customer.booking.open_page(tickets)
@@ -46,7 +46,7 @@ def test_customer_booking_promo_codes(customer, tickets):
     customer.booking.verify_summary_details(tickets)
 
 
-@pytest.mark.parametrize("tickets", testdata_cus1[26:], ids=[repr(x) for x in testdata_cus1[26:]])
+@pytest.mark.parametrize("tickets", customer_invalid_codes, ids=[repr(x) for x in customer_invalid_codes])
 def test_customer_booking_invalid_promo_codes(customer, tickets):
     """Order tickets via customer facing with invalid promo codes."""
     customer.booking.open_page(tickets)
