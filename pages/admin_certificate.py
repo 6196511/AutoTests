@@ -9,6 +9,7 @@ class CertificatePage(BasePage):
     # Current Gift Certificates page.
 
     add_new_certificate_button = Find(by=By.CSS_SELECTOR, value="[ng-click='vm.openAddGiftCertificateModal();']")
+    first_row_code = Find(by=By.XPATH, value="//tbody/tr[contains(@ng-repeat, 'results')][1]/td[1]")
     first_row_name = Find(by=By.XPATH, value="//tbody/tr[contains(@ng-repeat, 'results')][1]/td[2]")
     first_row_email = Find(by=By.XPATH, value="//tbody/tr[contains(@ng-repeat, 'results')][1]/td[3]")
     first_row_initial_amount = Find(by=By.XPATH, value="//tbody/tr[contains(@ng-repeat, 'results')][1]/td[4]")
@@ -29,7 +30,8 @@ class CertificatePage(BasePage):
     activity_list = Find(by=By.CSS_SELECTOR, value="#activity")
     first_tickets_type_input = Find(by=By.XPATH, value="//div[@ng-if='vm.selectedType.key===3']/div[2]//input")
     second_tickets_type_input = Find(by=By.XPATH, value="//div[@ng-if='vm.selectedType.key===3']/div[3]//input")
-    third_tickets_type_input = Find(by=By.XPATH, value="//div[@ng-if='vm.selectedType.key===3']/div[3]//input")
+    third_tickets_type_input = Find(by=By.XPATH, value="//div[@ng-if='vm.selectedType.key===3']/div[4]//input")
+    fourth_tickets_type_input = Find(by=By.XPATH, value="//div[@ng-if='vm.selectedType.key===3']/div[5]//input")
     charge_type_label = Find(by=By.XPATH, value="//label[@for='chargetype']")
     charge_type_list = Find(by=By.CSS_SELECTOR, value="#chargetype")
     check_number_input = Find(by=By.CSS_SELECTOR, value="#charge_checknumbner")
