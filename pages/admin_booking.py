@@ -2,7 +2,7 @@ from time import sleep
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
-from webium import BasePage, Find
+from webium import BasePage, Find, Finds
 from webium.wait import wait
 
 
@@ -11,6 +11,7 @@ class AdminBookingPage(BasePage):
     # First tab.
 
     activity_list = Find(by=By.XPATH, value="//select[@id='activity'][@ng-model='vm.selectedActivity']")
+    activities_in_list = Finds(by=By.XPATH, value="//option")
     first_tickets_type = Find(by=By.XPATH, value="//tbody/tr[1]//input")
     second_tickets_type = Find(by=By.XPATH, value="//tbody/tr[2]//input")
     third_tickets_type = Find(by=By.XPATH, value="//tbody/tr[3]//input")

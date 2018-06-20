@@ -4,11 +4,9 @@ from Login import loginpage
 from activity_hub_page import ActivityHubPage
 from activity_page import AddEditActivityPage, switcher_OFF
 from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 from random import choice
 from string import digits
 from selenium.webdriver.support.ui import Select
-from selenium.webdriver.common.by import By
 import time
 from creds import admin_login, admin_password
 
@@ -27,18 +25,16 @@ class Test_GODO83(BaseTest):
         page=ActivityHubPage()
         page.open()
         page.search_activity_field.send_keys('AutoTest_')
+        time.sleep(5)
         page.activity_actions.click()
-        wait = WebDriverWait(get_driver(), 15)
-        wait.until(lambda driver: page.is_element_present('activity_actions'))
         page.edit_activity.click()
         page=AddEditActivityPage()
-        for i in range(1, len(page.switchers)):
+        time.sleep(15)
+        for i in range(0, len(page.switchers)):
             if page.switchers[i].get_attribute("outerHTML") != switcher_OFF:
                 page.switchers[i].click()
             else:
                 continue
-            break
-        time.sleep(15)
         NewActivityName = ("TestEdit"+''.join(choice(digits) for i in range(4)))
         page.activity_name.clear()
         page.activity_name.send_keys(NewActivityName)
@@ -49,13 +45,13 @@ class Test_GODO83(BaseTest):
         NewActivityStatus = "Inactive"
         select.select_by_visible_text(NewActivityStatus )
         select = Select(page.branch)
-        NewActivityBranch = "Belarus Branch"
+        NewActivityBranch = "HA Branch"
         select.select_by_visible_text(NewActivityBranch)
         select = Select(page.starting_location)
         NewActivityLocation = "Chris Falvey's Place"
         select.select_by_visible_text(NewActivityLocation)
         select = Select(page.time_zone)
-        NewActivityTimezone = "Atlantic"
+        NewActivityTimezone = "Hawaii"
         select.select_by_visible_text(NewActivityTimezone)
         NewActivityDesription = 'This activity has been edited'
         page.activity_description.clear()
@@ -140,6 +136,8 @@ class Test_GODO83(BaseTest):
         page.edit_activity.click()
         page = AddEditActivityPage()
         time.sleep(15)
+        for i in range(0, len(page.switchers)):
+             assert page.switchers[i].get_attribute("outerHTML") == switcher_OFF
         assert page.activity_name.get_attribute('value') == NewActivityName
         assert page.activity_url.get_attribute('value')== NewActivityURL
         select = Select(page.activity_status)
@@ -180,5 +178,5 @@ class Test_GODO83(BaseTest):
         select = Select(page.review_redirect)
         assert select.first_selected_option.text == NewActivityStarsReview
         assert page.review_website.get_attribute('value') == NewActivityURL
-        for i in range(0, len(page.switchers)):  #FAILED because of bug 2270
-             assert page.switchers[i].get_attribute("outerHTML") == switcher_OFF
+
+

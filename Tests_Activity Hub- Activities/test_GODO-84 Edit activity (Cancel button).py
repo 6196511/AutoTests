@@ -2,13 +2,10 @@ from webium.driver import get_driver
 from webium.driver import close_driver
 from Login import loginpage
 from activity_hub_page import ActivityHubPage
-from activity_page import AddEditActivityPage, switcher_OFF
-from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
+from activity_page import AddEditActivityPage
 from random import choice
 from string import digits
 from selenium.webdriver.support.ui import Select
-from selenium.webdriver.common.by import By
 import time
 from creds import admin_login, admin_password
 
@@ -27,11 +24,9 @@ class Test_GODO84(BaseTest):
         page=ActivityHubPage()
         page.open()
         page.show_inactive.click()
-        time.sleep(2)
         page.search_activity_field.send_keys('TestEdit')
+        time.sleep(5)
         page.activity_actions.click()
-        wait = WebDriverWait(get_driver(), 15)
-        wait.until(lambda driver: page.is_element_present('edit_activity'))
         page.edit_activity.click()
         page=AddEditActivityPage()
         time.sleep(15)
@@ -85,7 +80,6 @@ class Test_GODO84(BaseTest):
         for i in range(0, len(page.switchers)):  # FAILED because of bug 2270
             NewActivitySwitcher = page.switchers[i].get_attribute("outerHTML")
             NewActivitySwitchers.append(NewActivitySwitcher)
-        print(NewActivitySwitchers)
         assert OldActivitySwitchers != NewActivitySwitchers
         OldActivityName = page.activity_name.get_attribute('value')
         NewActivityName = ("NoEdit"+''.join(choice(digits) for i in range(4)))
@@ -175,14 +169,13 @@ class Test_GODO84(BaseTest):
         page.cancel_button.click()
         page = ActivityHubPage()
         page.show_inactive.click()
-        time.sleep(2)
         page.search_activity_field.send_keys(NewActivityName)
+        time.sleep(5)
         assert page.is_element_present('activity_actions') == False
         page.search_activity_field.clear()
         page.search_activity_field.send_keys(OldActivityName)
+        time.sleep(5)
         page.activity_actions.click()
-        wait = WebDriverWait(get_driver(), 15)
-        wait.until(lambda driver: page.is_element_present('edit_activity'))
         text = page.activity_title.get_attribute("textContent")
         assert text == OldActivityName
         page.edit_activity.click()
