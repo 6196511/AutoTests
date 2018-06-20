@@ -1,8 +1,8 @@
 import pytest
-from data.certificates import testdata_cus1, testdata_cus2
+from data.orders import customer_certificates, customer_certificates_declines
 
 
-@pytest.mark.parametrize("certificate", testdata_cus1, ids=[repr(x) for x in testdata_cus1])
+@pytest.mark.parametrize("certificate", customer_certificates, ids=[repr(x) for x in customer_certificates])
 def test_purchasing_certificate(customer, certificate):
     """Purchasing gift certificates via customer facing with valid credit card."""
     customer.certificate.open_page(certificate)
@@ -12,7 +12,7 @@ def test_purchasing_certificate(customer, certificate):
     customer.certificate.verify_summary_details(certificate)
 
 
-@pytest.mark.parametrize("certificate", testdata_cus2, ids=[repr(x) for x in testdata_cus2])
+@pytest.mark.parametrize("certificate", customer_certificates_declines[2:], ids=[repr(x) for x in customer_certificates_declines[2:]])
 def test_purchasing_certificate_declines(customer, certificate):
     """Purchasing gift certificates via customer facing with invalid credit card."""
     customer.certificate.open_page(certificate)

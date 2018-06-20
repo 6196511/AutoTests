@@ -13,7 +13,7 @@ class CustomerActions:
         self.booking = None
 
     def open_page(self, tickets):
-        self.booking = CustomerBookingPage(driver=self.driver, url=tickets.customer_URL)
+        self.booking = CustomerBookingPage(driver=self.driver, url=tickets.URL_tickets)
         self.booking.open()
 
     def select_tickets_buttons(self, tickets):
@@ -51,7 +51,6 @@ class CustomerActions:
         self.booking._driver.execute_script(
             "$('#datepicker').datepicker('setDate', new Date(%s, %s-1, %s))" % (tickets.year, tickets.month, tickets.day))
         self.booking.click_date(tickets.day)
-        wait(lambda: self.booking.next_button_2.is_enabled())
         self.booking.next_button_2.click()
 
     def select_time(self, tickets):
@@ -74,6 +73,7 @@ class CustomerActions:
     def skip_addons(self):
         if self.booking.addons_present():
             wait(lambda: self.booking.next_button_5.is_displayed() and self.booking.next_button_5.is_enabled())
+            sleep(1)
             self.booking.next_button_5.click()
 
     def apply_valid_promo_code(self, tickets):
@@ -112,9 +112,11 @@ class CustomerActions:
         date = "%s %s, %s" % (month, tickets.day, tickets.year)
         wait(lambda: self.booking.checkout_date.is_displayed())
         assert self.booking.checkout_date.text == date, "Wrong date: %s" % self.booking.checkout_date.text
-        assert self.booking.tickets_cost.text == tickets.ticket_total, "Wrong ticket cost on the payment page!"
+        assert self.booking.tickets_cost.text == tickets.ticket_total, "Wrong ticket cost on the payment page! '%s'" % \
+                                                                       self.booking.tickets_cost.text
         taxes_fees = float(tickets.taxes) + float(tickets.booking_fee)
-        assert self.booking.tax.text == "%.2f" % taxes_fees, "Wrong Taxes & Fees on the payment page!"
+        assert self.booking.tax.text == "%.2f" % taxes_fees, "Wrong Taxes & Fees on the payment page! '%s'" % \
+                                                             self.booking.tax.text
         assert self.booking.total_price.text == tickets.grand_total, "Wrong grand total on the payment page! '%s'" % \
                                                                      self.booking.total_price.text
 
@@ -127,9 +129,13 @@ class CustomerActions:
             "Wrong text of the final alert: '%s'" % self.booking.payment_notification.text
 
     def make_payment(self, tickets):
-        self.booking.enter_cc_info(tickets.card_number, tickets.card_date, tickets.card_cvc, tickets.card_zip)
-        wait(lambda: self.booking.next_button_6.is_enabled())
-        self.booking.next_button_6.click()
+        if tickets.payment_type is None:
+            wait(lambda: self.booking.next_button_6.is_enabled())
+            self.booking.next_button_6.click()
+        else:
+            self.booking.enter_cc_info(tickets.card_number, tickets.card_date, tickets.card_cvc, tickets.card_zip)
+            wait(lambda: self.booking.next_button_6.is_enabled())
+            self.booking.next_button_6.click()
 
     def refill_payment_info(self, tickets):
         self.booking.enter_cc_info(tickets.card_number, tickets.card_date, tickets.card_cvc, tickets.card_zip)

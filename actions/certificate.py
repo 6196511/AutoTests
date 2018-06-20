@@ -31,17 +31,17 @@ class CertificateActions:
         self.check_initial_amount(cert)
 
     def make_successful_payment(self, cert):
-        self.certificate_page.select_charge_type(cert.charge_type)
+        self.certificate_page.select_charge_type(cert.cert_charge_type)
 
-        self.enter_payment_information(cert.charge_type, cert.card_number, cert.card_date, cert.card_cvc, cert.card_zip,
-                                       cert.check_number)
+        self.enter_payment_information(cert.cert_charge_type, cert.cert_card_number, cert.cert_card_date,
+                                       cert.cert_card_cvc, cert.cert_card_zip, cert.cert_check_number)
         self.get_purchase_datetime()
         self.certificate_page.click_save_button()
 
     def make_declined_payment(self, cert):
-        self.certificate_page.select_charge_type(cert.charge_type)
-        self.enter_payment_information(cert.charge_type, cert.declined_card_number, cert.card_date, cert.card_cvc,
-                                       cert.card_zip, cert.check_number)
+        self.certificate_page.select_charge_type(cert.cert_charge_type)
+        self.enter_payment_information(cert.cert_charge_type, cert.cert_declined_card_number, cert.cert_card_date,
+                                       cert.cert_card_cvc, cert.cert_card_zip, cert.cert_check_number)
         self.certificate_page.save_button.click()
         wait(lambda: self.certificate_page.payment_alert.is_displayed(), timeout_seconds=100)
         assert self.certificate_page.payment_alert.text == "Credit card declined: please try again.", \
@@ -63,27 +63,34 @@ class CertificateActions:
                 (self.certificate_page.first_row_purchase_date.text, self.purchase_datetime,
                  self.purchase_datetime_plus_one_minute))
         if cert.certificate_type != "Specific Dollar Amount":
-            assert self.certificate_page.first_row_activity.text == cert.activity, "Wrong activity in the table!"
-        if cert.name_first_tickets_type is not None:
-            assert cert.name_first_tickets_type in self.certificate_page.first_row_ticket_types.text,\
+            assert self.certificate_page.first_row_activity.text == cert.cert_activity, "Wrong activity in the table!"
+        if cert.cert_name_first_tickets_type is not None:
+            assert cert.cert_name_first_tickets_type in self.certificate_page.first_row_ticket_types.text,\
                 "The first tickets type is not in the table!"
-        if cert.name_second_tickets_type is not None:
-            assert cert.name_second_tickets_type in self.certificate_page.first_row_ticket_types.text, \
-                "The first tickets type is not in the table!"
-        if cert.name_third_tickets_type is not None:
-            assert cert.name_third_tickets_type in self.certificate_page.first_row_ticket_types.text, \
-                "The first tickets type is not in the table!"
+        if cert.cert_name_second_tickets_type is not None:
+            assert cert.cert_name_second_tickets_type in self.certificate_page.first_row_ticket_types.text, \
+                "The second tickets type is not in the table!"
+        if cert.cert_name_third_tickets_type is not None:
+            assert cert.cert_name_third_tickets_type in self.certificate_page.first_row_ticket_types.text, \
+                "The third tickets type is not in the table!"
         # check for Tickets type field
-        if cert.first_tickets_type is not None:
-            assert cert.first_tickets_type in self.certificate_page.first_row_quantity.text, \
+        if cert.cert_first_tickets_type is not None:
+            assert cert.cert_first_tickets_type in self.certificate_page.first_row_quantity.text, \
                 "Wrong amount of first tickets in the table!"
-        if cert.second_tickets_type is not None:
-            assert cert.second_tickets_type in self.certificate_page.first_row_quantity.text, \
+        if cert.cert_second_tickets_type is not None:
+            assert cert.cert_second_tickets_type in self.certificate_page.first_row_quantity.text, \
                 "Wrong amount of second tickets in the table!"
-        if cert.third_tickets_type is not None:
-            assert cert.third_tickets_type in self.certificate_page.first_row_quantity.text, \
+        if cert.cert_third_tickets_type is not None:
+            assert cert.cert_third_tickets_type in self.certificate_page.first_row_quantity.text, \
                 "Wrong amount of third tickets in the table!"
         # check for Quantity field
+
+    def copy_the_code(self, order):
+        order.gift_certificate_code = self.certificate_page.first_row_code.text
+
+    def verify_remain_amount(self, order):
+        assert self.certificate_page.first_row_remain_amount.text == order.remain_amount_after, \
+            "Wrong remain amount: %s" % self.certificate_page.first_row_remain_amount.text
 
     def get_purchase_datetime(self):
         self.now = datetime.now(tz=pytz.timezone('US/Central'))
@@ -102,19 +109,24 @@ class CertificateActions:
     def check_initial_amount(self, cert):
         if cert.certificate_type == "Activity Tickets":
             initial_amount = self.certificate_page.initial_amount_input.get_attribute("value")
-            assert initial_amount == "%g" % float(
-                cert.initial_amount), "Wrong value in the Initial Amount field!"
-            # removing trailing zeros from a decimal part and comparing with expected result
+            expected_result = float(cert.initial_amount)
+            if expected_result.is_integer():
+                assert initial_amount == "%g" % expected_result, "Wrong value in the Initial Amount field!"
+                # removing trailing zeros from a decimal part and comparing with expected result
+            else:
+                assert initial_amount == "%s" % expected_result, "Wrong value in the Initial Amount field!"
 
     def select_activity_and_tickets(self, cert):
-        if cert.activity is not None:
-            self.certificate_page.select_activity(cert.activity)
-            if cert.first_tickets_type is not None:
-                self.certificate_page.first_tickets_type_input.send_keys(cert.first_tickets_type)
-            if cert.second_tickets_type is not None:
-                self.certificate_page.second_tickets_type_input.send_keys(cert.second_tickets_type)
-            if cert.third_tickets_type is not None:
-                self.certificate_page.third_tickets_type_input.send_keys(cert.third_tickets_type)
+        if cert.cert_activity is not None:
+            self.certificate_page.select_activity(cert.cert_activity)
+            if cert.cert_first_tickets_type is not None:
+                self.certificate_page.first_tickets_type_input.send_keys(cert.cert_first_tickets_type)
+            if cert.cert_second_tickets_type is not None:
+                self.certificate_page.second_tickets_type_input.send_keys(cert.cert_second_tickets_type)
+            if cert.cert_third_tickets_type is not None:
+                self.certificate_page.third_tickets_type_input.send_keys(cert.cert_third_tickets_type)
+            if cert.cert_fourth_tickets_type is not None:
+                self.certificate_page.fourth_tickets_type_input.send_keys(cert.cert_fourth_tickets_type)
 
     def enter_initial_amount(self, cert):
         if cert.certificate_type == "Specific Dollar Amount" and cert.initial_amount is not None:
