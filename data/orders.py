@@ -15,6 +15,9 @@ df7 = pd.read_excel("../data/orders.xlsx", "Customer valid discounts", dtype=str
 df8 = pd.read_excel("../data/orders.xlsx", "Customer invalid discounts", dtype=str, keep_default_na=False)
 df9 = pd.read_excel("../data/orders.xlsx", "Admin booking with certificates", dtype=str, keep_default_na=False)
 df10 = pd.read_excel("../data/orders.xlsx", "Admin certificates", dtype=str, keep_default_na=False)
+df11 = pd.read_excel("../data/orders.xlsx", "Admin certificates declines", dtype=str, keep_default_na=False)
+df12 = pd.read_excel("../data/orders.xlsx", "Customer certificates", dtype=str, keep_default_na=False)
+df13 = pd.read_excel("../data/orders.xlsx", "Customer certificates declines", dtype=str, keep_default_na=False)
 
 
 excel_dict1 = df1.to_dict(orient='records')
@@ -27,6 +30,9 @@ excel_dict7 = df7.to_dict(orient='records')
 excel_dict8 = df8.to_dict(orient='records')
 excel_dict9 = df9.to_dict(orient='records')
 excel_dict10 = df10.to_dict(orient='records')
+excel_dict11 = df11.to_dict(orient='records')
+excel_dict12 = df12.to_dict(orient='records')
+excel_dict13 = df13.to_dict(orient='records')
 
 
 admin_data = []
@@ -39,6 +45,10 @@ customer_declines = []
 customer_valid_codes = []
 customer_invalid_codes = []
 admin_certificates = []
+admin_certificates_declines = []
+customer_certificates = []
+customer_certificates_declines = []
+
 
 today = datetime.date.today()
 purchase_date = today + datetime.timedelta(days=1)  # Tickets will be booked on tomorrow.
@@ -68,9 +78,6 @@ extract_test_data(customer_valid_codes, excel_dict7)
 extract_test_data(customer_invalid_codes, excel_dict8)
 extract_test_data(admin_booking_with_certificates, excel_dict9)
 extract_test_data(admin_certificates, excel_dict10)
-
-
-
-
-# for item in admin_data:
-#     print(item.id_testdata, item.year, item.month, item.day)
+extract_test_data(admin_certificates_declines, excel_dict11)
+extract_test_data(customer_certificates, excel_dict12)
+extract_test_data(customer_certificates_declines, excel_dict13)
