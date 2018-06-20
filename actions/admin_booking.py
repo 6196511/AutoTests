@@ -43,6 +43,12 @@ class AdminBooking:
                                                        self.booking_page.discount_pop_up.text
         self.booking_page.discount_pop_up_ok_button.click()
 
+    def apply_valid_gift_cert(self, order):
+        self.enter_gift_cert(order)
+        assert self.booking_page.discount_pop_up.text == "Your gift code has been applied to this order!",\
+            "Wrong discount notification: %s " % self.booking_page.discount_pop_up.text
+        self.booking_page.discount_pop_up_ok_button.click()
+
     def apply_invalid_promo_code(self, tickets):
         self.enter_promo_code(tickets)
         assert self.booking_page.discount_pop_up.text == "Sorry, the promo code %s is not valid for your selected events." %\
@@ -50,7 +56,14 @@ class AdminBooking:
         self.booking_page.discount_pop_up_ok_button.click()
 
     def enter_promo_code(self, tickets):
+        sleep(1)
         self.booking_page.promo_code_input.send_keys(tickets.promo_code)
+        self.booking_page.apply_discount.click()
+        wait(lambda: self.booking_page.discount_pop_up.is_displayed(), waiting_for="Discount pop-up")
+
+    def enter_gift_cert(self, order):
+        sleep(1)
+        self.booking_page.gift_certificate_input.send_keys(order.gift_certificate_code)
         self.booking_page.apply_discount.click()
         wait(lambda: self.booking_page.discount_pop_up.is_displayed(), waiting_for="Discount pop-up")
 
@@ -75,7 +88,8 @@ class AdminBooking:
         sleep(1)
 
     def select_payment_method(self, tickets):
-        self.booking_page.select_payment_type(tickets.payment_type)
+        if tickets.payment_type is not None:
+            self.booking_page.select_payment_type(tickets.payment_type)
         if tickets.payment_type == "Credit Card":
             if tickets.saved_card is None:
                 self.booking_page.enter_cc_info(tickets.card_number, tickets.card_date, tickets.card_cvc, tickets.card_zip)
