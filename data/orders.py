@@ -18,6 +18,9 @@ df10 = pd.read_excel("../data/orders.xlsx", "Admin certificates", dtype=str, kee
 df11 = pd.read_excel("../data/orders.xlsx", "Admin certificates declines", dtype=str, keep_default_na=False)
 df12 = pd.read_excel("../data/orders.xlsx", "Customer certificates", dtype=str, keep_default_na=False)
 df13 = pd.read_excel("../data/orders.xlsx", "Customer certificates declines", dtype=str, keep_default_na=False)
+df14 = pd.read_excel("../data/orders.xlsx", "Center payment types", dtype=str, keep_default_na=False)
+df15 = pd.read_excel("../data/orders.xlsx", "Center certificates", dtype=str, keep_default_na=False)
+df16 = pd.read_excel("../data/orders.xlsx", "Center certificates declines", dtype=str, keep_default_na=False)
 
 
 excel_dict1 = df1.to_dict(orient='records')
@@ -33,6 +36,9 @@ excel_dict10 = df10.to_dict(orient='records')
 excel_dict11 = df11.to_dict(orient='records')
 excel_dict12 = df12.to_dict(orient='records')
 excel_dict13 = df13.to_dict(orient='records')
+excel_dict14 = df14.to_dict(orient='records')
+excel_dict15 = df15.to_dict(orient='records')
+excel_dict16 = df16.to_dict(orient='records')
 
 
 admin_data = []
@@ -48,7 +54,9 @@ admin_certificates = []
 admin_certificates_declines = []
 customer_certificates = []
 customer_certificates_declines = []
-
+center_data = []
+center_certificates = []
+center_certificates_declines = []
 
 today = datetime.date.today()
 purchase_date = today + datetime.timedelta(days=1)  # Tickets will be booked on tomorrow.
@@ -81,3 +89,6 @@ extract_test_data(admin_certificates, excel_dict10)
 extract_test_data(admin_certificates_declines, excel_dict11)
 extract_test_data(customer_certificates, excel_dict12)
 extract_test_data(customer_certificates_declines, excel_dict13)
+extract_test_data(center_data, excel_dict14)
+extract_test_data(center_certificates, excel_dict15)
+extract_test_data(center_certificates_declines, excel_dict16)
