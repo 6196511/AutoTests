@@ -36,5 +36,5 @@ class SessionHelper:
         self.navigation_bar.main_actions_drop_down.click()
         self.navigation_bar.sell_gift_certificates.click()
 
-    def login_to_test_company(self):
-        self.login_page.choose_company("GoDo Development Test Company (Dev)")
+    def login_to_test_company(self, company):
+        self.login_page.choose_company(company)

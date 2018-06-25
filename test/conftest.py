@@ -37,7 +37,7 @@ def call_center(request):
     if fixture is None or not fixture.is_valid():
         fixture = CallCenter(browser=browser)
     fixture.session.ensure_login(login=target['login_call_center'], password=target['password_call_center'])
-    fixture.session.login_to_test_company()
+    fixture.session.login_to_test_company(company=target['company'])
     return fixture
 
 
