@@ -37,7 +37,6 @@ def test_admin_booking_promo_codes(app, tickets):
     app.booking.submit_successful_booking()
 
 
-@pytest.mark.skip  # Due to the bug 2550
 @pytest.mark.parametrize("tickets", admin_invalid_codes, ids=[repr(x) for x in admin_invalid_codes])
 def test_admin_booking_invalid_promo_codes(app, tickets):
     """Booking tickets via admin with invalid promo codes."""
