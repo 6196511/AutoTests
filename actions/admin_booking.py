@@ -72,7 +72,8 @@ class AdminBooking:
         self.booking_page.first_name.send_keys(tickets.first_name)
         self.booking_page.last_name.send_keys(tickets.last_name)
         self.booking_page.email_address.send_keys(tickets.email)
-        self.booking_page.phone_number.send_keys(tickets.phone)
+        if tickets.phone is not None:
+            self.booking_page.phone_number.send_keys(tickets.phone)
         self.booking_page.zip_code.send_keys(tickets.zip_code)
         self.booking_page.empty_space.click()
         self.booking_page.complete_booking_button.click()
