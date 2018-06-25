@@ -99,6 +99,7 @@ class CustomerBookingPage(BasePage):
     checkout_fourth_tickets = Find(by=By.XPATH, value="//div[@id='tckTypes']/p[4]")
     tickets_cost = Find(by=By.XPATH, value="//div[@id='ticketbaseprice']")
     tax = Find(by=By.XPATH, value="//div[@id='taxesandfees']")
+    checkout_discount = Find(by=By.XPATH, value="//div[@id='payDiscount-amount']")
     total_price = Find(by=By.XPATH, value="//div[@id='tickettotalprice']")
 
     # Summary Details.

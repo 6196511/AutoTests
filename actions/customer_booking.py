@@ -117,6 +117,9 @@ class CustomerActions:
         taxes_fees = float(tickets.taxes) + float(tickets.booking_fee)
         assert self.booking.tax.text == "%.2f" % taxes_fees, "Wrong Taxes & Fees on the payment page! '%s'" % \
                                                              self.booking.tax.text
+        if tickets.discount != "0.00":
+            assert self.booking.checkout_discount.text == tickets.discount, "Wrong discount on the payment page! '%s' " \
+            "but expected '%s'" % (self.booking.checkout_discount.text, tickets.discount)
         assert self.booking.total_price.text == tickets.grand_total, "Wrong grand total on the payment page! '%s'" % \
                                                                      self.booking.total_price.text
 
