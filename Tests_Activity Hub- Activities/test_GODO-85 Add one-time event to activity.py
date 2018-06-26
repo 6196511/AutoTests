@@ -5,14 +5,13 @@ from activity_hub_page import ActivityHubPage
 from event_schelduler import EventScheldulerPage
 from event_calendar import EventCalendarPage
 from selenium.webdriver.support.wait import WebDriverWait
-from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.support.ui import Select
 import time
 from creds import admin_login, admin_password
 import random
-import datetime
 from event_manifest import EventManifestPage
-
+import datetime
+from dateutil.relativedelta import relativedelta
 
 class BaseTest(object):
     def teardown_class(self):
@@ -39,8 +38,10 @@ class Test_GODO85(BaseTest):
         select = Select(page.scheldule_type)
         select.select_by_visible_text('One-Time Event')
         page.onetime_field.click()
+        page.next_button_calendar_begin.click()
         NewDate = random.randint(8, 30)
-        NewFullDate = (datetime.datetime.now().strftime("%B") + ' ' + ''.join(str(NewDate)))
+        nextMonthDate = datetime.date.today() + relativedelta(months=1)
+        NewFullDate = (nextMonthDate.strftime("%B") + ' ' + ''.join(str(NewDate)))
         for i in range(0, len(page.date_calendar)):
             if i+1==NewDate:
                 page.date_calendar[i].click()
@@ -70,13 +71,14 @@ class Test_GODO85(BaseTest):
         time.sleep(2)
         page.date_picker.click()
         time.sleep(2)
+        page.date_picker_next.click()
         for i in range(0, len(page.days_date_picker)):
             if page.days_date_picker[i].get_attribute("textContent") == str(NewDate):
                 page.days_date_picker[i].click()
         page.day_button.click()
         time.sleep(2)
         timeEvent = (NewTimeHours+':' + ''.join(NewTimeMinutes)+' '+''.join(NewTimeAMPM))
-        print(timeEvent)
+        assert str(NewFullDate) in page.date_header.get_attribute("textContent")
         for ticket in page.day_slots:
             for i in range(0, len(page.day_slots)):
                 if timeEvent in ticket.day_slot_time[i].get_attribute('textContent'):
@@ -86,13 +88,8 @@ class Test_GODO85(BaseTest):
                     assert NewFullDate in page.date_time_title.get_attribute('textContent')
                     assert ActivityName == page.activity_name_title.get_attribute('textContent')
                     assert timeEvent in page.date_time_title.get_attribute('textContent')
-                    try:
-                        page.close_button.click()
-                        time.sleep(6)
-                    except WebDriverException:
-                        pass
+                    page.close_button.click()
                     page = EventCalendarPage()
-                    break
                 else:
                     continue
             break
