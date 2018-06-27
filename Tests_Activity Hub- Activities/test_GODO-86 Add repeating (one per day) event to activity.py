@@ -10,7 +10,6 @@ from selenium.webdriver.support.ui import Select
 import time
 from creds import admin_login, admin_password
 import random
-from event_manifest import EventManifestPage
 import datetime
 from dateutil.relativedelta import relativedelta
 
@@ -104,7 +103,6 @@ class Test_GODO86(BaseTest):
                 if timeEvent in ticket.day_slot_time[i].get_attribute('textContent'):
                     page.day_slots[i].click()
                     time.sleep(6)
-                    page = EventManifestPage()
                     assert NewFullDateBegin in page.date_time_title.get_attribute('textContent')
                     assert ActivityName == page.activity_name_title.get_attribute('textContent')
                     assert timeEvent in page.date_time_title.get_attribute('textContent')
@@ -127,7 +125,6 @@ class Test_GODO86(BaseTest):
                 if timeEvent in ticket.day_slot_time[i].get_attribute('textContent'):
                     page.day_slots[i].click()
                     time.sleep(6)
-                    page = EventManifestPage()
                     assert NewFullDateNextBegin in page.date_time_title.get_attribute('textContent')
                     assert ActivityName == page.activity_name_title.get_attribute('textContent')
                     assert timeEvent in page.date_time_title.get_attribute('textContent')
@@ -150,7 +147,6 @@ class Test_GODO86(BaseTest):
                 if timeEvent in ticket.day_slot_time[i].get_attribute('textContent'):
                     page.day_slots[i].click()
                     time.sleep(6)
-                    page = EventManifestPage()
                     assert NewFullDatePrevEnd in page.date_time_title.get_attribute('textContent')
                     assert ActivityName == page.activity_name_title.get_attribute('textContent')
                     assert timeEvent in page.date_time_title.get_attribute('textContent')
@@ -173,7 +169,6 @@ class Test_GODO86(BaseTest):
                 if timeEvent in ticket.day_slot_time[i].get_attribute('textContent'):
                     page.day_slots[i].click()
                     time.sleep(6)
-                    page = EventManifestPage()
                     assert NewFullDateEnd in page.date_time_title.get_attribute('textContent')
                     assert ActivityName == page.activity_name_title.get_attribute('textContent')
                     assert timeEvent in page.date_time_title.get_attribute('textContent')
