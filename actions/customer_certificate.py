@@ -31,6 +31,8 @@ class CustomerCertActions:
                 self.certificate.second_tickets_type.send_keys(cert.cert_second_tickets_type)
             if cert.cert_third_tickets_type is not None:
                 self.certificate.third_tickets_type.send_keys(cert.cert_third_tickets_type)
+            if cert.cert_fourth_tickets_type is not None:
+                self.certificate.fourth_tickets_type.send_keys(cert.cert_fourth_tickets_type)
         self.certificate.empty_space.click()
 
     def verify_payment_info(self, cert):
@@ -72,3 +74,6 @@ class CustomerCertActions:
 
     def close_alert(self):
         self.certificate.close_alert()
+
+    def copy_the_code(self, order):
+        order.gift_certificate_code = self.certificate.gift_code.text

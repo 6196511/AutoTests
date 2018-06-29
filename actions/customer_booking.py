@@ -99,10 +99,26 @@ class CustomerActions:
         self.booking.discount_pop_up_ok_button.click()
 
     def redeem_gift_certificate(self, tickets):
+        sleep(2)
         self.booking.gift_certificate_input.send_keys(tickets.gift_certificate_code)
-        sleep(1)
+        wait(lambda: self.booking.gift_certificate_button.is_enabled())
         self.booking.gift_certificate_button.click()
-        wait(lambda: self.booking.discount_pop_up_ok_button.is_displayed())
+        wait(lambda: self.booking.discount_pop_up.is_displayed(), timeout_seconds=15,
+             waiting_for="discount notification.")
+        assert self.booking.discount_pop_up.text == "Your gift certificate (%s) was applied." % tickets.gift_certificate_code, \
+            "Wrong notification: %s" % self.booking.discount_pop_up.text
+        self.booking.discount_pop_up_ok_button.click()
+
+    def redeem_invalid_gift_certificate(self, tickets):
+        sleep(2)
+        self.booking.gift_certificate_input.send_keys(tickets.gift_certificate_code)
+        wait(lambda: self.booking.gift_certificate_button.is_enabled())
+        self.booking.gift_certificate_button.click()
+        wait(lambda: self.booking.discount_pop_up.is_displayed(), timeout_seconds=15,
+             waiting_for="discount notification.")
+        assert self.booking.discount_pop_up.text == "This code of gift certificate (%s) is not valid. Please make" \
+            " sure you spelled the code you were given correctly." % tickets.gift_certificate_code, \
+            "Wrong notification: %s" % self.booking.discount_pop_up.text
         self.booking.discount_pop_up_ok_button.click()
 
     def verify_payment_page(self, tickets):
@@ -118,6 +134,7 @@ class CustomerActions:
         assert self.booking.tax.text == "%.2f" % taxes_fees, "Wrong Taxes & Fees on the payment page! '%s'" % \
                                                              self.booking.tax.text
         if tickets.discount != "0.00":
+            wait(lambda: len(self.booking.checkout_discount.text) > 0, timeout_seconds=5)
             assert self.booking.checkout_discount.text == tickets.discount, "Wrong discount on the payment page! '%s' " \
             "but expected '%s'" % (self.booking.checkout_discount.text, tickets.discount)
         assert self.booking.total_price.text == tickets.grand_total, "Wrong grand total on the payment page! '%s'" % \
