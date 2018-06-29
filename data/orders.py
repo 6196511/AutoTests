@@ -22,6 +22,10 @@ df14 = pd.read_excel("../data/orders.xlsx", "Center payment types", dtype=str, k
 df15 = pd.read_excel("../data/orders.xlsx", "Center certificates", dtype=str, keep_default_na=False)
 df16 = pd.read_excel("../data/orders.xlsx", "Center certificates declines", dtype=str, keep_default_na=False)
 df17 = pd.read_excel("../data/orders.xlsx", "Admin cert + discount", dtype=str, keep_default_na=False)
+df18 = pd.read_excel("../data/orders.xlsx", "Customer booking with cert", dtype=str, keep_default_na=False)
+df19 = pd.read_excel("../data/orders.xlsx", "Admin not finished declines", dtype=str, keep_default_na=False)
+df20 = pd.read_excel("../data/orders.xlsx", "Customer not finished", dtype=str, keep_default_na=False)
+df21 = pd.read_excel("../data/orders.xlsx", "Customer booking cert + disc", dtype=str, keep_default_na=False)
 
 
 excel_dict1 = df1.to_dict(orient='records')
@@ -41,6 +45,10 @@ excel_dict14 = df14.to_dict(orient='records')
 excel_dict15 = df15.to_dict(orient='records')
 excel_dict16 = df16.to_dict(orient='records')
 excel_dict17 = df17.to_dict(orient='records')
+excel_dict18 = df18.to_dict(orient='records')
+excel_dict19 = df19.to_dict(orient='records')
+excel_dict20 = df20.to_dict(orient='records')
+excel_dict21 = df21.to_dict(orient='records')
 
 
 admin_data = []
@@ -60,6 +68,11 @@ center_data = []
 center_certificates = []
 center_certificates_declines = []
 admin_cert_discount = []
+customer_booking_with_certificates = []
+admin_declines_not_finished = []
+customer_declines_not_finished = []
+customer_cert_discount = []
+
 
 today = datetime.date.today()
 purchase_date = today + datetime.timedelta(days=1)  # Tickets will be booked on tomorrow.
@@ -96,3 +109,7 @@ extract_test_data(center_data, excel_dict14)
 extract_test_data(center_certificates, excel_dict15)
 extract_test_data(center_certificates_declines, excel_dict16)
 extract_test_data(admin_cert_discount, excel_dict17)
+extract_test_data(customer_booking_with_certificates, excel_dict18)
+extract_test_data(admin_declines_not_finished, excel_dict19)
+extract_test_data(customer_declines_not_finished, excel_dict20)
+extract_test_data(customer_cert_discount, excel_dict21)
