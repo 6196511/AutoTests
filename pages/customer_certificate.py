@@ -26,6 +26,7 @@ class CustomerCertPage(BasePage):
     first_tickets_type = Find(by=By.XPATH, value="//div[@id='divActivityDetials']/div[1]//input")
     second_tickets_type = Find(by=By.XPATH, value="//div[@id='divActivityDetials']/div[2]//input")
     third_tickets_type = Find(by=By.XPATH, value="//div[@id='divActivityDetials']/div[3]//input")
+    fourth_tickets_type = Find(by=By.XPATH, value="//div[@id='divActivityDetials']/div[4]//input")
     initial_amount = Find(TextField, by=By.XPATH, value="//input[@id='giftInitialAmount']")
     booking_fee = Find(TextField, by=By.XPATH, value="//div[@id='divamountSummary']/div[1]//input")
     total_amount = Find(TextField, by=By.XPATH, value="//div[@id='divamountSummary']/div[2]//input")
