@@ -1,5 +1,5 @@
 import pytest
-from data.orders import customer_data, customer_declines, customer_valid_codes, customer_invalid_codes
+from data.orders import *
 
 
 @pytest.mark.parametrize("tickets", customer_data, ids=[repr(x) for x in customer_data])
@@ -29,6 +29,19 @@ def test_customer_declines(customer, tickets):
     customer.booking.submit_declined_card(tickets)
     customer.booking.refill_payment_info(tickets)
     customer.booking.verify_summary_details(tickets)
+
+
+@pytest.mark.parametrize("tickets", customer_declines_not_finished, ids=[repr(x) for x in customer_declines_not_finished])
+def test_customer_declines_not_finished(customer, tickets):
+    """Order tickets via customer facing with invalid credit card number."""
+    customer.booking.open_page(tickets)
+    customer.booking.select_tickets_buttons(tickets)
+    customer.booking.select_date(tickets)
+    customer.booking.select_time(tickets)
+    customer.booking.fill_info(tickets)
+    customer.booking.skip_addons()
+    customer.booking.verify_payment_page(tickets)
+    customer.booking.submit_declined_card(tickets)
 
 
 @pytest.mark.parametrize("tickets", customer_valid_codes, ids=[repr(x) for x in customer_valid_codes])
