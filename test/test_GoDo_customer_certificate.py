@@ -12,7 +12,7 @@ def test_purchasing_certificate(customer, certificate):
     customer.certificate.verify_summary_details(certificate)
 
 
-@pytest.mark.parametrize("certificate", customer_certificates_declines[2:], ids=[repr(x) for x in customer_certificates_declines[2:]])
+@pytest.mark.parametrize("certificate", customer_certificates_declines, ids=[repr(x) for x in customer_certificates_declines])
 def test_purchasing_certificate_declines(customer, certificate):
     """Purchasing gift certificates via customer facing with invalid credit card."""
     customer.certificate.open_page(certificate)
