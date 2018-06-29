@@ -25,6 +25,15 @@ def test_admin_booking_declines(app, tickets):
     app.booking.submit_successful_booking()
 
 
+@pytest.mark.parametrize("tickets", admin_declines_not_finished, ids=[repr(x) for x in admin_declines])
+def test_admin_booking_declines_not_finished(app, tickets):
+    """Booking tickets via admin with invalid credit card."""
+    app.booking.refresh_page()
+    app.booking.select_event(tickets)
+    app.booking.fill_out_customer_info(tickets)
+    app.booking.submit_declined_card(tickets)
+
+
 @pytest.mark.parametrize("tickets", admin_valid_codes, ids=[repr(x) for x in admin_valid_codes])
 def test_admin_booking_promo_codes(app, tickets):
     """Booking tickets via admin with valid promo codes."""
@@ -72,10 +81,10 @@ def test_admin_booking_with_gift_certificate_and_promo_code(app, order):
     """Booking tickets via admin with gift certificates and promo code."""
 
     # Bugs:
-    # GoDo-39 1622 Admin booking. Partial redemption of gift certificates does not work.
-    # GoDo-41 1622 Admin booking. Partial redemption of gift certificates does not work.
-    # GoDo-43 1622 Admin booking. Partial redemption of gift certificates does not work.
-    # GoDo-45 1622 Admin booking. Partial redemption of gift certificates does not work.
+    # GoDo-39 2624 Admin booking. The discount amount is not taken into account when calculating the remain amount of gift certificate.
+    # GoDo-41 2624 Admin booking. The discount amount is not taken into account when calculating the remain amount of gift certificate.
+    # GoDo-43 2624 Admin booking. The discount amount is not taken into account when calculating the remain amount of gift certificate.
+    # GoDo-45 2624 Admin booking. The discount amount is not taken into account when calculating the remain amount of gift certificate.
 
     app.certificate.select_certificate(order)
     app.certificate.make_successful_payment(order)
