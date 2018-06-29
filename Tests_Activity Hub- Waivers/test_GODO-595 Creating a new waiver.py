@@ -40,10 +40,9 @@ class Test_GODO595(BaseTest):
         page.refer_field.send_keys(NewWaiverRefer)
         page.save_button.click()
         time.sleep(10)
-        get_driver().refresh()
         select = Select(page.entries_per_page)
         select.select_by_visible_text('100')
-        time.sleep(5)
+        time.sleep(2)
         L=[]
         for i in range(0, len(page.waiver_names)):
             L.append(page.waiver_names[i].get_attribute("textContent"))
