@@ -2,6 +2,7 @@ from pages.admin_booking import AdminBookingPage
 from pages.navigation_bar import NavigationBar
 from webium.wait import wait
 from time import sleep
+import datetime
 
 
 class AdminBooking:
@@ -18,6 +19,17 @@ class AdminBooking:
         self.select_tickets(tickets)
         self.booking_page.select_date(tickets.year, tickets.month, tickets.day)
         self.booking_page.select_time(tickets.time)
+
+    def select_today_event(self, tickets):
+        purchase_date = datetime.date.today()
+        tickets.year = str(purchase_date.year)
+        tickets.month = str(purchase_date.month)
+        tickets.day = str(purchase_date.day)
+        self.select_event(tickets)
+
+    def close_booking_is_over_alert(self):
+        wait(lambda: self.booking_page.discount_pop_up.is_displayed())
+        self.booking_page.discount_pop_up_ok_button.click()
 
     def navigate_to(self):
         self.navigation_bar.main_actions_drop_down.click()

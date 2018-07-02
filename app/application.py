@@ -4,6 +4,7 @@ from selenium import webdriver
 from actions.admin_booking import AdminBooking
 from actions.certificate import CertificateActions
 from actions.activity_hub import ActivityHub
+from actions.groupons import Groupons
 from app.session import SessionHelper
 
 
@@ -25,6 +26,7 @@ class Application:
         self.booking = AdminBooking(self)
         self.certificate = CertificateActions(self)
         self.activity_hub = ActivityHub(self)
+        self.groupons = Groupons(self)
 
     def destroy(self):
         self.driver.quit()

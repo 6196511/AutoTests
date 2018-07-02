@@ -10,5 +10,9 @@ class NavigationBar(BasePage):
     main_actions_drop_down = Find(by=By.CSS_SELECTOR, value=".dropdown")
     sell_gift_certificates = Find(by=By.CSS_SELECTOR, value="[href = 'giftcertificate.aspx']")
     add_a_booking = Find(by=By.XPATH, value="//*[@class='nav navbar-nav navbar-right']//a[text()='Add a Booking']")
+
+    # Your Hubs navigation bar.
+
     sitemap = Find(by=By.XPATH, value="//i[@class='fa fa-sitemap']")
     activity_hub = Find(by=By.XPATH, value="//div[@class='side-bar right-bar nicescroll']//span[text()='Activity Hub']")
+    marketing_hub = Find(by=By.XPATH, value="//a[@href='marketing_hub.aspx']")

@@ -26,6 +26,7 @@ df18 = pd.read_excel("../data/orders.xlsx", "Customer booking with cert", dtype=
 df19 = pd.read_excel("../data/orders.xlsx", "Admin not finished declines", dtype=str, keep_default_na=False)
 df20 = pd.read_excel("../data/orders.xlsx", "Customer not finished", dtype=str, keep_default_na=False)
 df21 = pd.read_excel("../data/orders.xlsx", "Customer booking cert + disc", dtype=str, keep_default_na=False)
+df22 = pd.read_excel("../data/orders.xlsx", "Admin groupon", dtype=str, keep_default_na=False)
 
 
 excel_dict1 = df1.to_dict(orient='records')
@@ -49,6 +50,7 @@ excel_dict18 = df18.to_dict(orient='records')
 excel_dict19 = df19.to_dict(orient='records')
 excel_dict20 = df20.to_dict(orient='records')
 excel_dict21 = df21.to_dict(orient='records')
+excel_dict22 = df22.to_dict(orient='records')
 
 
 admin_data = []
@@ -72,6 +74,7 @@ customer_booking_with_certificates = []
 admin_declines_not_finished = []
 customer_declines_not_finished = []
 customer_cert_discount = []
+admin_groupons = []
 
 
 today = datetime.date.today()
@@ -113,3 +116,4 @@ extract_test_data(customer_booking_with_certificates, excel_dict18)
 extract_test_data(admin_declines_not_finished, excel_dict19)
 extract_test_data(customer_declines_not_finished, excel_dict20)
 extract_test_data(customer_cert_discount, excel_dict21)
+extract_test_data(admin_groupons, excel_dict22)
