@@ -15,6 +15,7 @@ class Groupons:
 
     def navigate_to(self):
         self.navigation_bar.sitemap.click()
+        wait(lambda: self.navigation_bar.marketing_hub.is_displayed())
         self.navigation_bar.marketing_hub.click()
         self.marketing_hub.groupon_button.click()
 

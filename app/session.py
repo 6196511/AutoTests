@@ -12,9 +12,10 @@ class SessionHelper:
 
     def login(self, login, password):
         self.login_page.open()
-        self.login_page.login_input.send_keys(login)
-        self.login_page.password_input.send_keys(password)
-        self.login_page.login_button.click()
+        if not self.is_logged_in_as_admin():
+            self.login_page.login_input.send_keys(login)
+            self.login_page.password_input.send_keys(password)
+            self.login_page.login_button.click()
 
     def ensure_login(self, login, password):
         if not self.is_logged_in_as_admin():

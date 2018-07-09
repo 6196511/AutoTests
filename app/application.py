@@ -6,6 +6,7 @@ from actions.certificate import CertificateActions
 from actions.activity_hub import ActivityHub
 from actions.groupons import Groupons
 from app.session import SessionHelper
+from actions.customer_booking import CustomerActions
 
 
 class Application:
@@ -23,6 +24,7 @@ class Application:
         self.driver.implicitly_wait(15)
         webium.settings.wait_timeout = 5
         self.session = SessionHelper(self)
+        self.customer_booking = CustomerActions(self)
         self.booking = AdminBooking(self)
         self.certificate = CertificateActions(self)
         self.activity_hub = ActivityHub(self)
