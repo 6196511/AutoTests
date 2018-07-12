@@ -15,4 +15,5 @@ class NavigationBar(BasePage):
 
     sitemap = Find(by=By.XPATH, value="//i[@class='fa fa-sitemap']")
     activity_hub = Find(by=By.XPATH, value="//div[@class='side-bar right-bar nicescroll']//span[text()='Activity Hub']")
-    marketing_hub = Find(by=By.XPATH, value="//a[@href='marketing_hub.aspx']")
+    marketing_hub = Find(by=By.XPATH, value="//li//span[text()='Marketing & Sales Hub']")
+    people_hub = Find(by=By.XPATH, value="//li//span[text()='People Hub']")

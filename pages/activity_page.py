@@ -55,4 +55,5 @@ class AddEditActivityPage(BasePage):
     def select(self, web_element, option):
         Select(web_element).select_by_visible_text(option)
 
-
+    def get_selected_value(self, web_element):
+        return Select(web_element).first_selected_option.text

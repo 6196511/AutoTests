@@ -71,5 +71,15 @@ class ActivityHub:
         wait(lambda: self.navigation_bar.activity_hub.is_displayed())
         self.navigation_bar.activity_hub.click()
 
+    def find_activity_by_name(self, activity):
+        self.activity_hub.search_activity_field.send_keys(activity)
 
+    def to_edit_page(self, activity):
+        self.find_activity_by_name(activity)
+        sleep(2)
+        self.activity_hub.activity_actions.click()
+        self.activity_hub.edit_activity.click()
 
+    def verify_trained_guides(self, name):
+        wait(lambda: len(self.activity_page.activity_name.get_attribute('value')) > 0)
+        assert self.activity_page.get_selected_value(self.activity_page.first_guide) == name
