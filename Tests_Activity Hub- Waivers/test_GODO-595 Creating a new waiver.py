@@ -29,12 +29,14 @@ class Test_GODO595(BaseTest):
         NewWaiverName = ("AutoTest_" + ''.join(choice(digits) for i in range(4)))
         page.waiver_title.send_keys(NewWaiverName)
         NewWaiverHeader = "TestHeader"
-        page.waiver_header.send_keys(NewWaiverHeader)
+        page.text_fields[0].send_keys(NewWaiverHeader)
         page.next_button.click()
-        select = Select(page.field_add)
-        NewFieldAdd = "Date of Signing"
-        select.select_by_visible_text(NewFieldAdd)
-        page.insert_button.click()
+        # select = Select(page.field_add)
+        # NewFieldAdd = "Date of Signing"
+        # select.select_by_visible_text(NewFieldAdd)
+        # page.insert_button.click()
+        time.sleep(8)
+        page.text_fields[1].send_keys ('By signing this waiver agreement, _________________ agrees to the following terms: Assumption of Risk. PandaTip: This waiver agreement template protects you by ensuring that your client understands that they are participating in your event at their own risk, and that all risk and liability rests with them. The Client agrees that their participation in [Event.Name] is voluntary. Furthermore, the Client agrees to assume any risk associated with participating in the event, and releases [Sender.Company] from any and all claims of loss or damage that may arise during the Client’s participation. Such releases are without limitation, and include attorneys’ fees, personal injury, property damage, and any other losses or damages suffered by the Client.')
         page.next1_button.click()
         NewWaiverRefer = "Dear Friends"
         page.refer_field.send_keys(NewWaiverRefer)
