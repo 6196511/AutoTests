@@ -25,9 +25,10 @@ class Test_GODO80(BaseTest):
         page.open()
         page.add_activity_button.click()
         page=AddEditActivityPage()
+        time.sleep(5)
         for i in range(1, len(page.switchers)):
             page.switchers[i].click()
-        time.sleep(15)
+        time.sleep(10)
         NewActivityName = ("AutoTestCancel"+''.join(choice(digits) for i in range(4)))
         page.activity_name.send_keys(NewActivityName)
         NewActivityURL = ("http://"+NewActivityName+'.com')
