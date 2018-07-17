@@ -79,6 +79,35 @@ class AdminBooking:
         self.booking_page.apply_discount.click()
         wait(lambda: self.booking_page.discount_pop_up.is_displayed(), waiting_for="Discount pop-up")
 
+    def select_addon(self, order):
+        self.booking_page.addons_link.click()
+        wait(lambda: len(self.booking_page.addons_list) > 0)
+        for addon in self.booking_page.addons_list:
+            if addon.name.text == order.addon_name:
+                addon.checkbox.click()
+                self.booking_page.select(addon.type_list, order.addon_type)
+                self.booking_page.add_to_cart.click()
+                break
+
+    def addon_not_present(self, order):
+        self.booking_page.addons_link.click()
+        wait(lambda: len(self.booking_page.addons_list) > 0)
+        for addon in self.booking_page.addons_list:
+            assert addon.name.text != order.addon_name
+        self.booking_page.cancel_addon.click()
+
+    def type_not_present(self, order):
+        self.booking_page.addons_link.click()
+        wait(lambda: len(self.booking_page.addons_list) > 0)
+        for addon in self.booking_page.addons_list:
+            if addon.name.text == order.addon_name:
+                addon.checkbox.click()
+                options = self.booking_page.get_options(addon.type_list)
+                for opt in options:
+                    print(opt.text)
+                    assert opt.text != order.addon_type, "%a" % opt
+        self.booking_page.cancel_addon.click()
+
     def fill_out_customer_info(self, tickets):
         self.booking_page.click_enter_customer_information()
         self.booking_page.first_name.send_keys(tickets.first_name)
@@ -116,6 +145,8 @@ class AdminBooking:
         assert self.booking_page.ticket_total.text == tickets.ticket_total, "Wrong ticket total!"
         assert self.booking_page.discount.text == tickets.discount, "Wrong discount!"
         assert self.booking_page.giftcertificate.text == tickets.gift_certificate, "Wrong discount (gift certificate)!"
+        if tickets.addon is not None:
+            assert self.booking_page.addons.text == tickets.addon, "Wrong addon's price!"
         assert self.booking_page.taxes.text == tickets.taxes, "Wrong taxes!"
         assert self.booking_page.booking_fee.text == tickets.booking_fee, "Wrong booking fee!"
         assert self.booking_page.grand_total.text == tickets.grand_total, "Wrong grand total! %s" % \

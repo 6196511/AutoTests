@@ -6,6 +6,7 @@ from actions.certificate import CertificateActions
 from actions.activity_hub import ActivityHub
 from actions.people_hub import PeopleHub
 from actions.groupons import Groupons
+from actions.addons import Addons
 from app.session import SessionHelper
 from actions.customer_booking import CustomerActions
 
@@ -31,6 +32,7 @@ class Application:
         self.activity_hub = ActivityHub(self)
         self.people_hub = PeopleHub(self)
         self.groupons = Groupons(self)
+        self.addons = Addons(self)
 
     def destroy(self):
         self.driver.quit()

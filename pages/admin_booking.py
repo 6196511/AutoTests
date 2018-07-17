@@ -1,9 +1,16 @@
 from time import sleep
 
 from selenium.webdriver.common.by import By
+from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support.ui import Select
 from webium import BasePage, Find, Finds
 from webium.wait import wait
+
+
+class AddonsList(WebElement):
+    name = Find(by=By.XPATH, value="./label")
+    checkbox = Find(by=By.XPATH, value=".//input")
+    type_list = Find(by=By.XPATH, value=".//select")
 
 
 class AdminBookingPage(BasePage):
@@ -29,7 +36,10 @@ class AdminBookingPage(BasePage):
     discount_pop_up = Find(by=By.XPATH, value="//div[@class='modal-content']//div[@class='modal-body ng-binding']")
     discount_pop_up_ok_button = Find(by=By.XPATH, value="//div[@class='modal-content']//button[text()='Ok']")
     enter_customer_information_button = Find(by=By.XPATH, value="//div[contains(text(), 'Enter Customer Information')]")
-
+    addons_link = Find(by=By.XPATH, value="//button[@name='addons']")
+    addons_list = Finds(AddonsList, by=By.XPATH, value="//div[@name='addonSelectionForm']//li")
+    add_to_cart = Find(by=By.XPATH, value="//div[@name='addonSelectionForm']//button[text()='Add To Cart']")
+    cancel_addon = Find(by=By.XPATH, value="//div[@name='addonSelectionForm']//button[text()='Cancel']")
     # Customer Info tab.
 
     first_name = Find(by=By.XPATH, value="//input[@placeholder='First Name']")
@@ -59,6 +69,7 @@ class AdminBookingPage(BasePage):
     ticket_total = Find(by=By.XPATH, value="//tr[contains(@ng-show, 'ticketTotal')]/td[2]")
     discount = Find(by=By.XPATH, value="//tr[contains(@ng-show, 'totalDiscount')]/td[2]")
     giftcertificate = Find(by=By.XPATH, value="//tr[contains(@ng-show, 'totalGiftCertificate')]/td[2]")
+    addons = Find(by=By.XPATH, value="//tr[contains(@ng-show, 'addons')]/td[2]")
     taxes = Find(by=By.XPATH, value="//tr[contains(@ng-show, 'tax')]/td[2]")
     booking_fee = Find(by=By.XPATH, value="//tr[contains(@ng-show, 'bookingfee')]/td[2]")
     grand_total = Find(by=By.XPATH, value="//tr[contains(@ng-show, 'grandTotal')]/td[2]")
@@ -104,3 +115,9 @@ class AdminBookingPage(BasePage):
 
     def select_saved_card(self, saved_card):
         Select(self.credit_card_list).select_by_visible_text(saved_card)
+
+    def select(self, web_element, option):
+        Select(web_element).select_by_visible_text(option)
+
+    def get_options(self, web_element):
+        return Select(web_element).options
