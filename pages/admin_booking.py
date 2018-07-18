@@ -17,6 +17,8 @@ class AdminBookingPage(BasePage):
 
     # First tab.
 
+    datepicker_next_month = Find(by=By.XPATH, value="//th[@class = 'next']")
+    dates = Finds(by=By.XPATH, value="//td[@class = 'day available']")
     activity_list = Find(by=By.XPATH, value="//select[@id='activity'][@ng-model='vm.selectedActivity']")
     activities_in_list = Finds(by=By.XPATH, value="//option")
     first_tickets_type = Find(by=By.XPATH, value="//tbody/tr[1]//input")
