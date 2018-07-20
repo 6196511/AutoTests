@@ -54,6 +54,7 @@ class AdminBookingPage(BasePage):
 
     # Payment tab.
 
+    channel_list = Find(by=By.XPATH, value="//select[@name='channel']")
     payment_type_list = Find(by=By.XPATH, value="//select[@ng-model='bookingdrawer.paymentType']")
     credit_card_list = Find(by=By.XPATH, value="//select[@ng-model='bookingdrawer.preselectedCard']")
     stripe = Find(by=By.XPATH, value="//iframe[@name='__privateStripeFrame4']")
