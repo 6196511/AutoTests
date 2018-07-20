@@ -4,6 +4,7 @@ from selenium.webdriver.common.by import By
 
 class NavigationBar(BasePage):
 
+    godo_lodo = Find(by=By.XPATH, value="//a[@class = 'logo']")
     navigation_bar = Finds(by=By.XPATH, value="//ul[@class='nav navbar-nav navbar-right']")
     menu_drop_down = Find(by=By.XPATH, value="//a[contains(@class, 'dropdown-toggle waves-effect waves-light top-buttons-link')]")
     logout = Find(by=By.XPATH, value="//ul/li/a[text()='Logout']")
