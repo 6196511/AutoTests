@@ -15,3 +15,4 @@ class GuidePayrollPage(BasePage):
     OK_button = Find(by=By.XPATH, value="//button[@ng-click='vm.cancel()']")
     show_entries = Find(by=By.XPATH, value="//select[@name='guidePayrollAll_length']")
     payment_entry = Finds(by=By.XPATH, value="//tr[@class='row']|//tr[@class='odd']|//tr[@class='even']")
+    next_button = Find(by=By.XPATH, value="//*[@id='guidePayrollAll_paginate']/ul/li[3]/a")
