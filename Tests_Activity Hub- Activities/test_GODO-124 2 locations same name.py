@@ -41,6 +41,6 @@ class Test_GODO108(BaseTest):
         ExistedLocationName = page.location_name.get_attribute('value')
         get_driver().back()
         page.location_name.send_keys(ExistedLocationName)
-        time.sleep(8)
+        time.sleep(4)
         assert page.is_element_present('alert_message') == True
         assert page.save_button.is_enabled()==False
