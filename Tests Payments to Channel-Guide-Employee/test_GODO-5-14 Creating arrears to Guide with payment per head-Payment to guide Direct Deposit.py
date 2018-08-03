@@ -215,13 +215,13 @@ class Test_GODO5_14(BaseTest):
         select.select_by_visible_text('100')
         time.sleep(8)
         page.next_button.click() #remove if <100 entries
-        # try:
-        #     page.next_button.click()
-        # except WebDriverException:
-        #     pass
         time.sleep(4)
         L=[]
         for i in range(0, len(page.payment_entry)):
-            L.append(page.payment_entry[i].get_attribute('textContent'))
+            if GuideName in page.payment_entry[i].get_attribute('textContent'):
+                L.append(page.payment_entry[i].get_attribute('textContent'))
+            else:
+                continue
+            break
         L.sort(reverse=True)
         assert time_and_date and GuideName and guide_per_head_due in L[0]
