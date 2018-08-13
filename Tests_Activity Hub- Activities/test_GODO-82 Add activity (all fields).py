@@ -123,7 +123,7 @@ class Test_GODO82(BaseTest):
         assert select.first_selected_option.text == NewActivityTimezone
         assert page.activity_description.get_attribute('value') == NewActivityDesription
         assert page.cancellation_policy.get_attribute('value') == NewActivityCancellationPolicy
-        assert page.sales_tax.get_attribute('value') == NewActivitySalesTax
+        assert page.sales_tax.get_attribute('value') == NewActivitySalesTax+' %'
         assert page.activity_duration_days.get_attribute('value') == NewActivityDurationDays
         assert page.activity_duration_hours.get_attribute('value') == NewActivityDurationHours
         assert page.activity_duration_minutes.get_attribute('value') == NewActivityDurationMinutes
