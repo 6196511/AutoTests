@@ -23,9 +23,9 @@ class EventCalendarPage(BasePage):
     time = Finds(by=By.XPATH, value="//div[@class='cal_event_tickets_avail ng-binding']")
     date_header = Find (by=By.XPATH, value="//span[@class='cal-header-text ng-binding']")
     time_slots = Finds(EventTicket, By.XPATH, value="//div[@class='col-sm-3 cal_event_time ng-binding']")
-    close_button = Find(by=By.XPATH, value="//i[@class='close-x fa fa-times pull-right visible-md visible-lg hidden-xs hidden-sm']")
-    date_time_title = Find(by=By.XPATH, value="//h3[@class='calendar_modal_header_left_subtitle ng-binding']")
-    activity_name_title = Find(by=By.XPATH, value="//h2[@class='modal-title ng-binding']")
+    close_button = Find(by=By.XPATH, value="//i[@class='close-x fa fa-times pull-right visible-md visible-lg visible-xs visible-sm']")
+    date_time_title = Find(by=By.XPATH, value="//span[@class='manifest-title-desc ng-binding']")
+    activity_name_title = Find(by=By.XPATH, value="//span[@class='manifest-act-title ng-binding']")
     guide_list = Find(by=By.XPATH, value="//select[@ng-model='ga.selectedItem']")
     save_guide = Find(by=By.XPATH, value="//button[@ng-click='vm.trySubmit(singleEventGuideAssignmentNoDetailsForm)']")
 
