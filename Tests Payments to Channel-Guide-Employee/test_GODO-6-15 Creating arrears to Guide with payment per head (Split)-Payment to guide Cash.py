@@ -113,9 +113,8 @@ class Test_GODO6_15(BaseTest):
                 if EventTime in ticket.day_slot_time[i].get_attribute('textContent'):
                     page.day_slots[i].click()
                     time.sleep(6)
-                    assert NewFullDate in page.date_time_title.get_attribute('textContent')
-                    assert ActivityName == page.activity_name_title.get_attribute('textContent')
-                    assert EventTime in page.date_time_title.get_attribute('textContent')
+                    assert NextMonthName and EventDate and EventTimeWithZone in page.date_time_title.get_attribute('textContent')
+                    assert ActivityName in page.activity_name_title.get_attribute('textContent')
                     select = Select(page.guide_list)
                     select.select_by_visible_text(GuideName)
                     page.save_guide.click()
@@ -142,7 +141,7 @@ class Test_GODO6_15(BaseTest):
             else:
                 continue
             break
-        time.sleep(2)
+        time.sleep(6)
         assert str(NewFullDate) in page.date_header.get_attribute("textContent")
         for ticket in page.day_slots:
             for i in range(0, len(page.day_slots)):
