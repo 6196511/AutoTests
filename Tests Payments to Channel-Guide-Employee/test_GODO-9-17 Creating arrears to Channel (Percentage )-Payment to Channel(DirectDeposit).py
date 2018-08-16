@@ -111,7 +111,7 @@ class Test_GODO9_17(BaseTest):
                 continue
             break
         page.day_button.click()
-        time.sleep(6)
+        time.sleep(10)
         EventTime = (EventTimeHours + ':' + ''.join(EventTimeMinutes) + ' ' + ''.join(timeday))
         assert str(NewFullDate) in page.date_header.get_attribute("textContent")
         for ticket in page.day_slots:
@@ -119,13 +119,12 @@ class Test_GODO9_17(BaseTest):
                 if EventTime in ticket.day_slot_time[i].get_attribute('textContent'):
                     page.day_slots[i].click()
                     time.sleep(6)
-                    assert NewFullDate in page.date_time_title.get_attribute('textContent')
+                    assert NewFullDate and EventTime in page.date_time_title.get_attribute('textContent')
                     assert ActivityName == page.activity_name_title.get_attribute('textContent')
-                    assert EventTime in page.date_time_title.get_attribute('textContent')
                     select = Select(page.guide_list)
                     select.select_by_visible_text(GuideName)
                     page.save_guide.click()
-                    page.close_button.click()
+                    # page.close_button.click()
                 else:
                     continue
             break
@@ -148,7 +147,7 @@ class Test_GODO9_17(BaseTest):
             else:
                 continue
             break
-        time.sleep(2)
+        time.sleep(6)
         assert str(NewFullDate) in page.date_header.get_attribute("textContent")
         for ticket in page.day_slots:
             for i in range(0, len(page.day_slots)):
