@@ -117,9 +117,8 @@ class Test_GODO8_18(BaseTest):
                 if EventTime in ticket.day_slot_time[i].get_attribute('textContent'):
                     page.day_slots[i].click()
                     time.sleep(6)
-                    assert NewFullDate in page.date_time_title.get_attribute('textContent')
+                    assert NewFullDate and EventTime in page.date_time_title.get_attribute('textContent')
                     assert ActivityName == page.activity_name_title.get_attribute('textContent')
-                    assert EventTime in page.date_time_title.get_attribute('textContent')
                     select = Select(page.guide_list)
                     select.select_by_visible_text(GuideName)
                     page.save_guide.click()
