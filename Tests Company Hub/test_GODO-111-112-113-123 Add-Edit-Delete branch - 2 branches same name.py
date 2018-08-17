@@ -1,7 +1,7 @@
 from webium.driver import get_driver
 from webium.driver import close_driver
 from Login import loginpage
-from branch_page import BranchPage
+from branch_page import BranchPage, CustomerBranchPage
 from selenium.webdriver.support.ui import Select
 import time
 from creds import admin_login, admin_password
@@ -173,6 +173,13 @@ class Test_GODO111_112_113_123(BaseTest):
         for i in range(0, len(page.branch_names)):
             branch_list.append(page.branch_names[i].get_attribute('textContent'))
         assert BranchEditedNameList[0] not in branch_list
+        page = CustomerBranchPage()
+        page.open()
+        customer_branch_list = []
+        for i in range(0, len(page.branch_tickets)):
+            customer_branch_list.append(page.branch_tickets[i].get_attribute('textContent'))
+        assert BranchEditedNameList[0] not in customer_branch_list
+
     def test_123(self):#2 BRANCHES WITH THE SAME NAME
         get_driver().maximize_window()
         page = loginpage()
