@@ -138,6 +138,7 @@ class Test_GODO12(BaseTest):
         alert.accept()
         page.OK_button.click()
         page.employee_paid_weekly.click()
+        time.sleep(3)
         select = Select(page.show_entries_list)
         select.select_by_visible_text('100')
         time.sleep(3)
