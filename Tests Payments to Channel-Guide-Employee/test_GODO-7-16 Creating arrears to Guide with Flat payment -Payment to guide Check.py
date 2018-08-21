@@ -221,7 +221,11 @@ class Test_GODO7_16(BaseTest):
         select = Select(page.show_entries)
         select.select_by_visible_text('100')
         time.sleep(5)
-        page.next_button.click()  # remove if <100 entries
+        try:
+            page.next_button.click()
+        except WebDriverException:
+            print("Less than 100 Entries")
+        time.sleep(4)
         L=[]
         for i in range(0, len(page.payment_entry)):
             if GuideName in page.payment_entry[i].get_attribute('textContent'):
