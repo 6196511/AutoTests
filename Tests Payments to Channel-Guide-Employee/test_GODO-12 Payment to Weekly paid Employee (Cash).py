@@ -104,7 +104,7 @@ class Test_GODO12(BaseTest):
         L = []
         L1=[]
         for i in range(0, len(page.weekly_payment_due_enties)):
-            if (''.join(NewFirstName)+' '+''.join(NewLastName)) in page.weekly_payment_due_enties[i].get_attribute("textContent"):
+            if (''.join(NewFirstName)+' '+''.join(NewLastName)) and NewEmail in page.weekly_payment_due_enties[i].get_attribute("textContent"):
                 L.append(page.weekly_employee_payment_due_amounts[i].get_attribute("textContent"))
                 L1.append(page.weekly_employee_payment_due_amounts_total[i].get_attribute("textContent"))
                 page.detail_links_weekly[i].click()
