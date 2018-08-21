@@ -169,7 +169,7 @@ class Test_GODO6_15(BaseTest):
         select.select_by_visible_text(GuideName)
         time.sleep(5)
         for i in range(0, len(page.event_due)):
-            if page.event_due[i].is_displayed():
+            if page.event_due[i].is_displayed() and EventTimeWithZone and nextMonthDate and EventDate in page.activity_timedate[i].get_attribute("textContent"):
                 assert page.event_due[i].get_attribute("textContent") == guide_per_head_split_due
             else:
                 continue
@@ -215,7 +215,11 @@ class Test_GODO6_15(BaseTest):
         select = Select(page.show_entries)
         select.select_by_visible_text('100')
         time.sleep(5)
-        page.next_button.click()  # remove if <100 entries
+        try:
+            page.next_button.click()
+        except WebDriverException:
+            print("Less than 100 Entries")
+        time.sleep(4)
         L=[]
         for i in range(0, len(page.payment_entry)):
             if GuideName in page.payment_entry[i].get_attribute('textContent'):
