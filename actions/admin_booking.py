@@ -20,6 +20,20 @@ class AdminBooking:
         self.booking_page.select_date(tickets.year, tickets.month, tickets.day)
         self.booking_page.select_time(tickets.time)
 
+    def select_activity_and_day(self, order):
+        self.navigate_to()
+        self.booking_page.select_activity(order.activity)
+        self.select_tickets(order)
+        self.booking_page.select_date(order.year, order.month, order.day)
+
+    def verify_time_list(self, time):
+        wait(lambda: len(self.booking_page.get_time_list()) > 1)
+        time_list = self.booking_page.get_time_list()
+        time_options = []
+        for time in time_list:
+            time_options.append(time.text)
+        assert time not in time_options, time_options
+
     def select_today_event(self, tickets):
         purchase_date = datetime.date.today()
         tickets.year = str(purchase_date.year)
@@ -46,6 +60,13 @@ class AdminBooking:
             self.booking_page.third_tickets_type.send_keys(tickets.third_tickets_type)
         if tickets.fourth_tickets_type is not None:
             self.booking_page.fourth_tickets_type.send_keys(tickets.fourth_tickets_type)
+        self.booking_page.empty_space_first_tab.click()
+
+    def wait_pricing_table_updating(self):
+        wait(lambda: self.booking_page.grand_total.text != '$0.00', timeout_seconds=20)
+
+    def apply_custom_price(self, tickets):
+        self.booking_page.custom_price.send_keys(tickets.custom_price)
         self.booking_page.empty_space_first_tab.click()
 
     def apply_valid_promo_code(self, tickets):
@@ -82,8 +103,10 @@ class AdminBooking:
     def select_addon(self, order):
         self.booking_page.addons_link.click()
         wait(lambda: len(self.booking_page.addons_list) > 0)
+        print(order.addon_name)
         for addon in self.booking_page.addons_list:
-            if addon.name.text == order.addon_name:
+            print(addon.name.text)
+            if addon.name.text.startswith(order.addon_name):
                 addon.checkbox.click()
                 self.booking_page.select(addon.type_list, order.addon_type)
                 self.booking_page.add_to_cart.click()
