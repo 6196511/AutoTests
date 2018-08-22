@@ -2,7 +2,7 @@ import pytest
 from data.orders import admin_groupons
 
 
-@pytest.mark.parametrize("order", admin_groupons[:11], ids=[repr(x) for x in admin_groupons[:11]])
+@pytest.mark.parametrize("order", admin_groupons[:10], ids=[repr(x) for x in admin_groupons[:10]])
 def test_admin_booking_with_groupons(app, order):
     """Booking tickets via admin with groupon."""
     app.booking.refresh_page()
@@ -60,6 +60,9 @@ def test_admin_booking_for_today_with_valid_groupons(app, order):
 def test_admin_booking_for_today_with_valid_groupon_810(app, order):
     """Groupon. Admin booking. "Days Booked In Advance" is set to 1 (= a day before the event the code must be
     used - the day is not met)"""
+
+    # Bug 2258 Groupon. Admin booking + Customer Facing. "Days Booked In Advance" issue
+
     app.booking.refresh_page()
     app.groupons.navigate_to()
     app.groupons.get_code(order)
@@ -74,6 +77,9 @@ def test_admin_booking_for_today_with_valid_groupon_810(app, order):
 @pytest.mark.parametrize("order", admin_groupons[20:21], ids=[repr(x) for x in admin_groupons[20:21]])
 def test_admin_booking_for_today_with_valid_groupon_809(app, order):
     """Groupon. Admin booking. "Days Booked In Advance" is set to 0 (= up to time of event - time is not met)."""
+
+    # Bug 2258 Groupon. Admin booking + Customer Facing. "Days Booked In Advance" issue
+
     app.booking.refresh_page()
     app.groupons.navigate_to()
     app.groupons.get_code(order)
@@ -98,3 +104,14 @@ def test_admin_booking_with_redeemed_groupon(app, order):
     app.booking.select_payment_method(order)
     app.booking.verify_payment_table(order)
     app.booking.submit_successful_booking()
+
+
+data = admin_groupons[:5] + admin_groupons[7:8] + admin_groupons[10:14] + admin_groupons[17:22]
+
+
+@pytest.mark.parametrize("order", data, ids=[repr(x) for x in data])
+def test_event_manifest_verification(app, order):
+    """Checking booked tickets in the event manifest and customer event page."""
+    app.calendar.select_event(order)
+    app.calendar.verify_event_manifest(order)
+    app.calendar.verify_customer_event_admin(order)

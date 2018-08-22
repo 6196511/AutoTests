@@ -70,3 +70,14 @@ def test_customer_booking_with_redeemed_groupon(app, order):
     app.customer_booking.verify_payment_page(order)
     app.customer_booking.make_payment(order)
     app.customer_booking.verify_summary_details(order)
+
+
+data = customer_groupons[0:5] + customer_groupons[7:12] + customer_groupons[13:15]
+
+
+@pytest.mark.parametrize("order", data, ids=[repr(x) for x in data])
+def test_event_manifest_verification(app, order):
+    """Checking booked tickets in the event manifest and customer event page."""
+    app.calendar.select_event(order)
+    app.calendar.verify_event_manifest(order)
+    app.calendar.verify_customer_event_customer(order)
