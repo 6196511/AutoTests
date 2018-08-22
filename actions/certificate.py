@@ -90,7 +90,8 @@ class CertificateActions:
 
     def verify_remain_amount(self, order):
         assert self.certificate_page.first_row_remain_amount.text == order.remain_amount_after, \
-            "Wrong remain amount: %s" % self.certificate_page.first_row_remain_amount.text
+            "Wrong remain amount: '%s' but expected '%s'" % (self.certificate_page.first_row_remain_amount.text,
+                                                             order.remain_amount_after)
 
     def get_purchase_datetime(self):
         self.now = datetime.now(tz=pytz.timezone('US/Central'))
@@ -140,3 +141,7 @@ class CertificateActions:
             self.navigation_bar.sell_gift_certificates.click()
         elif self.certificate_page.certificate_pop_up() is True:
             self.certificate_page.click_cancel_button()
+
+    def find_by_code(self, order):
+        self.certificate_page.search_input.send_keys(order.gift_certificate_code)
+        wait(lambda: self.certificate_page.first_row_code.text == order.gift_certificate_code)
