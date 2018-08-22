@@ -23,6 +23,7 @@ class Orders:
         self.phone = kwargs.get('phone')
         self.email = kwargs.get('email')
         self.zip_code = kwargs.get('zip_code')
+        self.custom_price = kwargs.get('custom_price')
         self.groupon_name = kwargs.get('groupon_name')
         self.promo_code = kwargs.get('promo_code')
         self.gift_certificate_code = kwargs.get('gift_certificate_code')
