@@ -9,6 +9,9 @@ from actions.groupons import Groupons
 from actions.addons import Addons
 from app.session import SessionHelper
 from actions.customer_booking import CustomerActions
+from actions.customer_certificate import CustomerCertActions
+from actions.calendar import Calendar
+from actions.rain_checks import RainChecks
 
 
 class Application:
@@ -27,12 +30,15 @@ class Application:
         webium.settings.wait_timeout = 5
         self.session = SessionHelper(self)
         self.customer_booking = CustomerActions(self)
+        self.customer_certs = CustomerCertActions(self)
         self.booking = AdminBooking(self)
         self.certificate = CertificateActions(self)
         self.activity_hub = ActivityHub(self)
         self.people_hub = PeopleHub(self)
         self.groupons = Groupons(self)
         self.addons = Addons(self)
+        self.calendar = Calendar(self)
+        self.rain_checks = RainChecks(self)
 
     def destroy(self):
         self.driver.quit()
