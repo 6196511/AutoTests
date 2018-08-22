@@ -58,6 +58,10 @@ class CustomerActions:
         wait(lambda: self.booking.next_button_3.is_enabled())
         self.booking.next_button_3.click()
 
+    def time_is_unavailable(self, time):
+        print(self.booking.get_time_list())
+        assert time not in self.booking.get_time_list(), self.booking.get_time_list()
+
     def fill_info(self, tickets):
         self.booking.first_name_input.send_keys(tickets.first_name)
         self.booking.last_name_input.send_keys(tickets.last_name)
@@ -123,7 +127,7 @@ class CustomerActions:
 
     def verify_payment_page(self, tickets):
         wait(lambda: len(self.booking.checkout_activity.text) > 0, timeout_seconds=15)
-        assert self.booking.checkout_activity.text == tickets.activity
+        assert self.booking.checkout_activity.text == tickets.activity, self.booking.checkout_activity.text
         month = month_name[int(tickets.month)]
         date = "%s %s, %s" % (month, tickets.day, tickets.year)
         wait(lambda: self.booking.checkout_date.is_displayed())
