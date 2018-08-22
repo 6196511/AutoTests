@@ -2,7 +2,7 @@ import pytest
 from data.orders import *
 
 
-@pytest.mark.parametrize("tickets", customer_data, ids=[repr(x) for x in customer_data])
+@pytest.mark.parametrize("tickets", customer_data[:16], ids=[repr(x) for x in customer_data[:16]])
 def test_customer_booking(customer, tickets):
     """Order tickets via customer facing with valid credit card."""
     customer.booking.open_page(tickets)
