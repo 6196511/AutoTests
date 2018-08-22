@@ -39,3 +39,6 @@ class SessionHelper:
 
     def login_to_test_company(self, company):
         self.login_page.choose_company(company)
+
+    def go_to_admin(self):      # You should be logged in earlier.
+        self.login_page.open()
