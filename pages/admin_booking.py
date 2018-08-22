@@ -17,6 +17,8 @@ class AdminBookingPage(BasePage):
 
     # First tab.
 
+    datepicker_next_month = Find(by=By.XPATH, value="//th[@class = 'next']")
+    dates = Finds(by=By.XPATH, value="//td[@class = 'day available']")
     activity_list = Find(by=By.XPATH, value="//select[@id='activity'][@ng-model='vm.selectedActivity']")
     activities_in_list = Finds(by=By.XPATH, value="//option")
     first_tickets_type = Find(by=By.XPATH, value="//div[@name='tickets']//tr[1]//input")
@@ -53,6 +55,7 @@ class AdminBookingPage(BasePage):
 
     # Payment tab.
 
+    channel_list = Find(by=By.XPATH, value="//select[@name='channel']")
     payment_type_list = Find(by=By.XPATH, value="//select[@ng-model='bookingdrawer.paymentType']")
     credit_card_list = Find(by=By.XPATH, value="//select[@ng-model='bookingdrawer.preselectedCard']")
     stripe = Find(by=By.XPATH, value="//iframe[@name='__privateStripeFrame4']")

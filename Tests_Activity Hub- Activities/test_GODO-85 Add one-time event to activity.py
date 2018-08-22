@@ -83,12 +83,12 @@ class Test_GODO85(BaseTest):
                 if timeEvent in ticket.day_slot_time[i].get_attribute('textContent'):
                     page.day_slots[i].click()
                     time.sleep(6)
-                    assert NewFullDate in page.date_time_title.get_attribute('textContent')
+                    assert NewFullDate and timeEvent in page.date_time_title.get_attribute('textContent')
                     assert ActivityName == page.activity_name_title.get_attribute('textContent')
-                    assert timeEvent in page.date_time_title.get_attribute('textContent')
                     page.close_button.click()
                     page = EventCalendarPage()
                 else:
                     continue
             break
+
 
