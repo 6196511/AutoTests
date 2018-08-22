@@ -18,6 +18,7 @@ class CertificatePage(BasePage):
     first_row_activity = Find(by=By.XPATH, value="//tbody/tr[contains(@ng-repeat, 'results')][1]/td[7]")
     first_row_ticket_types = Find(by=By.XPATH, value="//tbody/tr[contains(@ng-repeat, 'results')][1]/td[8]")
     first_row_quantity = Find(by=By.XPATH, value="//tbody/tr[contains(@ng-repeat, 'results')][1]/td[9]")
+    search_input = Find(by=By.XPATH, value="//input[@placeholder='Start typing to search...']")
 
     # Add new certificate pop-up.
 

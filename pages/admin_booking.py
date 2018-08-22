@@ -19,10 +19,10 @@ class AdminBookingPage(BasePage):
 
     activity_list = Find(by=By.XPATH, value="//select[@id='activity'][@ng-model='vm.selectedActivity']")
     activities_in_list = Finds(by=By.XPATH, value="//option")
-    first_tickets_type = Find(by=By.XPATH, value="//tbody/tr[1]//input")
-    second_tickets_type = Find(by=By.XPATH, value="//tbody/tr[2]//input")
-    third_tickets_type = Find(by=By.XPATH, value="//tbody/tr[3]//input")
-    fourth_tickets_type = Find(by=By.XPATH, value="//tbody/tr[4]//input")
+    first_tickets_type = Find(by=By.XPATH, value="//div[@name='tickets']//tr[1]//input")
+    second_tickets_type = Find(by=By.XPATH, value="//div[@name='tickets']//tr[2]//input")
+    third_tickets_type = Find(by=By.XPATH, value="//div[@name='tickets']//tr[3]//input")
+    fourth_tickets_type = Find(by=By.XPATH, value="//div[@name='tickets']//tr[4]//input")
     empty_space_first_tab = Find(by=By.XPATH, value="//h1[text()='Add Booking']")
     name_first_tickets_type = Find(by=By.XPATH, value="//div[@class='form-group']//tbody/tr[1]/td[1]")
     name_second_tickets_type = Find(by=By.XPATH, value="//div[@class='form-group']//tbody/tr[2]/td[1]")
@@ -30,6 +30,7 @@ class AdminBookingPage(BasePage):
     name_fourth_tickets_type = Find(by=By.XPATH, value="//div[@class='form-group']//tbody/tr[4]/td[1]")
     datepicker = Find(by=By.ID, value="datepicker_1")
     time = Find(by=By.XPATH, value="//select[@ng-options='item as item.time for item in vm.times']")
+    custom_price = Find(by=By.XPATH, value="//input[@name='custom-price']")
     promo_code_input = Find(by=By.XPATH, value="//input[@name='promo-code']")
     gift_certificate_input = Find(by=By.XPATH, value="//input[@name='gift-certificate']")
     apply_discount = Find(by=By.XPATH, value="//div[text()='Apply Discount']")
@@ -87,6 +88,9 @@ class AdminBookingPage(BasePage):
 
     def select_time(self, time):
         Select(self.time).select_by_visible_text(time)
+
+    def get_time_list(self):
+        return Select(self.time).options
 
     def click_enter_customer_information(self):
         self._driver.execute_script("$('pageslide').animate({ scrollTop: '2000px' })")

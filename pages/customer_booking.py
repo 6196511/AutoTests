@@ -126,6 +126,13 @@ class CustomerBookingPage(BasePage):
                 item.button.click()
                 break
 
+    def get_time_list(self):
+        sleep(1)
+        list = []
+        for item in self.available_time_list:
+            list.append(item.available_time.text)
+        return list
+
     def click_date(self, day):
         for item in self.datepicker:
             if item.text == day:

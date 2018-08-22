@@ -13,3 +13,4 @@ class ActivityHubPage(BasePage):
     add_events = Find(by=By.XPATH, value="//i[@class='fa fa-plus mr20']")
     show_inactive = Find(by=By.XPATH, value="//*[@id='activityBG']/div[3]/div[2]/div/div/label")
     add_location_button = Find(by=By.XPATH, value="//a[@href='location_information.aspx']//h3[text()='Locations']")
+    rain_checks = Find(by=By.XPATH, value="//h3[text()='Rain Checks']")

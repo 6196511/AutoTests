@@ -10,6 +10,7 @@ class NavigationBar(BasePage):
     main_actions_drop_down = Find(by=By.CSS_SELECTOR, value=".dropdown")
     sell_gift_certificates = Find(by=By.CSS_SELECTOR, value="[href = 'giftcertificate.aspx']")
     add_a_booking = Find(by=By.XPATH, value="//*[@class='nav navbar-nav navbar-right']//a[text()='Add a Booking']")
+    calendar = Find(by=By.XPATH, value="//li/a[@href='event_calendar.aspx']")
 
     # Your Hubs navigation bar.
 
