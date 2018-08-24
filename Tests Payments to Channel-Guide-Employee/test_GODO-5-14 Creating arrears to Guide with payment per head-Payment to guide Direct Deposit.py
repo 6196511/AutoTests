@@ -40,7 +40,36 @@ class Test_GODO5_14(BaseTest):
         page.login_field.send_keys(admin_login)
         page.password_field.send_keys(admin_password)
         page.button.click()
+        page = GuidePayrollPage()
+        page.open()
+        time.sleep(3)
+        select = Select(page.guide_list)
+        try:
+            select.select_by_visible_text(GuideName)
+            time.sleep(3)
+            for i in range(0, len(page.check)):
+                if page.cash[i].is_displayed():
+                    page.cash[i].click()
+                else:
+                    continue
+                break
+            time.sleep(2)
+            for i in range(0, len(page.pay_button)):
+                if page.pay_button[i].is_displayed():
+                    page.pay_button[i].click()
+                else:
+                    continue
+                break
+            time.sleep(3)
+            alert = get_driver().switch_to_alert()
+            alert.accept()
+            time.sleep(2)
+            page.OK_button.click()
+        except WebDriverException:
+            print("Guide has no payment due")
+            get_driver().refresh()
         page = NavigationBar()
+        time.sleep(2)
         page.main_actions_drop_down.click()
         time.sleep(2)
         page.add_a_booking.click()
@@ -227,4 +256,3 @@ class Test_GODO5_14(BaseTest):
             break
         L.sort(reverse=True)
         assert time_and_date and GuideName and guide_per_head_due in L[0]
-
