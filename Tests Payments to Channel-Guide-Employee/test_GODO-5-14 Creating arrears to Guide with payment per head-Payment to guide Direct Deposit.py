@@ -249,10 +249,7 @@ class Test_GODO5_14(BaseTest):
         time.sleep(4)
         L=[]
         for i in range(0, len(page.payment_entry)):
-            if GuideName in page.payment_entry[i].get_attribute('textContent'):
-                L.append(page.payment_entry[i].get_attribute('textContent'))
-            else:
-                continue
-            break
+            L.append(page.payment_entry[i].get_attribute('textContent'))
         L.sort(reverse=True)
         assert time_and_date and GuideName and guide_per_head_due in L[0]
+
