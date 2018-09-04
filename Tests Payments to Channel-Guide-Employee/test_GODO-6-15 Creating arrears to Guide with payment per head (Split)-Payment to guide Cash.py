@@ -26,9 +26,9 @@ AdultTickets = '5'
 ChildTickets = '5'
 guide_per_head_split_due_amount = (int(AdultTickets) + int(ChildTickets)-fist_heads_quantity) * guide_per_head_split_rate_add + guide_per_head_split_rate_first
 guide_per_head_split_due =('$'+''.join(str(guide_per_head_split_due_amount))+'.00')
-PT = timezone('America/Los_Angeles')
-pt_time = datetime.now(PT)
-time_and_date = pt_time.strftime('%#m/%#d/%Y %#H:%M')
+AT = timezone('America/Glace_Bay')
+at_time = datetime.now(AT)
+time_and_date = at_time.strftime('%#m/%#d/%Y %#H:%M')
 
 class BaseTest(object):
     def teardown_class(self):
@@ -251,10 +251,7 @@ class Test_GODO6_15(BaseTest):
         time.sleep(4)
         L=[]
         for i in range(0, len(page.payment_entry)):
-            if GuideName in page.payment_entry[i].get_attribute('textContent'):
-                L.append(page.payment_entry[i].get_attribute('textContent'))
-            else:
-                continue
-            break
+            L.append(page.payment_entry[i].get_attribute('textContent'))
         L.sort(reverse=True)
         assert time_and_date and GuideName and guide_per_head_split_due in L[0]
+
