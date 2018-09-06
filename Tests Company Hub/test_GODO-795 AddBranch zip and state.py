@@ -26,6 +26,7 @@ class Test_GODO795(BaseTest):
         time.sleep(3)
         select = Select(page.country_list)
         select.select_by_visible_text('United States')
+        time.sleep(3)
         select = Select(page.state_list)
         select.select_by_visible_text('Florida')
         page.branch_zip.send_keys('54321')
