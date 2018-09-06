@@ -18,8 +18,8 @@ class LocationLink(BasePage):
 
 
 
-class Test_GODO108(BaseTest):
-    def test_108(self):
+class Test_GODO124(BaseTest):
+    def test_124(self):
         get_driver().maximize_window()
         page = loginpage()
         page.open()
