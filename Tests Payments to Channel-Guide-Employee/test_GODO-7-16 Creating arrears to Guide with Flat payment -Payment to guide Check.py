@@ -243,7 +243,7 @@ class Test_GODO7_16(BaseTest):
         alert = get_driver().switch_to_alert()
         assert (guide_flat_due+' to '+''.join(GuideName)) in alert.text
         alert.accept()
-        time_and_date = datetime.now(AT).strftime('%#m/%#d/%Y %#H:%M')
+        time_and_date = datetime.now(AT).strftime('%#m/%#d/%Y %#I:%M')
         print(time_and_date)
         time.sleep(2)
         page.OK_button.click()
