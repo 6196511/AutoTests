@@ -30,6 +30,7 @@ comission_amount_alert = "$" +''.join(str(('{:.2f}'.format(round(dollar_amount, 
 AT = timezone('America/Glace_Bay')
 at_time = datetime.now(AT)
 time_and_date = at_time.strftime('%#m/%#d/%Y %#H:%M')
+from selenium.common.exceptions import WebDriverException
 
 class BaseTest(object):
     def teardown_class(self):
@@ -43,6 +44,39 @@ class Test_GODO8_18(BaseTest):
         page.login_field.send_keys(admin_login)
         page.password_field.send_keys(admin_password)
         page.button.click()
+        page = ChannelPayrollPage()
+        page.open()
+        page.channel_payment_due.click()
+        time.sleep(3)
+        try:
+            for i in range(0, len(page.channel_entries)):
+                if channel in page.channel_entries[i].get_attribute('textContent'):
+                    page.channel_detail[i].click()
+                else:
+                    continue
+                break
+            time.sleep(3)
+            for i in range(0, len(page.cash)):
+                if page.cash[i].is_displayed():
+                    page.cash[i].click()
+                else:
+                    continue
+                break
+            time.sleep(6)
+            for i in range(0, len(page.pay_button)):
+                if page.pay_button[i].is_displayed():
+                    page.pay_button[i].click()
+                else:
+                    continue
+                break
+            time.sleep(6)
+            alert = get_driver().switch_to_alert()
+            alert.accept()
+            time.sleep(2)
+            page.OK_button.click()
+            time.sleep(2)
+        except WebDriverException:
+            print("Channel has no payment due")
         page = NavigationBar()
         page.main_actions_drop_down.click()
         time.sleep(2)
