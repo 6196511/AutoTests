@@ -22,29 +22,61 @@ GuideName = "Ivan Petrov"
 guide_per_head_rate = 72
 AdultTickets = '3'
 CheckNumber = '134124124'
-channel = "Test 10%"
-channel_name = '123 456'
-ticket_price = 100
-channel_rate = 0.1
-price = int(AdultTickets)*ticket_price
-comission_amount = "$ " +''.join(str(int(price*channel_rate)))
-comission_amount_alert = "$" +''.join(str(('{:.2f}'.format(round(price*channel_rate, 2)))))
+channel = "DollarAmount1"
+channel_name = 'qwer asdf'
+dollar_amount= 15
+comission_amount = "$ " +''.join(str(dollar_amount))
+comission_amount_alert = "$" +''.join(str(('{:.2f}'.format(round(dollar_amount, 2)))))
 AT = timezone('America/Glace_Bay')
 at_time = datetime.now(AT)
 time_and_date = at_time.strftime('%#m/%#d/%Y %#H:%M')
+from selenium.common.exceptions import WebDriverException
 
 class BaseTest(object):
     def teardown_class(self):
          close_driver()
 
-class Test_GODO9_17(BaseTest):
-    def test_9(self):
+class Test_GODO8_18(BaseTest):
+    def test_8(self):
         get_driver().maximize_window()
         page = loginpage()
         page.open()
         page.login_field.send_keys(admin_login)
         page.password_field.send_keys(admin_password)
         page.button.click()
+        page = ChannelPayrollPage()
+        page.open()
+        page.channel_payment_due.click()
+        time.sleep(3)
+        try:
+            for i in range(0, len(page.channel_entries)):
+                if channel in page.channel_entries[i].get_attribute('textContent'):
+                    page.channel_detail[i].click()
+                else:
+                    continue
+                break
+            time.sleep(3)
+            for i in range(0, len(page.cash)):
+                if page.cash[i].is_displayed():
+                    page.cash[i].click()
+                else:
+                    continue
+                break
+            time.sleep(6)
+            for i in range(0, len(page.pay_button)):
+                if page.pay_button[i].is_displayed():
+                    page.pay_button[i].click()
+                else:
+                    continue
+                break
+            time.sleep(6)
+            alert = get_driver().switch_to_alert()
+            alert.accept()
+            time.sleep(2)
+            page.OK_button.click()
+            time.sleep(2)
+        except WebDriverException:
+            print("Channel has no payment due")
         page = NavigationBar()
         page.main_actions_drop_down.click()
         time.sleep(2)
@@ -111,7 +143,7 @@ class Test_GODO9_17(BaseTest):
                 continue
             break
         page.day_button.click()
-        time.sleep(10)
+        time.sleep(6)
         EventTime = (EventTimeHours + ':' + ''.join(EventTimeMinutes) + ' ' + ''.join(timeday))
         assert str(NewFullDate) in page.date_header.get_attribute("textContent")
         for ticket in page.day_slots:
@@ -124,7 +156,7 @@ class Test_GODO9_17(BaseTest):
                     select = Select(page.guide_list)
                     select.select_by_visible_text(GuideName)
                     page.save_guide.click()
-                    # page.close_button.click()
+                    page.close_button.click()
                 else:
                     continue
             break
@@ -147,7 +179,7 @@ class Test_GODO9_17(BaseTest):
             else:
                 continue
             break
-        time.sleep(6)
+        time.sleep(2)
         assert str(NewFullDate) in page.date_header.get_attribute("textContent")
         for ticket in page.day_slots:
             for i in range(0, len(page.day_slots)):
@@ -182,7 +214,7 @@ class Test_GODO9_17(BaseTest):
                 continue
             break
         assert len(L)==1
-    def test_17(self):
+    def test_18(self):
         get_driver().maximize_window()
         page = loginpage()
         page.open()
@@ -215,9 +247,9 @@ class Test_GODO9_17(BaseTest):
                 continue
             break
         time.sleep(3)
-        for i in range(0, len(page.direct_deposit)):
-            if page.direct_deposit[i].is_displayed():
-                page.direct_deposit[i].click()
+        for i in range(0, len(page.cash)):
+            if page.cash[i].is_displayed():
+                page.cash[i].click()
             else:
                 continue
             break
@@ -246,4 +278,4 @@ class Test_GODO9_17(BaseTest):
         assert len(L1) == 1
         paid_amount_new = L1[0]
         paid_amount_number_new = re.findall('\d+\.\d*', paid_amount_new)[0]
-        assert float(paid_amount_number_new) == float(paid_amount_number)+float(price*channel_rate)
+        assert float(paid_amount_number_new) == float(paid_amount_number)+float(dollar_amount)
