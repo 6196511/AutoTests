@@ -238,7 +238,7 @@ class Test_GODO6_15(BaseTest):
         alert = get_driver().switch_to_alert()
         assert (guide_per_head_split_due+' to '+''.join(GuideName)) in alert.text
         alert.accept()
-        time_and_date = datetime.now(AT).strftime('%#m/%#d/%Y %#H:%M')
+        time_and_date = datetime.now(AT).strftime('%#m/%#d/%Y %#I:%M')
         time.sleep(2)
         page.OK_button.click()
         time.sleep(12)
