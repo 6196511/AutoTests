@@ -27,8 +27,8 @@ ChildTickets = '5'
 guide_per_head_split_due_amount = (int(AdultTickets) + int(ChildTickets)-fist_heads_quantity) * guide_per_head_split_rate_add + guide_per_head_split_rate_first
 guide_per_head_split_due =('$'+''.join(str(guide_per_head_split_due_amount))+'.00')
 AT = timezone('America/Glace_Bay')
-at_time = datetime.now(AT)
-time_and_date = at_time.strftime('%#m/%#d/%Y %#H:%M')
+# at_time = datetime.now(AT)
+# time_and_date = at_time.strftime('%#m/%#d/%Y %#H:%M')
 
 class BaseTest(object):
     def teardown_class(self):
@@ -238,20 +238,30 @@ class Test_GODO6_15(BaseTest):
         alert = get_driver().switch_to_alert()
         assert (guide_per_head_split_due+' to '+''.join(GuideName)) in alert.text
         alert.accept()
+        time_and_date = datetime.now(AT).strftime('%#m/%#d/%Y %#H:%M')
         time.sleep(2)
         page.OK_button.click()
         time.sleep(12)
         select = Select(page.show_entries)
         select.select_by_visible_text('100')
         time.sleep(5)
-        try:
-            page.next_button.click()
-        except WebDriverException:
-            print("Less than 100 Entries")
-        time.sleep(4)
+        # try:
+        #     page.next_button.click()
+        # except WebDriverException:
+        #     print("Less than 100 Entries")
+        # time.sleep(4)
         L=[]
-        for i in range(0, len(page.payment_entry)):
-            L.append(page.payment_entry[i].get_attribute('textContent'))
-        L.sort(reverse=True)
-        assert time_and_date and GuideName and guide_per_head_split_due in L[0]
+        # for i in range(0, len(page.payment_entry)):
+        #     L.append(page.payment_entry[i].get_attribute('textContent'))
+        for i in range(0, len(page.payment_entry)): #until fixing 2904 Incorrect sorting of Recent Payments by date on guide_payroll.aspx
+            if time_and_date in page.payment_entry[i].get_attribute('textContent'):
+                L.append(page.payment_entry[i].get_attribute('textContent'))
+                assert GuideName and guide_per_head_split_due in page.payment_entry[i].get_attribute('textContent')
+            else:
+                continue
+            break
+        assert len(L) ==1  #until fixing 2904 Incorrect sorting of Recent Payments by date on guide_payroll.aspx
+        # L.sort(reverse=True)
+        # assert time_and_date and GuideName and guide_per_head_split_due in L[0]
+
 
