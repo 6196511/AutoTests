@@ -19,14 +19,14 @@ from pytz import timezone
 ActivityName = "_AutoTest200718"
 ActivityTimezone = 'AT'
 GuideName = "Holly Flat"
-guide_per_head_rate = 72
+guide_flat_rate = 72
 AdultTickets = '1'
 CheckNumber = '134124124'
-guide_per_head_due_amount = guide_per_head_rate
-guide_per_head_due =('$'+''.join(str(guide_per_head_due_amount))+'.00')
+guide_flat_due_amount = guide_flat_rate
+guide_flat_due =('$'+''.join(str(guide_flat_due_amount))+'.00')
 AT = timezone('America/Glace_Bay')
-at_time = datetime.now(AT)
-time_and_date = at_time.strftime('%#m/%#d/%Y %#H:%M')
+# at_time = datetime.now(AT)
+# time_and_date = at_time.strftime('%#m/%#d/%Y %#H:%M')
 
 class BaseTest(object):
     def teardown_class(self):
@@ -123,7 +123,6 @@ class Test_GODO7_16(BaseTest):
         select.select_by_visible_text(ActivityName)
         page.date_picker.click()
         time.sleep(2)
-        print(NewFullDate)
         page.date_picker_next.click()
         time.sleep(2)
         for i in range(0, len(page.days_date_picker)):
@@ -198,7 +197,7 @@ class Test_GODO7_16(BaseTest):
         time.sleep(5)
         for i in range(0, len(page.event_due)):
             if page.event_due[i].is_displayed():
-                assert page.event_due[i].get_attribute("textContent") == guide_per_head_due
+                assert page.event_due[i].get_attribute("textContent") == guide_flat_due
             else:
                 continue
             break
@@ -242,22 +241,32 @@ class Test_GODO7_16(BaseTest):
             break
         time.sleep(6)
         alert = get_driver().switch_to_alert()
-        assert (guide_per_head_due+' to '+''.join(GuideName)) in alert.text
+        assert (guide_flat_due+' to '+''.join(GuideName)) in alert.text
         alert.accept()
+        time_and_date = datetime.now(AT).strftime('%#m/%#d/%Y %#H:%M')
+        print(time_and_date)
         time.sleep(2)
         page.OK_button.click()
         time.sleep(15)
         select = Select(page.show_entries)
         select.select_by_visible_text('100')
         time.sleep(5)
-        try:
-            page.next_button.click()
-        except WebDriverException:
-            print("Less than 100 Entries")
-        time.sleep(4)
+        # try:
+        #     page.next_button.click()
+        # except WebDriverException:
+        #     print("Less than 100 Entries")
+        # time.sleep(4)
         L=[]
-        for i in range(0, len(page.payment_entry)):
-            L.append(page.payment_entry[i].get_attribute('textContent'))
-        L.sort(reverse=True)
-        assert time_and_date and GuideName and guide_per_head_due in L[0]
+        # for i in range(0, len(page.payment_entry)):
+        #     L.append(page.payment_entry[i].get_attribute('textContent'))
+        for i in range(0, len(page.payment_entry)): #until fixing 2904 Incorrect sorting of Recent Payments by date on guide_payroll.aspx
+            if time_and_date in page.payment_entry[i].get_attribute('textContent'):
+                L.append(page.payment_entry[i].get_attribute('textContent'))
+                assert GuideName and guide_flat_due in page.payment_entry[i].get_attribute('textContent')
+            else:
+                continue
+            break
+        assert len(L) ==1  #until fixing 2904 Incorrect sorting of Recent Payments by date on guide_payroll.aspx
+        # L.sort(reverse=True)
+        # assert time_and_date and GuideName and guide_flat_due in L[0]
 
