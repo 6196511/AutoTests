@@ -25,3 +25,6 @@ class EmployeePage(BasePage):
     calendar_end_prev = Finds(by=By.XPATH, value="//th[@class='prev']")
     dates_calendar_end = Finds(by=By.XPATH, value="//td[@class='day']")
     save_button = Find(by=By.XPATH, value="//button[@id='submituser']")
+    country_list = Find(by=By.XPATH, value="//select[@id='administrator_country']")
+    state_list = Find(by=By.XPATH, value="//select[@id='administrator_state']")
+    user_zip = Find(by=By.XPATH, value="//input[@id='administrator_zipCode']")
