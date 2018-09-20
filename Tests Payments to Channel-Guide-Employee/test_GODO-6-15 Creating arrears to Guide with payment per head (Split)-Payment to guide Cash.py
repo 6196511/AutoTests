@@ -16,7 +16,7 @@ from selenium.common.exceptions import WebDriverException
 from pytz import timezone
 
 
-ActivityName = "_AutoTest200718"
+ActivityName = "_AutoTest200918"
 ActivityTimezone = 'AT'
 GuideName = "Ivan Ivanov"
 fist_heads_quantity = 3
@@ -198,14 +198,20 @@ class Test_GODO6_15(BaseTest):
         select.select_by_visible_text(GuideName)
         time.sleep(5)
         for i in range(0, len(page.event_due)):
-            if page.event_due[i].is_displayed() and EventTimeWithZone and nextMonthDate and EventDate in page.activity_timedate[i].get_attribute("textContent"):
-                assert page.event_due[i].get_attribute("textContent") == guide_per_head_split_due
+            if page.event_due[i].is_displayed():
+                if page.event_due[i].get_attribute("textContent") == '$0.00':
+                    continue
+                else:
+                    assert page.event_due[i].get_attribute("textContent") == guide_per_head_split_due
             else:
                 continue
             break
         for i in range(0, len(page.activity_timedate)):
             if page.activity_timedate[i].is_displayed():
-                assert EventTimeWithZone and nextMonthDate and EventDate in page.activity_timedate[i].get_attribute("textContent")
+                if ActivityName not in page.activity_timedate[i].get_attribute("textContent"):
+                    continue
+                else:
+                    assert EventTimeWithZone and nextMonthDate and EventDate in page.activity_timedate[i].get_attribute("textContent")
             else:
                 continue
             break
@@ -263,5 +269,3 @@ class Test_GODO6_15(BaseTest):
         assert len(L) ==1  #until fixing 2904 Incorrect sorting of Recent Payments by date on guide_payroll.aspx
         # L.sort(reverse=True)
         # assert time_and_date and GuideName and guide_per_head_split_due in L[0]
-
-
