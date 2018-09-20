@@ -16,7 +16,7 @@ import re
 from pytz import timezone
 
 
-ActivityName = "_AutoTest200718"
+ActivityName = "_AutoTest200918"
 ActivityTimezone = 'AT'
 GuideName = "Ivan Petrov"
 guide_per_head_rate = 72
