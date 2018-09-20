@@ -16,7 +16,7 @@ from selenium.common.exceptions import WebDriverException
 from pytz import timezone
 
 
-ActivityName = "_AutoTest200718"
+ActivityName = "_AutoTest200918"
 ActivityTimezone = 'AT'
 GuideName = "Alexey Perhead"
 guide_per_head_rate = 10
@@ -108,7 +108,7 @@ class Test_GODO5_14(BaseTest):
         EmailAddress = 'godoautotest@gmail.com'
         page.email_address.send_keys(EmailAddress)
         page.complete_booking_button.click()
-        time.sleep(2)
+        time.sleep(5)
         select = Select(page.payment_type_list)
         time.sleep(5)
         PaymentType = "Cash"
@@ -197,13 +197,19 @@ class Test_GODO5_14(BaseTest):
         time.sleep(5)
         for i in range(0, len(page.event_due)):
             if page.event_due[i].is_displayed():
-                assert page.event_due[i].get_attribute("textContent") == guide_per_head_due
+                if page.event_due[i].get_attribute("textContent") == '$0.00':
+                    continue
+                else:
+                    assert page.event_due[i].get_attribute("textContent") == guide_per_head_due
             else:
                 continue
             break
         for i in range(0, len(page.activity_timedate)):
             if page.activity_timedate[i].is_displayed():
-                assert EventTimeWithZone and nextMonthDate and EventDate in page.activity_timedate[i].get_attribute("textContent")
+                if ActivityName not in page.activity_timedate[i].get_attribute("textContent"):
+                    continue
+                else:
+                    assert EventTimeWithZone and nextMonthDate and EventDate in page.activity_timedate[i].get_attribute("textContent")
             else:
                 continue
             break
