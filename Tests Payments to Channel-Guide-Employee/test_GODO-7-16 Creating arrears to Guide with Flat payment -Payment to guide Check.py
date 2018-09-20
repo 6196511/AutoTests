@@ -16,7 +16,7 @@ from selenium.common.exceptions import WebDriverException
 from pytz import timezone
 
 
-ActivityName = "_AutoTest200718"
+ActivityName = "_AutoTest200918"
 ActivityTimezone = 'AT'
 GuideName = "Holly Flat"
 guide_flat_rate = 72
