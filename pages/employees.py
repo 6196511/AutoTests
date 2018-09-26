@@ -5,7 +5,9 @@ from webium import BasePage, Find, Finds
 class EmployeePage(BasePage):
     url = 'https://dev.godo.io/administrator.aspx'
     user_entry = Finds(by=By.XPATH, value="//tr[@class='ng-scope odd']|//tr[@class='ng-scope even']")
-    edit_user_button = Finds(by=By.XPATH, value="//i[@class='fa fa-edit']")
+    # edit_user_button = Finds(by=By.XPATH, value="//i[@class='fa fa-edit']")
+    edit_user_button = Find(by=By.XPATH, value="//i[@class='fa fa-edit']")
+    delete_user_button = Find(by=By.XPATH, value="//i[@class='fa fa-remove']")
     search_field = Find(by=By.XPATH, value="//input[@type='search']")
     add_new_user = Find(by=By.XPATH, value="//button[@id='addUser']")
     username_field = Find(by=By.XPATH, value="//input[@name='administrator_username']")
@@ -44,3 +46,4 @@ class EmployeePage(BasePage):
     em_phone_field = Find(by=By.XPATH, value="//input[@id='emergency_phone']")
     permission_entries = Finds(by=By.XPATH, value="//p[@ng-repeat='permission in vm.user.permissions']")
     permission_checkbox = Finds(by=By.XPATH, value="//input[@ng-model='permission.selected']")
+    no_such_entry_msg = Find(by=By.XPATH, value="//td[@class='dataTables_empty']")
