@@ -10,18 +10,15 @@ from random import choice
 from string import digits
 import datetime
 
-today = datetime.date.today()
-lastMonth = today - datetime.timedelta(days=30)
-nextMonth = today + datetime.timedelta(days=30)
-day_begin = lastMonth.strftime("%#d")
-day_end = nextMonth.strftime("%#d")
+email_list = []
+fullname_list = []
 
 class BaseTest(object):
     def teardown_class(self):
          close_driver()
 
 
-class Test_GODO186(BaseTest):
+class Test_GODO186_187(BaseTest):
     def test_186(self):
         get_driver().maximize_window()
         page = loginpage()
@@ -43,12 +40,15 @@ class Test_GODO186(BaseTest):
         last_names = ('Smith', 'Baker', 'Petroff', 'Smirnoff', 'Black', 'White', 'Broun', 'Ivanoff')
         NewLastName = random.choice(last_names)
         page.last_name_field.send_keys(NewLastName)
+        NewFullName = NewFirstName+' '+ ''.join(NewLastName)
+        fullname_list.append(NewFullName)
         NewPhone1 = ('' + ''.join(choice(digits) for i in range(10)))
         page.phone1_field.send_keys(NewPhone1)
         NewPhone2 = ('' + ''.join(choice(digits) for i in range(10)))
         page.phone2_field.send_keys(NewPhone2)
         NewEmail = ('' + ''.join(choice(digits) for i in range(10)) + '@mailinator.com')
         page.email_field.send_keys(NewEmail)
+        email_list.append(NewEmail)
         select = Select(page.role_list)
         NewRole = "Office Staff"
         select.select_by_visible_text(NewRole)
@@ -105,9 +105,7 @@ class Test_GODO186(BaseTest):
         page.search_field.clear()
         page.search_field.send_keys(NewEmail)
         time.sleep(6)
-        for i in range(0, len(page.edit_user_button)):
-            if page.edit_user_button[i].is_displayed():
-                page.edit_user_button[i].click()
+        page.edit_user_button.click()
         time.sleep(2)
         assert page.username_readonly_field.get_attribute('value') == NewUserName
         assert page.first_name_field.get_attribute('value') == NewFirstName
@@ -144,3 +142,26 @@ class Test_GODO186(BaseTest):
             else:
                 continue
         assert L ==L1
+    def test_187(self):
+        get_driver().maximize_window()
+        page = loginpage()
+        page.open()
+        page.login_field.send_keys(admin_login)
+        page.password_field.send_keys(admin_password)
+        page.button.click()
+        time.sleep(5)
+        page = EmployeePage()
+        page.open()
+        time.sleep(5)
+        page.search_field.send_keys(email_list[0])
+        time.sleep(5)
+        page.delete_user_button.click()
+        time.sleep(5)
+        alert = get_driver().switch_to_alert()
+        assert (fullname_list[0]) in alert.text
+        alert.accept()
+        time.sleep(2)
+        page.search_field.send_keys(email_list[0])
+        time.sleep(2)
+        assert page.is_element_present('no_such_entry_msg')
+        assert page.no_such_entry_msg.get_attribute('textContent') == "No matching records found"
