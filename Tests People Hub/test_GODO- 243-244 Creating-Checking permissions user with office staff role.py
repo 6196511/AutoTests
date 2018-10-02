@@ -10,7 +10,7 @@ from waiver import WaiverAddPage
 from marketing_hub_page import DiscountPage
 from groupon_page import GrouponPage
 from admin_certificate import CertificatePage
-from invoice import InvoicePage
+from invoice import InvoicePageV2
 from people_hub_page import PeopleHubPage
 from guide_payroll import GuidePayrollPage
 from channel_payroll import ChannelPayrollPage
@@ -219,7 +219,7 @@ class Test_GODO243_244(BaseTest):
         assert page.is_element_present('add_new_certificate_button') == True
         page = NoPermission()
         assert page.is_element_present('no_permission_alert') == False
-        page = InvoicePage() #STEP 10
+        page = InvoicePageV2() #STEP 10
         page.open()
         time.sleep(2)
         page = NoPermission()
