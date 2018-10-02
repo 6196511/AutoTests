@@ -10,7 +10,6 @@ from waiver import WaiverAddPage
 from marketing_hub_page import DiscountPage
 from groupon_page import GrouponPage
 from admin_certificate import CertificatePage
-from admin_booking import AdminBookingPage
 from invoice import InvoicePage
 from people_hub_page import PeopleHubPage
 from guide_payroll import GuidePayrollPage
@@ -219,73 +218,65 @@ class Test_GODO243_244(BaseTest):
         time.sleep(2)
         page = NoPermission()
         assert page.is_element_present('no_permission_alert') == False
-        page = NavigationBar() #STEP 10
-        page.main_actions_drop_down.click()
-        time.sleep(2)
-        page.add_a_booking.click()
-        page = AdminBookingPage()
-        assert page.is_element_present('activity_list') == True
-        page = NoPermission()
-        assert page.is_element_present('no_permission_alert') == False
-        page = InvoicePage() #STEP 11
+        page = InvoicePage() #STEP 10
         page.open()
         time.sleep(2)
         page = NoPermission()
         assert page.is_element_present('no_permission_alert') == False
-        page = PeopleHubPage() #STEP 12
+        page = PeopleHubPage() #STEP 11
         page.open()
         time.sleep(2)
         assert page.is_element_present('add_guide_button') == True
         page = NoPermission()
         assert page.is_element_present('no_permission_alert') == False
-        page = GuidePayrollPage() #STEP 13
+        page = GuidePayrollPage() #STEP 12
         page.open()
         time.sleep(2)
         assert page.is_element_present('guide_list') == True
         page = NoPermission()
         assert page.is_element_present('no_permission_alert') == False
-        page = ChannelPayrollPage() #STEP 14
+        page = ChannelPayrollPage() #STEP 13
         page.open()
         time.sleep(2)
         assert page.is_element_present('channel_payment_due') == True
         page = NoPermission()
         assert page.is_element_present('no_permission_alert') == False
-        page = EventCalendarPage()#STEP 15
+        page = EventCalendarPage()#STEP 14
         page.open()
         assert page.is_element_present('date_picker') == True
         page = NoPermission()
         assert page.is_element_present('no_permission_alert') ==False
-        page = GuideBulAssignmentPage() #STEP 16
+        page = GuideBulAssignmentPage() #STEP 15
         page.open()
         time.sleep(2)
         page = NoPermission()
         assert page.is_element_present('no_permission_alert') == False
-        page = AddStartingLocationPage()#STEP 17
+        page = AddStartingLocationPage()#STEP 16
         page.open()
         assert page.is_element_present('location_name') == True
         page = NoPermission()
         assert page.is_element_present('no_permission_alert') ==False
-        page = TaxesReportPage() #STEP 18
+        page = TaxesReportPage() #STEP 17
         page.open()
         time.sleep(2)
         page = NoPermission()
         assert page.is_element_present('no_permission_alert') == False
-        page = AnalyticsDashboardPage() #STEP 19
+        page = AnalyticsDashboardPage() #STEP 18
         page.open()
         time.sleep(2)
         page = NoPermission()
         assert page.is_element_present('no_permission_alert') == False
-        page = EditCompanyPage()#STEP 20
+        page = EditCompanyPage()#STEP 19
         page.open()
         assert page.is_element_present('company_name_field') == True
         page = NoPermission()
         assert page.is_element_present('no_permission_alert') ==False
-        page = SelfProfilePage()#STEP 21
+        page = SelfProfilePage()#STEP 20
         page.open()
         assert page.is_element_present('first_name_field') == True
         page = NoPermission()
         assert page.is_element_present('no_permission_alert') ==False
-        page = CustomerListPage()#STEP 22
+        page = CustomerListPage()#STEP 21
         page.open()
         assert page.is_element_present('add_customer_button') == True
         page = NoPermission()
