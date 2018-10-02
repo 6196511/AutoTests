@@ -216,6 +216,7 @@ class Test_GODO243_244(BaseTest):
         page = CertificatePage() #STEP 9
         page.open()
         time.sleep(2)
+        assert page.is_element_present('add_new_certificate_button') == True
         page = NoPermission()
         assert page.is_element_present('no_permission_alert') == False
         page = InvoicePage() #STEP 10
