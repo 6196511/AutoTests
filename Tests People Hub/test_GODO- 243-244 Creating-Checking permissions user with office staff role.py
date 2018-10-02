@@ -172,6 +172,7 @@ class Test_GODO243_244(BaseTest):
         time.sleep(2)
         page = NoPermission()
         assert page.is_element_present('no_permission_alert') ==True
+        assert page.no_permission_alert.get_attribute('outerText') == no_permission_msg
         page = ActivityHubPage()  # STEP3.4
         page.open()
         time.sleep(8)
@@ -180,6 +181,7 @@ class Test_GODO243_244(BaseTest):
         time.sleep(2)
         page = NoPermission()
         assert page.is_element_present('no_permission_alert') ==True
+        assert page.no_permission_alert.get_attribute('outerText') == no_permission_msg
         page = ActivityHubPage()  # STEP3.4
         page.open()
         time.sleep(8)
