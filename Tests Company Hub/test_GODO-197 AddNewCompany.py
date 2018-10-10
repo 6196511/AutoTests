@@ -3,7 +3,7 @@ from webium.driver import close_driver
 from company_page import AddCompanyPage, EditCompanyPage
 from selenium.webdriver.support.ui import Select
 import time
-from creds import admin_login, admin_password
+from creds import internal_pwd
 import random
 from random import choice
 from string import digits
@@ -18,7 +18,7 @@ class Test_GODO197(BaseTest):
         page = AddCompanyPage()
         page.open()
         time.sleep(3)
-        page.internal_pwd_field.send_keys('GD2018a!')
+        page.internal_pwd_field.send_keys(internal_pwd)
         NewCompanyName = ("AutoTest_" + ''.join(choice(digits) for i in range(4)))
         page.company_name_field.send_keys(NewCompanyName)
         NewCompanyEmail = (NewCompanyName + '@mailinator.com')
