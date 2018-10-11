@@ -1,7 +1,6 @@
 from webium.driver import get_driver
 from webium.driver import close_driver
 from Login import loginpage
-from people_hub_page import PeopleHubPage
 from employees import EmployeePage
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.common.by import By
@@ -35,9 +34,7 @@ class Test_GODO731(BaseTest):
         time.sleep(5)
         page.search_field.send_keys(user_name)
         time.sleep(2)
-        for i in range(0, len(page.edit_user_button)):
-            if page.edit_user_button[i].is_displayed():
-                page.edit_user_button[i].click()
+        page.edit_user_button.click()
         time.sleep(2)
         select = Select(page.state_list)
         State = select.first_selected_option.text
