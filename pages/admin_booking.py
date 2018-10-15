@@ -110,15 +110,47 @@ class AdminBookingPage(BasePage):
         wait(lambda: self.stripe.is_enabled())
         self._driver.switch_to.frame(self.stripe)
         wait(lambda: self.card_number_input.is_enabled())
-        self.card_number_input.clear()
-        # wait(lambda: self.card_number_input.is_enabled())
-        # sleep(1)
-        self.card_number_input.send_keys(card_number)
-        self.card_date_input.send_keys(card_date)
+        attempts = 10
+        for attempt in range(1, attempts):
+            self.card_number_input.clear()
+            wait(lambda: self.card_number_input.is_enabled())
+            self.card_number_input.send_keys(card_number)
+            self.card_date_input.clear()
+            wait(lambda: self.card_date_input.is_enabled())
+            self.card_date_input.send_keys(card_date)
+            actual_value_card = self.card_number_input.get_attribute('value')
+            actual_value_card = actual_value_card.replace(" ", "")
+            actual_value_date = self.card_date_input.get_attribute('value')
+            actual_value_date = actual_value_date.replace(" / ", "")
+            if actual_value_card == card_number and actual_value_date == card_date:
+                break
+            else:
+                print("%s attempt failed. Entered: %s and %s but expected: %s and %s" %
+                      (attempt, actual_value_card, actual_value_date, card_number, card_date))
+        else:
+            print("Correct value hasn't been entered.")
+            exit()
         self.card_cvc_input.send_keys(card_cvc)
         if card_zip is not None:
             self.card_zip_input.send_keys(card_zip)
         self._driver.switch_to.default_content()
+
+    #   Commented due to the bug https://stackoverflow.com/questions/52608566/selenium-send-keys-incorrect-order-in-stripe-credit-card-input
+    #
+    # def enter_cc_info(self, card_number, card_date, card_cvc, card_zip):
+    #     Select(self.credit_card_list).select_by_visible_text("New Card")
+    #     wait(lambda: self.stripe.is_enabled())
+    #     self._driver.switch_to.frame(self.stripe)
+    #     wait(lambda: self.card_number_input.is_enabled())
+    #     self.card_number_input.clear()
+    #     wait(lambda: self.card_number_input.is_enabled())
+    #     sleep(2)
+    #     self.card_number_input.send_keys(card_number)
+    #     self.card_date_input.send_keys(card_date)
+    #     self.card_cvc_input.send_keys(card_cvc)
+    #     if card_zip is not None:
+    #         self.card_zip_input.send_keys(card_zip)
+    #     self._driver.switch_to.default_content()
 
     def select_saved_card(self, saved_card):
         Select(self.credit_card_list).select_by_visible_text(saved_card)
