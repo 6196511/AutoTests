@@ -13,7 +13,9 @@ class CompanyList(WebElement):
 class LoginPage(BasePage):
 
     def __init__(self, *args, **kwargs):
-        super().__init__(url='https://dev.godo.io', *args, **kwargs)
+        super().__init__(url='https://dev.godo.io', *args, **kwargs)    # For testing on DEV
+        # super().__init__(url='https://do.godo.io', *args, **kwargs)   # For testing on LIVE
+        # super().__init__(url='https://ci005.godo.io', *args, **kwargs)  # For testing on CI005
 
     # Base login page.
 
