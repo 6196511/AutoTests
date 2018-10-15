@@ -29,6 +29,10 @@ df21 = pd.read_excel("../data/orders.xlsx", "Customer booking cert + disc", dtyp
 df22 = pd.read_excel("../data/orders.xlsx", "Admin groupon", dtype=str, keep_default_na=False)
 df23 = pd.read_excel("../data/orders.xlsx", "Customer groupon", dtype=str, keep_default_na=False)
 df24 = pd.read_excel("../data/orders.xlsx", "Addons", dtype=str, keep_default_na=False)
+df25 = pd.read_excel("../data/orders.xlsx", "Center declines", dtype=str, keep_default_na=False)
+df26 = pd.read_excel("../data/orders.xlsx", "Center valid discounts", dtype=str, keep_default_na=False)
+df27 = pd.read_excel("../data/orders.xlsx", "Center invalid discounts", dtype=str, keep_default_na=False)
+df28 = pd.read_excel("../data/orders.xlsx", "Center booking with certificate", dtype=str, keep_default_na=False)
 
 
 excel_dict1 = df1.to_dict(orient='records')
@@ -55,6 +59,11 @@ excel_dict21 = df21.to_dict(orient='records')
 excel_dict22 = df22.to_dict(orient='records')
 excel_dict23 = df23.to_dict(orient='records')
 excel_dict24 = df24.to_dict(orient='records')
+excel_dict25 = df25.to_dict(orient='records')
+excel_dict26 = df26.to_dict(orient='records')
+excel_dict27 = df27.to_dict(orient='records')
+excel_dict28 = df28.to_dict(orient='records')
+
 
 admin_data = []
 admin_declines = []
@@ -80,10 +89,14 @@ customer_cert_discount = []
 admin_groupons = []
 customer_groupons = []
 addons = []
+center_declines = []
+center_valid_codes = []
+center_invalid_codes = []
+center_booking_with_certificates = []
 
 
 today = datetime.date.today()
-purchase_date = today + datetime.timedelta(days=1)  # Tickets will be booked on tomorrow.
+purchase_date = today + datetime.timedelta(days=2)  # Tickets will be booked on tomorrow.
 
 
 def extract_test_data(testdata, excel_dict):
@@ -124,3 +137,7 @@ extract_test_data(customer_cert_discount, excel_dict21)
 extract_test_data(admin_groupons, excel_dict22)
 extract_test_data(customer_groupons, excel_dict23)
 extract_test_data(addons, excel_dict24)
+extract_test_data(center_declines, excel_dict25)
+extract_test_data(center_valid_codes, excel_dict26)
+extract_test_data(center_invalid_codes, excel_dict27)
+extract_test_data(center_booking_with_certificates, excel_dict28)

@@ -4,6 +4,7 @@ from selenium import webdriver
 from actions.admin_booking import AdminBooking
 from actions.certificate import CertificateActions
 from app.session import SessionHelper
+from actions.calendar import Calendar
 
 
 class CallCenter:
@@ -23,6 +24,7 @@ class CallCenter:
         self.session = SessionHelper(self)
         self.booking = AdminBooking(self)
         self.certificate = CertificateActions(self)
+        self.calendar = Calendar(self)
 
     def destroy(self):
         self.driver.quit()

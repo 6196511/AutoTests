@@ -34,7 +34,7 @@ class Calendar:
                     if event.activity_name.text == order.activity and event.time.text.startswith(order.time.lstrip("0")):
                         event.activity_name.click()
                         break
-        wait(lambda: len(self.event_manifest.event_title.text) > 0, timeout_seconds=15)
+        wait(lambda: len(self.event_manifest.event_title.text) > 0, timeout_seconds=30)
 
     def select_event(self, order):
         if not self.event_manifest.is_element_present('event_title'):
@@ -242,7 +242,7 @@ class Calendar:
         self.customer_event.final_button.click()
         wait(lambda: self.customer_event.final_button.text == "Adjust Booking")
         wait(lambda: len(self.customer_event.status.text) > 0)
-        assert self.customer_event.status.text == 'Request Complete: "Refunded"', self.customer_event.status.text
+        assert self.customer_event.status.text == 'Request Complete: "Booked"', self.customer_event.status.text
         sleep(2)
         amount = float(order.grand_total.lstrip("$")) / 2
         assert self.customer_event.charge_history_amount.text == "(${0:,.2f})".format(amount), self.customer_event.charge_history_amount.text
@@ -389,6 +389,9 @@ class Calendar:
         expected_name = order.first_name + " " + order.last_name
         print(list_of_guests)
         assert expected_name not in list_of_guests, "%s in list %s" % (expected_name, list_of_guests)
+
+    def no_current_bookings(self):
+        assert self.event_manifest.no_bookings.text == "There are no current bookings."
 
     def refund_cancel(self, order):
         expected_name = order.first_name + " " + order.last_name
