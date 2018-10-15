@@ -1,3 +1,5 @@
+from time import sleep
+
 from pages.groupon_page import GrouponPage
 from pages.navigation_bar import NavigationBar
 from pages.marketing_hub_page import MarketingHubPage
@@ -17,6 +19,7 @@ class Groupons:
         self.navigation_bar.sitemap.click()
         wait(lambda: self.navigation_bar.marketing_hub.is_displayed())
         self.navigation_bar.marketing_hub.click()
+        sleep(1)
         self.marketing_hub.groupon_button.click()
 
     def get_code(self, order):
