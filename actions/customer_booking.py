@@ -82,7 +82,7 @@ class CustomerActions:
 
     def apply_valid_promo_code(self, tickets):
         wait(lambda: len(self.booking.tickets_cost.text) > 0, waiting_for="Final Step: Checkout page shows up.",
-             timeout_seconds=10)
+             timeout_seconds=15)
         self.booking.promo_code_input.send_keys(tickets.promo_code)
         wait(lambda: self.booking.promo_code_button.is_enabled())
         self.booking.promo_code_button.click()
@@ -163,7 +163,7 @@ class CustomerActions:
 
     def refill_payment_info(self, tickets):
         self.booking.enter_cc_info(tickets.card_number, tickets.card_date, tickets.card_cvc, tickets.card_zip)
-        wait(lambda: self.booking.next_button_6.is_enabled())
+        wait(lambda: self.booking.next_button_6.is_enabled(), timeout_seconds=60)
         attempt = 0
         while self.booking.next_button_6.text == 'Get Your Tickets!' and attempt < 10:
             self.booking.next_button_6.click()
@@ -171,7 +171,7 @@ class CustomerActions:
             sleep(1)
 
     def verify_summary_details(self, tickets):
-        wait(lambda: self.booking.customer_information.is_displayed(), timeout_seconds=30,
+        wait(lambda: self.booking.customer_information.is_displayed(), timeout_seconds=60,
              waiting_for="Summary Detais is displayed")
         assert self.booking.customer_information.text == (tickets.first_name + ' ' + tickets.last_name), "Wrong customer!"
         assert self.booking.zip_information.text == tickets.zip_code, "Wrong zip code!"
