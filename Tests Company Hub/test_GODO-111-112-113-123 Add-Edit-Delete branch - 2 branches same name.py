@@ -221,6 +221,8 @@ class Test_GODO111_112_113_123(BaseTest):
         page.branch_phone1.send_keys(NewBranchPhone1)
         NewBranchPhone2 = "(206)624-3287"
         page.branch_phone2.send_keys(NewBranchPhone2)
+        page.save_button.click()
+        time.sleep(3)
         assert page.is_element_present('alert_message') == True
         branch_list1 = []
         for i in range(0, len(page.branch_names)):

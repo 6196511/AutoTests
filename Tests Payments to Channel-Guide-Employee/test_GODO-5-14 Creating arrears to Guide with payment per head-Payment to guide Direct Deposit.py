@@ -16,7 +16,7 @@ from selenium.common.exceptions import WebDriverException
 from pytz import timezone
 
 
-ActivityName = "_AutoTest200718"
+ActivityName = "_AutoTest200918"
 ActivityTimezone = 'AT'
 GuideName = "Alexey Perhead"
 guide_per_head_rate = 10
@@ -25,8 +25,8 @@ ChildTickets = '3'
 guide_per_head_due_amount = (int(AdultTickets) + int(ChildTickets)) * guide_per_head_rate
 guide_per_head_due =('$'+''.join(str(guide_per_head_due_amount))+'.00')
 AT = timezone('America/Glace_Bay')
-at_time = datetime.now(AT)
-time_and_date = at_time.strftime('%#m/%#d/%Y %#H:%M')
+# at_time = datetime.now(AT)
+# time_and_date = at_time.strftime('%#m/%#d/%Y %#H:%M')
 
 class BaseTest(object):
     def teardown_class(self):
@@ -40,7 +40,36 @@ class Test_GODO5_14(BaseTest):
         page.login_field.send_keys(admin_login)
         page.password_field.send_keys(admin_password)
         page.button.click()
+        page = GuidePayrollPage()
+        page.open()
+        time.sleep(3)
+        select = Select(page.guide_list)
+        try:
+            select.select_by_visible_text(GuideName)
+            time.sleep(3)
+            for i in range(0, len(page.check)):
+                if page.cash[i].is_displayed():
+                    page.cash[i].click()
+                else:
+                    continue
+                break
+            time.sleep(2)
+            for i in range(0, len(page.pay_button)):
+                if page.pay_button[i].is_displayed():
+                    page.pay_button[i].click()
+                else:
+                    continue
+                break
+            time.sleep(3)
+            alert = get_driver().switch_to_alert()
+            alert.accept()
+            time.sleep(2)
+            page.OK_button.click()
+        except WebDriverException:
+            print("Guide has no payment due")
+            get_driver().refresh()
         page = NavigationBar()
+        time.sleep(2)
         page.main_actions_drop_down.click()
         time.sleep(2)
         page.add_a_booking.click()
@@ -79,7 +108,7 @@ class Test_GODO5_14(BaseTest):
         EmailAddress = 'godoautotest@gmail.com'
         page.email_address.send_keys(EmailAddress)
         page.complete_booking_button.click()
-        time.sleep(2)
+        time.sleep(5)
         select = Select(page.payment_type_list)
         time.sleep(5)
         PaymentType = "Cash"
@@ -168,13 +197,19 @@ class Test_GODO5_14(BaseTest):
         time.sleep(5)
         for i in range(0, len(page.event_due)):
             if page.event_due[i].is_displayed():
-                assert page.event_due[i].get_attribute("textContent") == guide_per_head_due
+                if page.event_due[i].get_attribute("textContent") == '$0.00':
+                    continue
+                else:
+                    assert page.event_due[i].get_attribute("textContent") == guide_per_head_due
             else:
                 continue
             break
         for i in range(0, len(page.activity_timedate)):
             if page.activity_timedate[i].is_displayed():
-                assert EventTimeWithZone and nextMonthDate and EventDate in page.activity_timedate[i].get_attribute("textContent")
+                if ActivityName not in page.activity_timedate[i].get_attribute("textContent"):
+                    continue
+                else:
+                    assert EventTimeWithZone and nextMonthDate and EventDate in page.activity_timedate[i].get_attribute("textContent")
             else:
                 continue
             break
@@ -207,24 +242,29 @@ class Test_GODO5_14(BaseTest):
         alert = get_driver().switch_to_alert()
         assert (guide_per_head_due+' to '+''.join(GuideName)) in alert.text
         alert.accept()
+        time_and_date = datetime.now(AT).strftime('%#m/%#d/%Y %#I:%M')
+        print(time_and_date)
         time.sleep(2)
         page.OK_button.click()
         time.sleep(12)
         select = Select(page.show_entries)
         select.select_by_visible_text('100')
         time.sleep(8)
-        try:
-            page.next_button.click()
-        except WebDriverException:
-            print("Less than 100 Entries")
-        time.sleep(4)
+        # try:
+        #     page.next_button.click()
+        # except WebDriverException:
+        #     print("Less than 100 Entries")
+        # time.sleep(4)
         L=[]
-        for i in range(0, len(page.payment_entry)):
-            if GuideName in page.payment_entry[i].get_attribute('textContent'):
+        # for i in range(0, len(page.payment_entry)):
+        #     L.append(page.payment_entry[i].get_attribute('textContent'))
+        for i in range(0, len(page.payment_entry)): #until fixing 2904 Incorrect sorting of Recent Payments by date on guide_payroll.aspx
+            if time_and_date in page.payment_entry[i].get_attribute('textContent'):
                 L.append(page.payment_entry[i].get_attribute('textContent'))
+                assert GuideName and guide_per_head_due in page.payment_entry[i].get_attribute('textContent')
             else:
                 continue
             break
-        L.sort(reverse=True)
-        assert time_and_date and GuideName and guide_per_head_due in L[0]
-
+        assert len(L) ==1  #until fixing 2904 Incorrect sorting of Recent Payments by date on guide_payroll.aspx
+        # L.sort(reverse=True)
+        # assert time_and_date and GuideName and guide_per_head_due in L[0]
