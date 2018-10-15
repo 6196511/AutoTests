@@ -46,7 +46,7 @@ class EventManifest(BasePage):
     event_date = Find(by=By.XPATH, value="//span[@class='manifest-title-desc ng-binding'][1]")
     event_status = Find(by=By.XPATH, value="//span[@class='manifest-title-desc']/span")
 
-    actions_button = Find(by=By.XPATH, value="//button[@class='btn btn-blue btn-manifest dropdown-toggle']")
+    actions_button = Find(by=By.XPATH, value="//button[contains(text(), 'Actions')]")
     edit_event = Find(by=By.XPATH, value="//a[text()='Edit Event']")
     re_open_bookings = Find(by=By.XPATH, value="//a[text()='Re-Open Bookings']")
     close_bookings = Find(by=By.XPATH, value="//a[text()='Close Bookings']")
@@ -55,6 +55,7 @@ class EventManifest(BasePage):
     print = Find(by=By.XPATH, value="//button[contains(text(), 'Print')]")
 
     close_button = Find(by=By.XPATH, value="//div[@ng-if='manifest.isLoaded']//i[contains(@class, 'close-x')]")
+    no_bookings = Find(by=By.XPATH, value="//event-booking-list//tbody/tr")
     guests_list = Finds(Guest, by=By.XPATH, value="//event-booking-list//tbody/tr")
     pop_up = Find(by=By.XPATH, value="//div[@class='modal-body ng-binding']")
     pop_up_refund = Find(by=By.XPATH, value="//div[@class='tab-content']//div[@class='col-sm-12 ng-binding']")
