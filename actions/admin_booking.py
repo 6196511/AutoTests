@@ -171,7 +171,8 @@ class AdminBooking:
         if tickets.addon is not None:
             assert self.booking_page.addons.text == tickets.addon, "Wrong addon's price!"
         assert self.booking_page.taxes.text == tickets.taxes, "Wrong taxes!"
-        assert self.booking_page.booking_fee.text == tickets.booking_fee, "Wrong booking fee!"
+        assert self.booking_page.booking_fee.text == tickets.booking_fee, "Wrong booking fee! %s but expected: %s" % \
+                                                                          (self.booking_page.booking_fee.text, tickets.booking_fee)
         assert self.booking_page.grand_total.text == tickets.grand_total, "Wrong grand total! %s" % \
                                                                           self.booking_page.grand_total.text
 
