@@ -112,6 +112,10 @@ data = admin_groupons[:5] + admin_groupons[7:8] + admin_groupons[10:14] + admin_
 @pytest.mark.parametrize("order", data, ids=[repr(x) for x in data])
 def test_event_manifest_verification(app, order):
     """Checking booked tickets in the event manifest and customer event page."""
+
+    # 819 on today
+    # 809 and 810 failed
+
     app.calendar.select_event(order)
     app.calendar.verify_event_manifest(order)
     app.calendar.verify_customer_event_admin(order)
