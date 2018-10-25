@@ -81,7 +81,6 @@ class Test_GODO243_244_495(BaseTest):
         NewEmail = (NewEmailILocal + NewEmailDomain)
         page.email_field.send_keys(NewEmail)
         email_list.append(NewEmail)
-        email_list.append(NewEmail)
         select = Select(page.role_list)
         NewRole = "Office Staff"
         select.select_by_visible_text(NewRole)
