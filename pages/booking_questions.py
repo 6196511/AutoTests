@@ -15,7 +15,7 @@ class BookingQuestionsPage(BasePage):
     add_option_button = Finds(by=By.XPATH, value="//div[@ng-click='vm.addOption()']")
     applies_to = Finds(by=By.XPATH, value="//select[@name='question-perticket']")
     applies_to_msg = Finds(by=By.XPATH, value="//p[@ng-bind='vm.getPerTicketDescription(vm.question.perTicket)']")
-    dropdown_fields = Finds(by=By.XPATH, value="//input[@placeholder='Add a seletable answer for your question']")#SPELLING ERROR
+    dropdown_fields = Finds(by=By.XPATH, value="//input[@placeholder='Add a selectable answer for your question']")
     save_changes_button = Find(by=By.XPATH, value="//div[@ng-click='vm.save()']")
     cancel_button = Find(by=By.XPATH, value="//div[@ng-click='vm.cancel()']")
     my_questions_msg = Find(by=By.XPATH, value="//*[@id='wrapper']/div[6]/div/div/div[2]/div/popup-content-loader/ng-transclude/div[1]/div/div/div")
