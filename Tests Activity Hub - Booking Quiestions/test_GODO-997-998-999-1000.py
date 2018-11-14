@@ -314,12 +314,6 @@ class Test_997_998_999_1000(BaseTest):
         assert page.dropdown_fields[6].get_attribute('value') == 'Fine, thanks'
 
     def test_999(self):
-        get_driver().maximize_window()
-        page = loginpage()
-        page.open()
-        page.login_field.send_keys(admin_login)
-        page.password_field.send_keys(admin_password)
-        page.button.click()
         page = BookingQuestionsPage()  # STEP2
         page.open()
         time.sleep(10)
@@ -496,3 +490,117 @@ class Test_997_998_999_1000(BaseTest):
         assert page.dropdown_fields[1].get_attribute('value') == 'Not US'
         assert page.dropdown_fields[4].get_attribute('value') == 'Teacher'
         assert page.dropdown_fields[5].get_attribute('value') == 'Builder'
+
+    def test_1000(self):
+        page = BookingQuestionsPage()#STEP2
+        page.open()
+        time.sleep(15)
+        assert page.is_element_present('my_questions_no_questions_msg') == False
+        assert page.custom_questions_edit_buttons[-1].is_displayed()
+        page.custom_questions_edit_buttons[-1].click() #STEP3
+        time.sleep(5)
+        assert page.question_set_name.get_attribute('value') == question_set3_name
+        # assert len(page.selected_activities_lists) == 3
+        # select = Select(page.selected_activities_lists[0])
+        # assert select.first_selected_option.text == activity3_name
+        # select = Select(page.selected_activities_lists[1])
+        # assert select.first_selected_option.text == activity4_name
+        assert page.edit_custom_questions_titles[-3].get_attribute('textContent') == 'Question 1'
+        assert page.edit_custom_questions_titles[-2].get_attribute('textContent') == 'Question 2'
+        assert page.edit_custom_questions_titles[-1].get_attribute('textContent') == 'Question 3'
+        assert page.is_element_present('add_question_plus_button') == True
+        assert page.is_element_present('remove_button') == True
+        assert len(page.remove_button) == 3
+        assert page.question_text[0].get_attribute('value') == question1edited_text
+        assert page.question_text[1].get_attribute('value') == question2edited_text
+        assert page.question_text[2].get_attribute('value') == question3edited_text
+        assert len(page.add_option_button) == 3
+        assert page.is_element_present('add_option_button') == False
+        select = Select(page.answer_type[0])
+        select.select_by_visible_text('Checklist')
+        assert page.add_option_button[0].is_displayed()
+        assert page.answer_type_msg[0].get_attribute('textContent') == 'Guests may select one or several options below.'
+        select = Select(page.applies_to[0])
+        assert select.first_selected_option.text == 'Each Ticket'
+        assert page.applies_to_msg[0].get_attribute(
+            'textContent') == 'This question will be asked of each ticket buyer.'
+        select = Select(page.answer_type[1])
+        assert select.first_selected_option.text == 'Text Input'
+        assert page.answer_type_msg[1].get_attribute(
+            'textContent') == 'Guests will write out their own answer to this question.'
+        select = Select(page.applies_to[1])
+        assert select.first_selected_option.text == 'Each Ticket'
+        assert page.applies_to_msg[1].get_attribute(
+            'textContent') == 'This question will be asked of each ticket buyer.'
+        assert page.is_element_present('add_option_button') == False
+        select = Select(page.answer_type[2])
+        assert select.first_selected_option.text == 'Dropdown'
+        assert page.add_option_button[2].is_displayed()
+        assert page.answer_type_msg[2].get_attribute('textContent') == 'Guests will only select one of the options below.'
+        select = Select(page.applies_to[2])
+        assert select.first_selected_option.text == 'Each Ticket'
+        assert page.applies_to_msg[2].get_attribute(
+            'textContent') == 'This question will be asked of each ticket buyer.'
+        assert page.dropdown_fields[0].get_attribute('value') == 'US'
+        assert page.dropdown_fields[1].get_attribute('value') == 'Not US'
+        assert page.dropdown_fields[4].get_attribute('value') == 'Teacher'
+        assert page.dropdown_fields[5].get_attribute('value') == 'Builder'
+        page.remove_button[2].click()  # STEP4
+        time.sleep(2)
+        assert page.edit_custom_questions_titles[-2].get_attribute('textContent') == 'Question 1'
+        assert page.edit_custom_questions_titles[-1].get_attribute('textContent') == 'Question 2'
+        assert len(page.dropdown_fields) == 4
+        assert len(page.answer_type) == 2
+        assert len(page.answer_type_msg) == 2
+        page.remove_button[1].click()  # STEP5
+        time.sleep(2)
+        assert page.edit_custom_questions_titles[-1].get_attribute('textContent') == 'Question 1'
+        assert len(page.dropdown_fields) == 2
+        assert len(page.answer_type) == 1
+        assert len(page.answer_type_msg) == 1
+        page.save_changes_button.click() # STEP6
+        time.sleep(3)
+        get_driver().refresh()
+        time.sleep(15)
+        assert page.custom_questions_msg.get_attribute('textContent') == 'Create an additional set of questions that can be asked for selected activities.'
+        assert page.custom_questions_titles[-1].is_displayed()
+        assert page.custom_questions_titles[-1].get_attribute('textContent') == question_set3_name
+        assert page.my_questions_question[-1].get_attribute('textContent') == question1edited_text
+        page.custom_questions_edit_buttons[-1].click()  # STEP7
+        time.sleep(5)
+        assert page.question_set_name.get_attribute('value') == question_set3_name
+        assert page.edit_custom_questions_titles[-1].get_attribute('textContent') == 'Question 1'
+        assert page.is_element_present('add_question_plus_button') == True
+        assert page.is_element_present('remove_button') == True
+        assert len(page.remove_button) == 1
+        assert page.question_text[0].get_attribute('value') == question1edited_text
+        assert len(page.add_option_button) == 1
+        assert page.is_element_present('add_option_button') == True
+        select = Select(page.answer_type[0])
+        select.select_by_visible_text('Checklist')
+        assert page.add_option_button[0].is_displayed()
+        assert page.answer_type_msg[0].get_attribute('textContent') == 'Guests may select one or several options below.'
+        select = Select(page.applies_to[0])
+        assert select.first_selected_option.text == 'Each Ticket'
+        assert page.applies_to_msg[0].get_attribute(
+            'textContent') == 'This question will be asked of each ticket buyer.'
+        assert page.dropdown_fields[0].get_attribute('value') == 'US'
+        assert page.dropdown_fields[1].get_attribute('value') == 'Not US'
+        page.remove_button[0].click()  # STEP8
+        time.sleep(2)
+        assert page.is_element_present('edit_custom_questions_titles') == False
+        assert len(page.dropdown_fields) == 0
+        assert len(page.answer_type) == 0
+        assert len(page.answer_type_msg) == 0
+        assert page.add_question_plus_button.is_displayed()
+        page.save_changes_button.click()  # STEP9
+        time.sleep(3)
+        assert page.is_element_present('my_questions_no_questions_msg') == True
+        assert page.my_questions_no_questions_msg.get_attribute(
+            'innerText') == "You don't have any questions added! Click Edit below to add some."
+        page.delete_buttons[-1].click()
+        time.sleep(5)
+        get_driver().refresh()
+        if len (page.custom_questions_titles)>0:
+            assert page.custom_questions_titles[-1].get_attribute('textContent') != question_set3_name
+        assert page.is_element_present('my_questions_no_questions_msg') == False
