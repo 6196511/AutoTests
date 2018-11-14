@@ -141,7 +141,7 @@ class Test_997_998_999_1000(BaseTest):
     def test_998(self):
         page = BookingQuestionsPage()  # STEP2
         page.open()
-        time.sleep(7)
+        time.sleep(10)
         page.custom_questions_edit_buttons[-1].click()# STEP3
         time.sleep(2)
         assert page.question_set_name.get_attribute('value') == question_set1_name
