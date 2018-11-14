@@ -24,8 +24,7 @@ GuideName = 'Sidor Sidorov'
 
 class BaseTest(object):
     def teardown_class(self):
-         # close_driver()
-        pass
+        close_driver()
 
 
 class Test_127(BaseTest):
