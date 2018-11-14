@@ -29,5 +29,18 @@ class GuidePage(BasePage):
     event_complete = Find(by=By.XPATH, value="//button[@id='markeventcomplete']")
     next_month = Find(by=By.XPATH, value="//button[@class='btn btn-default btn-sm pull-right uib-right']")
 
-
+class GuideRequestOffPage (BasePage):
+    url = 'https://dev.godo.io/g_requestOff.aspx'
+    company_drop_down = Find(by=By.XPATH, value="//select[@id='guideCompany_id']")
+    start_date = Find(by=By.XPATH, value="//input[@id='start']")
+    calendar_next_month = Finds(by=By.XPATH, value="//th[@class='next']")
+    dates_calendar_start = Finds(by=By.XPATH, value="//td[@class='day']")
+    end_date = Find(by=By.XPATH, value="//input[@id='end']")
+    dates_calendar_end = Finds(by=By.XPATH, value="//td[@class='day']")
+    reason_field = Find(by=By.XPATH, value="//textarea[@id='requestoff_reason']")
+    I_aknowledge_checkbox = Find(by=By.XPATH, value="//input[@id='requestoffhtml_accept']")
+    submit_request_button =  Find(by=By.XPATH, value="//button[@id='submitrequestoff']")
+    pop_up_notification = Find(by=By.XPATH, value="//div[@class='bootbox-body']")
+    pop_up_OK = Find(by=By.XPATH, value="/html/body/div[5]/div/div/div[2]/button")
+    request_entry = Finds(by=By.XPATH, value="//tr[@class='gradeX']")
 
