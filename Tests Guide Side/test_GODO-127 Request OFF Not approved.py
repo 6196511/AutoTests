@@ -58,7 +58,6 @@ class Test_127(BaseTest):
         time.sleep(2)
         for i in range(0, len(page.calendar_next_month )):
             if page.calendar_next_month[i].is_displayed():
-                page.calendar_next_month [i].click()
                 if (int(month_start)-int(month_end))>0:
                     page.calendar_next_month[i].click()
             else:
@@ -107,4 +106,13 @@ class Test_127(BaseTest):
         page.button.click()
         page = GuideRequestOffPage()
         page.open()
-        assert CompanyName and start_date and end_date and 'Not Approved' in page.request_entry[-1].get_attribute('textContent')
+        time.sleep(2)
+        L=[]
+        print(len(page.request_entry))
+        for i in range (0, len(page.request_entry)):
+            if start_date and end_date in page.request_entry[i].get_attribute('outerText'):
+                assert CompanyName and 'Not Approved' in page.request_entry[i].get_attribute('outerText')
+                L.append(page.request_entry[i].get_attribute('outerText'))
+            else:
+                continue
+        assert len(L)>0
