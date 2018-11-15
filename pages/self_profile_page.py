@@ -3,7 +3,7 @@ from webium import BasePage, Find
 
 
 class SelfProfilePage(BasePage):
-    url = 'https://dev.godo.io/administrator_self.aspx'
+    url = 'https://ci004.godo.io/administrator_self.aspx'
     first_name_field = Find(by=By.XPATH, value="//input[@id='administrator_firstname']")
     last_name_field = Find(by=By.XPATH, value="//input[@id='administrator_lastname']")
     phone1_field = Find(by=By.XPATH, value="//input[@id='administrator_phone_1']")
