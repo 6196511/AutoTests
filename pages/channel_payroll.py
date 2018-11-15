@@ -3,7 +3,7 @@ from webium import BasePage, Find, Finds
 
 
 class ChannelPayrollPage(BasePage):
-    url = 'https://dev.godo.io/channel_payroll.aspx'
+    url = 'https://ci004.godo.io/channel_payroll.aspx'
     channel_payment_due = Find(by=By.XPATH, value="//a[@id='payrolldetailplus_']")
     channel_paid = Find(by=By.XPATH, value="//a[@id='paymentPaidChannel']")
     channel_entries = Finds(by=By.XPATH, value="//tbody[@ng-repeat='payment in vm.channelPaymentDue track by $index']")
