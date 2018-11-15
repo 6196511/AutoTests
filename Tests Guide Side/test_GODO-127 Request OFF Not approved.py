@@ -19,7 +19,8 @@ month_end = end.strftime("%#m")
 start_date = start.strftime("%#m/%#d/%Y")
 end_date = end.strftime("%#m/%#d/%Y")
 CompanyName = 'GoDo Manual Testing Company'
-GuideName = 'Sidor Sidorov'
+GuideName = 'Alexey Autotest'
+reason_text = 'AutoTest127'
 
 
 class BaseTest(object):
@@ -71,7 +72,6 @@ class Test_127(BaseTest):
                 continue
             break
         time.sleep(5)
-        reason_text = 'AutoTest-127'
         page.reason_field.send_keys(reason_text)
         page.I_aknowledge_checkbox.click()
         page.submit_request_button.click()
@@ -87,14 +87,24 @@ class Test_127(BaseTest):
         page.button.click()
         page = RequestOFFPage()
         page.open()
-        assert GuideName and start_date and end_date and reason_text in page.request_off_entry[-1].get_attribute('textContent')
+        for i in range(0, len(page.request_off_entry)):
+            if GuideName and reason_text in page.request_off_entry[i].get_attribute('textContent'):
+                assert start_date and end_date in page.request_off_entry[i].get_attribute('textContent')
+            else:
+                continue
         Requests1_list = len(page.request_off_entry)
-        select = Select(page.approval_dropdown[-1])
-        select.select_by_visible_text('Request Off Not Approved')
+        for i in range(0, len(page.request_off_entry)):
+            if GuideName and start_date and end_date and reason_text in page.request_off_entry[i].get_attribute('textContent'):
+                select = Select(page.approval_dropdown[i])
+                select.select_by_visible_text('Request Off Not Approved')
+            else:
+                continue
         time.sleep(5)
         Requests2_list = len(page.request_off_entry)
         assert Requests1_list - Requests2_list == 1
-        assert GuideName and start_date and end_date and reason_text not in page.request_off_entry[-1].get_attribute('textContent')
+        for i in range(0, len(page.request_off_entry)):
+            assert GuideName and start_date and end_date and reason_text not in page.request_off_entry[i].get_attribute('textContent')
+            continue
         page.not_approved_button.click()
         time.sleep(3)
         assert GuideName and start_date and end_date and reason_text not in page.tables[0].get_attribute('textContent')
