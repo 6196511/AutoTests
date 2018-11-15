@@ -3,7 +3,7 @@ from webium import BasePage, Find, Finds
 
 
 class BookingQuestionsPage(BasePage):
-    url = 'https://dev.godo.io/booking_questions.aspx'
+    url = 'https://ci004.godo.io/booking_questions.aspx'
     add_question_plus_button = Find(by=By.XPATH, value="//div[@ng-click='vm.addQuestion()']")
     question1_title = Find(by=By.XPATH, value="//*[@id='wrapper']/div[6]/div/div/div[2]/div/popup-content-loader/ng-transclude/div[1]/div/div/gd-question-set/div/div/div[2]/div/div/gd-question/div/div/div[1]/div/h4")
     question2_title = Find(by=By.XPATH,value="//*[@id='wrapper']/div[6]/div/div/div[2]/div/popup-content-loader/ng-transclude/div[1]/div/div/gd-question-set/div/div/div[2]/div/div[2]/gd-question/div/div/div[1]/div/h4")
