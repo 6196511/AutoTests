@@ -8,7 +8,7 @@ class CertificatePage(BasePage):
 
     # Current Gift Certificates page.
 
-    url = 'https://dev.godo.io/giftcertificate.aspx'
+    url = 'https://ci004.godo.io/giftcertificate.aspx'
     add_new_certificate_button = Find(by=By.CSS_SELECTOR, value="[ng-click='vm.openAddGiftCertificateModal();']")
     first_row_code = Find(by=By.XPATH, value="//tbody/tr[contains(@ng-repeat, 'results')][1]/td[1]")
     first_row_name = Find(by=By.XPATH, value="//tbody/tr[contains(@ng-repeat, 'results')][1]/td[2]")
