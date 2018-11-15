@@ -3,7 +3,7 @@ from webium import BasePage, Find, Finds
 
 
 class EmployeePayrollPage(BasePage):
-    url = 'https://dev.godo.io/employee_payroll.aspx'
+    url = 'https://ci004.godo.io/employee_payroll.aspx'
     employee_payment_due_hourly = Find(by=By.XPATH, value="//a[@id='hourlypayrolldetailplus_']")
     employee_paid_hourly = Find(by=By.XPATH, value="//a[@ng-click='vm.showHourlyAdminPaid()']")
     hourly_payment_due_enties = Finds(by=By.XPATH, value="//tbody[@ng-if='vm.hourlyPayAdminPayments.length > 0']")
