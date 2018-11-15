@@ -3,7 +3,7 @@ from webium import BasePage, Find, Finds
 
 
 class EditCompanyPage(BasePage):
-    url = 'https://dev.godo.io/company_information.aspx'
+    url = 'https://ci004.godo.io/company_information.aspx'
     internal_pwd_field = Find(by=By.XPATH, value="//input[@name='internal_password']")
     company_name_field = Find(by=By.XPATH, value="//input[@id='company_name']")
     company_email = Find(by=By.XPATH, value="//input[@id='branch_master_email']")
@@ -19,7 +19,7 @@ class EditCompanyPage(BasePage):
     addcompany_button = Find(by=By.XPATH, value="//button[@id='id_submit']")
 
 class AddCompanyPage(BasePage):
-    url = 'https://dev.godo.io/sa_addNewCompany.aspx'
+    url = 'https://ci004.godo.io/sa_addNewCompany.aspx'
     internal_pwd_field = Find(by=By.XPATH, value="//input[@name='internal_password']")
     company_name_field = Find(by=By.XPATH, value="//input[@id='company_name']")
     company_email = Find(by=By.XPATH, value="//input[@id='branch_master_email']")
