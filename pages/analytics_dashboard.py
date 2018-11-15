@@ -3,4 +3,4 @@ from webium import BasePage, Find
 
 
 class AnalyticsDashboardPage(BasePage):
-    url = 'https://dev.godo.io/analytics_dashboard.aspx'
+    url = 'https://ci004.godo.io/analytics_dashboard.aspx'
