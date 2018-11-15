@@ -10,3 +10,4 @@ class RequestOFFPage(BasePage):
     not_approved_button = Find(by=By.XPATH, value="//label[@class ='btn btn-danger']")
     approved_button = Find(by=By.XPATH, value="//label[@class ='btn btn-success']")
     tables = Finds(by=By.XPATH, value="//table[@id = 'dtRequestOff']")
+    rows = Finds(by=By.XPATH, value="//*[@id='dtRequestOff']/tbody/tr")
