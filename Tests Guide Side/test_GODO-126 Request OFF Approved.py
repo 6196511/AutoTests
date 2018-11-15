@@ -2,10 +2,11 @@ from webium.driver import get_driver
 from webium.driver import close_driver
 from selenium.webdriver.support.ui import Select
 import time
+from fakemailgenerator_page import FakeMailGeneratorPage
 from guide_side import GuidePage, GuideRequestOffPage
 from request_off import RequestOFFPage
 from Login import loginpage
-from creds import guide1_login, guide1_password, admin_login, admin_password
+from creds import guide1_login, guide1_password, admin_login, admin_password, guide1_email_login
 import datetime
 
 
@@ -19,11 +20,12 @@ month_end = end.strftime("%#m")
 start_date = start.strftime("%#m/%#d/%Y")
 end_date = end.strftime("%#m/%#d/%Y")
 CompanyName = 'GoDo Manual Testing Company'
-GuideName = 'Sidor Sidorov'
-
+GuideName = 'Alexey Autotest'
+reason_text = 'AutoTest126'
 
 class BaseTest(object):
     def teardown_class(self):
+        pass
         close_driver()
 
 
@@ -64,7 +66,6 @@ class Test_126(BaseTest):
                 continue
             break
         time.sleep(5)
-        reason_text = 'AutoTest-126'
         page.reason_field.send_keys(reason_text)
         page.I_aknowledge_checkbox.click()
         page.submit_request_button.click()
@@ -80,14 +81,24 @@ class Test_126(BaseTest):
         page.button.click()
         page = RequestOFFPage()
         page.open()
-        assert GuideName and start_date and end_date and reason_text in page.request_off_entry[-1].get_attribute('textContent')
+        for i in range(0, len(page.request_off_entry)):
+            if GuideName and reason_text in page.request_off_entry[i].get_attribute('textContent'):
+                assert start_date and end_date in page.request_off_entry[i].get_attribute('textContent')
+            else:
+                continue
         Requests1_list = len(page.request_off_entry)
-        select = Select(page.approval_dropdown[-1])
-        select.select_by_visible_text('Request Off Approved')
+        for i in range(0, len(page.request_off_entry)):
+            if GuideName and start_date and end_date and reason_text in page.request_off_entry[i].get_attribute('textContent'):
+                select = Select(page.approval_dropdown[i])
+                select.select_by_visible_text('Request Off Approved')
+            else:
+                continue
         time.sleep(5)
         Requests2_list = len(page.request_off_entry)
         assert Requests1_list - Requests2_list == 1
-        assert GuideName and start_date and end_date and reason_text not in page.request_off_entry[-1].get_attribute('textContent')
+        for i in range (0, len(page.request_off_entry)):
+            assert GuideName and start_date and end_date and reason_text not in page.request_off_entry[i].get_attribute('textContent')
+            continue
         page.approved_button.click()
         time.sleep(3)
         assert GuideName and start_date and end_date and reason_text not in page.tables[0].get_attribute('textContent')
@@ -101,12 +112,11 @@ class Test_126(BaseTest):
         page.open()
         time.sleep(2)
         L=[]
-        print(len(page.request_entry))
         for i in range (0, len(page.request_entry)):
-            if start_date and end_date in page.request_entry[i].get_attribute('outerText'):
-                assert CompanyName and 'Approved' in page.request_entry[i].get_attribute('outerText')
-                assert 'Not Approved' not in page.request_entry[i].get_attribute('outerText')
-                L.append(page.request_entry[i].get_attribute('outerText'))
+            if start_date and end_date in page.request_entry[i].get_attribute('textContent'):
+                assert CompanyName and 'Approved' in page.request_entry[i].get_attribute('textContent')
+                # assert 'Not Approved' not in page.request_entry[i].get_attribute('outerText')
+                L.append(page.request_entry[i].get_attribute('textContent'))
             else:
                 continue
         assert len(L)>0
