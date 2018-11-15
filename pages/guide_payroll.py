@@ -3,7 +3,7 @@ from webium import BasePage, Find, Finds
 
 
 class GuidePayrollPage(BasePage):
-    url = 'https://dev.godo.io/guide_payroll.aspx'
+    url = 'https://ci004.godo.io/guide_payroll.aspx'
     guide_list = Find(by=By.XPATH, value="//select[@id='selectGuides']")
     event_due = Finds(by=By.XPATH, value ="//*[contains(@id,'guidePayroll')]/tbody/tr[1]/td[6]")
     activity_timedate = Finds(by=By.XPATH, value ="//a[contains(@ng-click,'vm.openManifest')]")
