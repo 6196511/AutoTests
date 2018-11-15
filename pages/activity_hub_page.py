@@ -3,7 +3,7 @@ from webium import BasePage, Find
 
 
 class ActivityHubPage(BasePage):
-    url = 'https://dev.godo.io/activity_hub.aspx'
+    url = 'https://ci004.godo.io/activity_hub.aspx'
     add_activity_button = Find(by=By.XPATH, value="//a[@href='activity_information.aspx']//h3[text()='Add Activities']")
     addons_button = Find(by=By.XPATH, value="//h3[text()='Add-ons']")
     search_activity_field = Find(by=By.XPATH, value="//input[@placeholder='Start typing to search...']")
