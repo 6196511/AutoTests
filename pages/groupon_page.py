@@ -15,7 +15,7 @@ class CodeList(WebElement):
 
 class GrouponPage(BasePage):
 
-    url = 'https://dev.godo.io/integration_groupon.aspx'  
+    url = 'https://ci004.godo.io/integration_groupon.aspx'  
     import_codes = Find(by=By.XPATH, value="//div[@name='inputCodeForm']//button")
     groupon_list = Finds(GrouponList, by=By.XPATH, value="//tbody/tr")
     details = Find(by=By.XPATH, value="//a[text()='Details']")
