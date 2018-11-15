@@ -11,7 +11,7 @@ class EventTicket(WebElement):
 
 class EventCalendarPage(BasePage):
 
-    url = 'https://dev.godo.io/event_calendar.aspx'
+    url = 'https://ci004.godo.io/event_calendar.aspx'
     activity_name = Find(by=By.XPATH, value="//select[@id='activity_id']")
     hide_events = Find(by=By.XPATH, value="//input[@ng-model='calendar.hideEventsWithoutBooking']")
     date_picker = Find(by=By.XPATH, value="//i[@ng-model='calendar.customDate']")
