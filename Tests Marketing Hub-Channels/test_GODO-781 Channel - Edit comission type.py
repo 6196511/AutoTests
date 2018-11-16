@@ -32,7 +32,7 @@ class Test_GODO781(BaseTest):
             pass
         else:
             select.select_by_visible_text('Percentage')
-        if page.comission_amount.get_attribute('textContent') == Amount:
+        if page.comission_amount.get_attribute('value') == Amount:
             pass
         else:
             page.comission_amount.clear()
