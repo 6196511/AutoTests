@@ -34,3 +34,4 @@ class ChannelPage(BasePage):
     table_channel_phonenumber = Find(by=By.XPATH, value="//*[@id='dtChannel']/tbody/tr/td[3]")
     table_channel_email = Find(by=By.XPATH, value="//*[@id='dtChannel']/tbody/tr[1]/td[4]")
     table_channel_editbutton = Find(by=By.XPATH, value="//i[@class='fa fa-edit']")
+    table_channel_delete_button = Find(by=By.XPATH, value="//i[@class='fa fa-remove']")
