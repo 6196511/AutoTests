@@ -135,7 +135,7 @@ class Test_GODO213(BaseTest):
                 continue
             break
         time.sleep(5)
-        EventTimeHours = str(random.randint(2, 11))
+        EventTimeHours = str(random.randint(2, 10))
         minutes_values = ('00', '15', '30', '45')
         EventTimeMinutes = random.choice(minutes_values)
         timeday = random.choice(('AM', 'PM'))
