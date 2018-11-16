@@ -16,6 +16,7 @@ from channel_page import ChannelPage
 ActivityName = "AlertTest"
 ActivityTimezone = 'AT'
 ChannelNameList = []
+ChannelFirstLastNameList = []
 
 
 class BaseTest(object):
@@ -46,6 +47,7 @@ class Test_GODO213_214_215_216(BaseTest):
         page.first_name_field.send_keys(NewFirstName)
         last_names = ('Smith', 'Baker', 'Petroff', 'Smirnoff', 'Black', 'White', 'Broun', 'Ivanoff')
         NewLastName = random.choice(last_names)
+        ChannelFirstLastNameList.append(NewFirstName+' '+''.join(NewLastName))
         page.last_name_field.send_keys(NewLastName)
         NewHouseNumber = '2345'
         page.house_number_field.send_keys(NewHouseNumber)
@@ -233,6 +235,7 @@ class Test_GODO213_214_215_216(BaseTest):
         page.first_name_field.send_keys(NewFirstName)
         last_names = ('Smith', 'Baker', 'Petroff', 'Smirnoff', 'Black', 'White', 'Broun', 'Ivanoff')
         NewLastName = random.choice(last_names)
+        ChannelFirstLastNameList.append(NewFirstName + ' ' + ''.join(NewLastName))
         page.last_name_field.clear()
         page.last_name_field.send_keys(NewLastName)
         NewHouseNumber = '54'
@@ -318,3 +321,19 @@ class Test_GODO213_214_215_216(BaseTest):
         assert page.status_checkbox.is_selected() == True
         assert page.zip_code.get_attribute('value') == NewZipCode #FAILED BUG 2833
         page.cancel_button.click()
+
+    def test_216(self):
+        page = ChannelPage()
+        page.open()
+        time.sleep(5)
+        page.search_field.send_keys(ChannelNameList[1])
+        time.sleep(2)
+        page.table_channel_delete_button.click()
+        time.sleep(2)
+        alert = get_driver().switch_to_alert()
+        assert ('Are you sure you want to delete '+''.join(ChannelFirstLastNameList[1])+ ' (' + ''.join(ChannelNameList[1]) + ')?') in alert.text
+        alert.accept()
+        time.sleep(10)
+        page.search_field.send_keys(ChannelNameList[1])
+        time.sleep(2)
+        assert page.table_empty.get_attribute('textContent') == 'No matching records found'
