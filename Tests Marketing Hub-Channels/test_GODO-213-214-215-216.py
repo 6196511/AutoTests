@@ -214,3 +214,107 @@ class Test_GODO213_214_215_216(BaseTest):
         for i in range (0, len(page.channel_list_options)):
             L.append(page.channel_list_options[i].get_attribute("textContent"))
         assert ChannelNameList[0] not in L
+
+    def test_215(self):
+        page = ChannelPage()
+        page.open()
+        time.sleep(5)
+        page.search_field.send_keys(ChannelNameList[0])
+        time.sleep(2)
+        page.table_channel_editbutton.click()
+        time.sleep(5)
+        NewChannelName = ("AutoTestEdited_" + ''.join(choice(digits) for i in range(3)))
+        ChannelNameList.append(NewChannelName)
+        page.channel_name.clear()
+        page.channel_name.send_keys(NewChannelName)
+        first_names = ('Ivan', 'Peter', 'John', 'Bill', 'Michael', 'Sidor', 'Alex', 'James')
+        NewFirstName = random.choice(first_names)
+        page.first_name_field.clear()
+        page.first_name_field.send_keys(NewFirstName)
+        last_names = ('Smith', 'Baker', 'Petroff', 'Smirnoff', 'Black', 'White', 'Broun', 'Ivanoff')
+        NewLastName = random.choice(last_names)
+        page.last_name_field.clear()
+        page.last_name_field.send_keys(NewLastName)
+        NewHouseNumber = '54'
+        page.house_number_field.clear()
+        page.house_number_field.send_keys(NewHouseNumber)
+        NewStreet = '1st Avenue'
+        page.street_field.clear()
+        page.street_field.send_keys(NewStreet)
+        select = Select(page.country_list)
+        NewCountry = 'Canada'
+        select.select_by_visible_text(NewCountry)
+        time.sleep(5)
+        select = Select(page.state_list)
+        NewState = 'Alberta'
+        select.select_by_visible_text(NewState)
+        NewCity = "Toronto"
+        page.city_field.clear()
+        page.city_field.send_keys(NewCity)
+        NewZipCode = 'A1A 1A1'
+        page.zip_code.clear()
+        page.zip_code.send_keys(NewZipCode)
+        NewPhone1 = ('' + ''.join(choice(digits) for i in range(10)))
+        page.phone1_field.clear()
+        page.phone1_field.send_keys(NewPhone1)
+        NewPhone2 = ('' + ''.join(choice(digits) for i in range(10)))
+        page.phone2_field.clear()
+        page.phone2_field.send_keys(NewPhone2)
+        NewEmail = ('' + ''.join(choice(digits) for i in range(10)) + '@mailinator.com')
+        page.email_field.clear()
+        page.email_field.send_keys(NewEmail)
+        select = Select(page.comission_type_list)
+        NewComissionType = 'Dollar Amount'
+        select.select_by_visible_text(NewComissionType)
+        NewComissionAmount = '5'
+        page.comission_amount.clear()
+        page.comission_amount.send_keys(NewComissionAmount)
+        NewBankName = 'New Bank'
+        page.bank_name_field.clear()
+        page.bank_name_field.send_keys(NewBankName)
+        select = Select(page.bank_account_type)
+        NewAccountType = 'Checking'
+        select.select_by_visible_text(NewAccountType)
+        NewRoutingNumber = ('' + ''.join(choice(digits) for i in range(10)))
+        page.routing_number_field.clear()
+        page.routing_number_field.send_keys(NewRoutingNumber)
+        NewAccountNumber = ('' + ''.join(choice(digits) for i in range(10)))
+        page.account_number_field.clear()
+        page.account_number_field.send_keys(NewAccountNumber)
+        page.save_button.click()
+        assert page.status_checkbox.is_selected() == False
+        page.status_checkbox.click()
+        page.save_button.click()
+        time.sleep(5)
+        page.search_field.send_keys(NewChannelName)
+        time.sleep(2)
+        assert page.table_channel_name.get_attribute('textContent') == NewFirstName + ' ' + ''.join(
+            NewLastName) + ' (' + ''.join(NewChannelName) + ')'
+        assert page.table_channel_comission.get_attribute('textContent') == '$'+''.join(NewComissionAmount)
+        assert page.table_channel_phonenumber.get_attribute('textContent') == NewPhone1
+        assert page.table_channel_email.get_attribute('textContent') == NewEmail
+        page.table_channel_editbutton.click()
+        time.sleep(5)
+        assert page.channel_name.get_attribute('value') == NewChannelName
+        assert page.first_name_field.get_attribute('value') == NewFirstName
+        assert page.last_name_field.get_attribute('value') == NewLastName
+        assert page.house_number_field.get_attribute('value') == NewHouseNumber
+        assert page.street_field.get_attribute('value') == NewStreet
+        select = Select(page.country_list)
+        assert select.first_selected_option.text == NewCountry
+        select = Select(page.state_list)
+        assert select.first_selected_option.text == NewState
+        assert page.city_field.get_attribute('value') == NewCity
+        assert page.phone1_field.get_attribute('value') == NewPhone1
+        assert page.phone2_field.get_attribute('value') == NewPhone2
+        assert page.email_field.get_attribute('value') == NewEmail
+        select = Select(page.comission_type_list)
+        assert select.first_selected_option.text == NewComissionType
+        assert page.bank_name_field.get_attribute('value') == NewBankName
+        select = Select(page.bank_account_type)
+        assert select.first_selected_option.text == NewAccountType
+        assert page.routing_number_field.get_attribute('value') == NewRoutingNumber
+        assert page.account_number_field.get_attribute('value') == NewAccountNumber
+        assert page.status_checkbox.is_selected() == True
+        assert page.zip_code.get_attribute('value') == NewZipCode #FAILED BUG 2833
+        page.cancel_button.click()
