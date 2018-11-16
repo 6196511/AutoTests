@@ -37,7 +37,7 @@ class Test_GODO213(BaseTest):
         page.username_field.send_keys(NewUserName)
         NewUserPassword = ('' + ''.join(choice(digits) for i in range(8)) + 'qwer')
         page.password_field.send_keys(NewUserPassword)
-        NewChannelName = ("AutoTest_" + ''.join(choice(digits) for i in range(2)))
+        NewChannelName = ("AutoTest_" + ''.join(choice(digits) for i in range(3)))
         page.channel_name.send_keys(NewChannelName)
         first_names = ('Ivan', 'Peter', 'John', 'Bill', 'Michael', 'Sidor', 'Alex', 'James')
         NewFirstName = random.choice(first_names)
