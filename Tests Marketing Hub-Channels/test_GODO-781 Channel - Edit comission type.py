@@ -46,7 +46,6 @@ class Test_GODO781(BaseTest):
         NewComissionType = 'Dollar Amount'
         select.select_by_visible_text(NewComissionType)
         page.save_button.click()
-        page.save_button.click()
         time.sleep(5)
         page.search_field.send_keys(ChannelName)
         time.sleep(2)
