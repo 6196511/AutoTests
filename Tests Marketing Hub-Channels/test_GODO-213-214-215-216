@@ -15,13 +15,14 @@ from channel_page import ChannelPage
 
 ActivityName = "AlertTest"
 ActivityTimezone = 'AT'
+ChannelNameList = []
 
 
 class BaseTest(object):
     def teardown_class(self):
         close_driver()
 
-class Test_GODO213(BaseTest):
+class Test_GODO213_214_215_216(BaseTest):
     def test_213(self):
         get_driver().maximize_window()
         page = loginpage()
@@ -38,6 +39,7 @@ class Test_GODO213(BaseTest):
         NewUserPassword = ('' + ''.join(choice(digits) for i in range(8)) + 'qwer')
         page.password_field.send_keys(NewUserPassword)
         NewChannelName = ("AutoTest_" + ''.join(choice(digits) for i in range(3)))
+        ChannelNameList.append(NewChannelName)
         page.channel_name.send_keys(NewChannelName)
         first_names = ('Ivan', 'Peter', 'John', 'Bill', 'Michael', 'Sidor', 'Alex', 'James')
         NewFirstName = random.choice(first_names)
@@ -69,7 +71,6 @@ class Test_GODO213(BaseTest):
         select = Select(page.comission_type_list)
         NewComissionType = 'Percentage'
         select.select_by_visible_text(NewComissionType)
-        time.sleep(5)
         NewComissionAmount = '15'
         page.comission_amount.send_keys(NewComissionAmount)
         NewBankName = 'BSB'
@@ -157,3 +158,59 @@ class Test_GODO213(BaseTest):
         time.sleep(5)
         select.select_by_visible_text(NewChannelName)
         assert select.first_selected_option.text == NewChannelName
+
+    def test_214(self):
+        page = ChannelPage()
+        page.open()
+        time.sleep(5)
+        page.search_field.send_keys(ChannelNameList[0])
+        time.sleep(2)
+        page.table_channel_editbutton.click()
+        time.sleep(5)
+        assert page.status_checkbox.is_selected() == True
+        page.status_checkbox.click()
+        page.save_button.click()
+        time.sleep(7)
+        page = NavigationBar()
+        page.main_actions_drop_down.click()
+        time.sleep(2)
+        page.add_a_booking.click()
+        page = AdminBookingPage()
+        select = Select(page.activity_list)
+        select.select_by_visible_text(ActivityName)
+        page.first_tickets_type.send_keys('1')
+        time.sleep(5)
+        page.datepicker_next_month.click()
+        time.sleep(5)
+        EventDate = str(random.randint(2, 30))
+        for i in range(0, len(page.dates)):
+            if page.dates[i].get_attribute("textContent") == EventDate:
+                page.dates[i].click()
+            else:
+                continue
+            break
+        time.sleep(5)
+        EventTimeHours = str(random.randint(2, 10))
+        minutes_values = ('00', '15', '30', '45')
+        EventTimeMinutes = random.choice(minutes_values)
+        timeday = random.choice(('AM', 'PM'))
+        EventTimeWithZone = (EventTimeHours + ':' + ''.join(EventTimeMinutes) + ' ' + ''.join(timeday) + ' ' + ''.join(
+            ActivityTimezone))
+        select = Select(page.time)
+        select.select_by_visible_text(EventTimeWithZone)
+        time.sleep(5)
+        page.enter_customer_information_button.click()
+        FirstName = "Alexey"
+        page.first_name.send_keys(FirstName)
+        LastName = "Kolennikov"
+        page.last_name.send_keys(LastName)
+        EmailAddress = '6196511@mailinator.com'
+        page.email_address.send_keys(EmailAddress)
+        page.complete_booking_button.click()
+        time.sleep(2)
+        select = Select(page.channel_list)
+        time.sleep(5)
+        L=[]
+        for i in range (0, len(page.channel_list_options)):
+            L.append(page.channel_list_options[i].get_attribute("textContent"))
+        assert ChannelNameList[0] not in L
