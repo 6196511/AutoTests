@@ -93,12 +93,6 @@ class Test_GODO327_341(BaseTest):
         assert select.first_selected_option.text == NewChannelName
 
     def test_341(self):
-        get_driver().maximize_window()
-        page = loginpage()
-        page.open()
-        page.login_field.send_keys(admin_login)
-        page.password_field.send_keys(admin_password)
-        page.button.click()
         page = ChannelPage()
         page.open()
         time.sleep(2)
