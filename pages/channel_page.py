@@ -36,3 +36,6 @@ class ChannelPage(BasePage):
     table_channel_editbutton = Find(by=By.XPATH, value="//i[@class='fa fa-edit']")
     table_channel_delete_button = Find(by=By.XPATH, value="//i[@class='fa fa-remove']")
     table_empty = Find(by=By.XPATH, value="//td[@class='dataTables_empty']")
+    table_entries_qty = Find(by=By.XPATH, value="//div[@id='dtChannel_info']")
+    channel_exist_alert = Find(by=By.XPATH, value="//div[@class='modal-body ng-binding']")
+    OK_alert = Find(by=By.XPATH, value="//button[@ng-click='vm.cancel()']")
