@@ -23,7 +23,7 @@ class BaseTest(object):
     def teardown_class(self):
         close_driver()
 
-class Test_GODO213_214_215_216(BaseTest):
+class Test_GODO213_214_215_216_788(BaseTest):
     def test_213(self):
         get_driver().maximize_window()
         page = loginpage()
@@ -337,3 +337,25 @@ class Test_GODO213_214_215_216(BaseTest):
         page.search_field.send_keys(ChannelNameList[1])
         time.sleep(2)
         assert page.table_empty.get_attribute('textContent') == 'No matching records found'
+
+    def test_788(self):
+        page = ChannelPage()
+        page.open()
+        page.add_channel_button.click()
+        time.sleep(5)
+        NewChannelName = ChannelNameList[1]
+        page.channel_name.send_keys(NewChannelName)
+        ChannelNameList.append(NewChannelName)
+        page.save_button.click()
+        time.sleep(5)
+        page.search_field.send_keys(NewChannelName)
+        time.sleep(2)
+        assert page.table_channel_name.get_attribute('textContent') == '  ('+''.join(NewChannelName)+')'
+        assert page.table_channel_comission.get_attribute('textContent') == '' #FAILED FOR PERCENTAGE - Bug 3110
+        assert page.table_channel_phonenumber.get_attribute('textContent') == ''
+        assert page.table_channel_email.get_attribute('textContent') == ''
+        page.table_channel_editbutton.click()
+        time.sleep(5)
+        assert page.channel_name.get_attribute('value') == NewChannelName
+        assert page.status_checkbox.is_selected() == True
+        page.cancel_button.click()
