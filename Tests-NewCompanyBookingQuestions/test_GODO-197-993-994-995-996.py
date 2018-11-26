@@ -8,7 +8,6 @@ from creds import internal_pwd
 import random
 from random import choice
 from string import digits
-from selenium.webdriver.common.keys import Keys
 
 username_list = []
 pwd_list = []
@@ -21,7 +20,7 @@ question3edited_text = 'What is your profession?'
 
 class BaseTest(object):
     def teardown_class(self):
-         close_driver()
+        close_driver()
 
 class Test_GODO197_993_994_995_996(BaseTest):
     def test_197(self):
@@ -30,7 +29,7 @@ class Test_GODO197_993_994_995_996(BaseTest):
         page.open()
         time.sleep(3)
         page.internal_pwd_field.send_keys(internal_pwd)
-        NewCompanyName = ("AutoTest_" + ''.join(choice(digits) for i in range(4)))
+        NewCompanyName = ("Test197_" + ''.join(choice(digits) for i in range(4)))
         page.company_name_field.send_keys(NewCompanyName)
         NewCompanyEmail = (NewCompanyName + '@mailinator.com')
         page.company_email.send_keys(NewCompanyEmail)
@@ -499,7 +498,8 @@ class Test_GODO197_993_994_995_996(BaseTest):
         assert len(page.dropdown_fields) == 2
         assert len(page.answer_type) == 1
         assert len(page.answer_type_msg) == 1
-        page.question_text[0].send_keys(Keys.CONTROL + Keys.HOME)
+        get_driver().execute_script("window.scrollTo(0, 0)")
+        time.sleep(5)
         page.remove_button[0].click()  # STEP6
         time.sleep(2)
         assert page.is_element_present('question1_title') == False
