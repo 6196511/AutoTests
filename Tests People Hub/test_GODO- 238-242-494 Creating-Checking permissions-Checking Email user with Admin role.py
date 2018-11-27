@@ -129,11 +129,11 @@ class Test_GODO238_242_494(BaseTest):
         assert page.subject_field.get_attribute('textContent') == 'You have been added as an admin for '+''.join(CompanyName)
         get_driver().switch_to_frame('emailFrame')
         assert page.body_field.get_attribute('innerText') == ''.join(
-            fullname_list[0]) + ',\n\nWelcome to GoDo. You have been added as an admin for ' + ''.join(
-            CompanyName) + '.\n\nTo log in, go to:\nhttps://ci004.godo.io/\n\nAnd use this information:\n\nLOGIN: ' + ''.join(
+            fullname_list[0]) + ',\nWelcome to GoDo. You have been added as an admin for ' + ''.join(
+            CompanyName) + '.\n\nTo log in, go to:\nhttps://ci004.godo.io/ \n\nAnd use this information:\n\nLOGIN: ' + ''.join(
             username_list[0]) + '\nPASSWORD: ' + ''.join(
-            pwd_list[0]) + '\n\n\n\n\n\n\xa0\n\nThank you,\n The ' + ''.join(
-            CompanyName) + ' Team \xa0\n \xa0\n \xa0\n \xa0\n'
+            pwd_list[0]) + '\n\n\n\n\xa0\nThank you, \nThe ' + ''.join(
+            CompanyName) + ' Team \xa0 \n\xa0 \n\xa0 \n\xa0 \n'
    
     def test_242(self):
         get_driver().maximize_window()
