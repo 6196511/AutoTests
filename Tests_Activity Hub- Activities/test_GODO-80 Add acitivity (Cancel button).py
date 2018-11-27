@@ -26,8 +26,11 @@ class Test_GODO80(BaseTest):
         page.add_activity_button.click()
         page=AddEditActivityPage()
         time.sleep(5)
-        for i in range(1, len(page.switchers)):
-            page.switchers[i].click()
+        for i in range(1, len(page.switchers1)):
+            page.switchers1[i].click()
+        for i in range(0, len(page.switchers2)):
+            page.switchers2[i].click()
+        page.switcher_minimum_enforce.click()
         time.sleep(10)
         NewActivityName = ("AutoTestCancel"+''.join(choice(digits) for i in range(4)))
         page.activity_name.send_keys(NewActivityName)
@@ -85,6 +88,9 @@ class Test_GODO80(BaseTest):
         page.first_ticket_type.send_keys(NewActivityFirstTicketType)
         NewActivityFirstTicketPrice = '9.99'
         page.first_ticket_price.send_keys(NewActivityFirstTicketPrice)
+        select = Select(page.first_ticket_viator)
+        NewActivityFirstViatorType = "Adult"
+        select.select_by_visible_text(NewActivityFirstViatorType)
         select = Select(page.first_guide)
         NewActivityFirstGuide = "Holly Flat"
         select.select_by_visible_text(NewActivityFirstGuide)
