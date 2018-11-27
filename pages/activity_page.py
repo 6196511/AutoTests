@@ -32,18 +32,18 @@ class AddEditActivityPage(BasePage):
     switchers2 = Finds(by=By.XPATH,value="//div[@class='col-xs-12 col-sm-12 col-md-4 col-lg-4 demo'][2]//div[@class='switch-button-button']")
     switcher_minimum_enforce = Find(by=By.XPATH,value="//div[@class='col-xs-12 col-sm-12 col-md-4 col-lg-4 demo'][3]//div[@class='switch-button-button']")
     add_ticket_type = Find(by=By.XPATH, value="//a[text()='+ Add a Ticket Type']")
-    first_ticket_type = Find(by=By.XPATH, value="//div[@ng-repeat='price in vm.activity.prices'][1]//input[@ng-model='price.priceName']")
-    first_ticket_price = Find(by=By.XPATH, value="//div[@ng-repeat='price in vm.activity.prices'][1]//input[@ng-model='price.priceAmount']")
-    first_ticket_viator = Find(by=By.XPATH, value="//div[@ng-repeat='price in vm.activity.prices'][1]//select[@ng-model='price.priceViator']")
-    second_ticket_type = Find(by=By.XPATH, value="//div[@ng-repeat='price in vm.activity.prices'][2]//input[@ng-model='price.priceName']")
-    second_ticket_price = Find(by=By.XPATH, value="//div[@ng-repeat='price in vm.activity.prices'][2]//input[@ng-model='price.priceAmount']")
-    second_ticket_viator = Find(by=By.XPATH,value="//div[@ng-repeat='price in vm.activity.prices'][2]//select[@ng-model='price.priceViator']")
-    third_ticket_type = Find(by=By.XPATH, value="//div[@ng-repeat='price in vm.activity.prices'][3]//input[@ng-model='price.priceName']")
-    third_ticket_price = Find(by=By.XPATH, value="//div[@ng-repeat='price in vm.activity.prices'][3]//input[@ng-model='price.priceAmount']")
-    third_ticket_viator = Find(by=By.XPATH,value="//div[@ng-repeat='price in vm.activity.prices'][3]//select[@ng-model='price.priceViator']")
-    fourth_ticket_type = Find(by=By.XPATH, value="//div[@ng-repeat='price in vm.activity.prices'][4]//input[@ng-model='price.priceName']")
-    fourth_ticket_price = Find(by=By.XPATH, value="//div[@ng-repeat='price in vm.activity.prices'][4]//input[@ng-model='price.priceAmount']")
-    fourth_ticket_viator = Find(by=By.XPATH,value="//div[@ng-repeat='price in vm.activity.prices'][4]//select[@ng-model='price.priceViator']")
+    first_ticket_type = Find(by=By.XPATH, value="//div[@ng-repeat='price in vm.activity.prices track by $index'][1]//input[@ng-model='price.priceName']")
+    first_ticket_price = Find(by=By.XPATH, value="//div[@ng-repeat='price in vm.activity.prices track by $index'][1]//input[@ng-model='price.priceAmount']")
+    first_ticket_viator = Find(by=By.XPATH, value="//div[@ng-repeat='price in vm.activity.prices track by $index'][1]//select[@ng-model='price.priceViator']")
+    second_ticket_type = Find(by=By.XPATH, value="//div[@ng-repeat='price in vm.activity.prices track by $index'][2]//input[@ng-model='price.priceName']")
+    second_ticket_price = Find(by=By.XPATH, value="//div[@ng-repeat='price in vm.activity.prices track by $index'][2]//input[@ng-model='price.priceAmount']")
+    second_ticket_viator = Find(by=By.XPATH, value="//div[@ng-repeat='price in vm.activity.prices track by $index'][2]//select[@ng-model='price.priceViator']")
+    third_ticket_type = Find(by=By.XPATH, value="//div[@ng-repeat='price in vm.activity.prices track by $index'][3]//input[@ng-model='price.priceName']")
+    third_ticket_price = Find(by=By.XPATH, value="//div[@ng-repeat='price in vm.activity.prices track by $index'][3]//input[@ng-model='price.priceAmount']")
+    third_ticket_viator = Find(by=By.XPATH, value="//div[@ng-repeat='price in vm.activity.prices track by $index'][3]//select[@ng-model='price.priceViator']")
+    fourth_ticket_type = Find(by=By.XPATH, value="//div[@ng-repeat='price in vm.activity.prices track by $index'][4]//input[@ng-model='price.priceName']")
+    fourth_ticket_price = Find(by=By.XPATH, value="//div[@ng-repeat='price in vm.activity.prices track by $index'][4]//input[@ng-model='price.priceAmount']")
+    fourth_ticket_viator = Find(by=By.XPATH, value="//div[@ng-repeat='price in vm.activity.prices track by $index'][4]//select[@ng-model='price.priceViator']")
     first_guide = Find(by=By.XPATH, value="//h2[text()='Guides']/..//select")
     first_linked_activity = Find(by=By.XPATH, value="//h2[text()='Linked Activities']/..//select")
     what_included = Find(by=By.XPATH, value="//textarea[@id='activityIncluded']")
@@ -51,11 +51,11 @@ class AddEditActivityPage(BasePage):
     what_bring = Find(by=By.XPATH, value="//textarea[@id='activityBring']")
     review_redirect = Find(by=By.XPATH, value="//select[@id='activity_review_threshold']")
     review_website = Find(by=By.XPATH, value="//input[@id='review_url']")
-
     cancel_button = Find(by=By.XPATH, value="//a[text()='Cancel']")
     save_button = Find(by=By.XPATH, value="//button[@id='submitactivity']")
-
     alert_message = Find(by=By.XPATH, value="//label[@id='errormsg']")
+    duration_alert = Find(by=By.XPATH, value="//div[@id='divError']")
+    ticket_maximum_alert = Find(by=By.XPATH, value="//div[@class='activity_minticketsformError parentFormform1 formError']")
 
 
     def select(self, web_element, option):
@@ -63,3 +63,4 @@ class AddEditActivityPage(BasePage):
 
     def get_selected_value(self, web_element):
         return Select(web_element).first_selected_option.text
+
