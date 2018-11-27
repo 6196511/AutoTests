@@ -156,7 +156,7 @@ class Test_GODO245_246_496(BaseTest):
             username_list[0]) + '\nPASSWORD: ' + ''.join(
             pwd_list[0]) + '\n\n\n\n\xa0\nThank you, \nThe ' + ''.join(
             CompanyName) + ' Team \xa0 \n\xa0 \n\xa0 \n\xa0 \n'
-    
+        
     def test_246(self):
         get_driver().maximize_window()
         page = loginpage()
