@@ -28,6 +28,8 @@ class GuidePage(BasePage):
     check_in = Find(by=By.XPATH, value="//input[@data-checkincheckbox]")
     event_complete = Find(by=By.XPATH, value="//button[@id='markeventcomplete']")
     next_month = Find(by=By.XPATH, value="//button[@class='btn btn-default btn-sm pull-right uib-right']")
+    profile_dropdown = Find(by=By.XPATH, value='//a[@data-toggle="dropdown"]')
+    logout_button = Find(by=By.XPATH, value='//*[@id="wrapper"]/div[2]/div[2]/div/div/ul/li[3]/ul/li[5]/a')
 
 class GuideRequestOffPage (BasePage):
     url = 'https://dev.godo.io/g_requestOff.aspx'
