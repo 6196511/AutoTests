@@ -60,6 +60,12 @@ class AddEditActivityPage(BasePage):
     viator2_alert = Find(by=By.XPATH, value="//div[@class='viator_1formError parentFormform1 formError']")
     viator3_alert = Find(by=By.XPATH, value="//div[@class='viator_2formError parentFormform1 formError']")
     viator4_alert = Find(by=By.XPATH, value="//div[@class='viator_3formError parentFormform1 formError']")
+    delete_first_ticket_type = Find(by=By.XPATH, value="//div[@ng-repeat='price in vm.activity.prices track by $index'][1]//a[@ng-if='vm.activity.prices.length != 1']")
+    delete_second_ticket_type = Find(by=By.XPATH, value="//div[@ng-repeat='price in vm.activity.prices track by $index'][2]//a[@ng-if='vm.activity.prices.length != 1']")
+    delete_third_ticket_type = Find(by=By.XPATH, value="//div[@ng-repeat='price in vm.activity.prices track by $index'][3]//a[@ng-if='vm.activity.prices.length != 1']")
+    delete_fourth_ticket_type = Find(by=By.XPATH, value="//div[@ng-repeat='price in vm.activity.prices track by $index'][4]//a[@ng-if='vm.activity.prices.length != 1']")
+    ticket_type_alert = Find(by=By.XPATH, value="//div[@class='form-validation-field-0formError parentFormform1 formError']")
+    ticket_price_alert = Find(by=By.XPATH, value="//div[@class='form-validation-field-5formError parentFormform1 formError']")
 
     def select(self, web_element, option):
         Select(web_element).select_by_visible_text(option)
