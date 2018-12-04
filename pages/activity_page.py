@@ -56,7 +56,10 @@ class AddEditActivityPage(BasePage):
     alert_message = Find(by=By.XPATH, value="//label[@id='errormsg']")
     duration_alert = Find(by=By.XPATH, value="//div[@id='divError']")
     ticket_maximum_alert = Find(by=By.XPATH, value="//div[@class='activity_minticketsformError parentFormform1 formError']")
-
+    viator1_alert = Find(by=By.XPATH, value="//div[@class='viator_0formError parentFormform1 formError']")
+    viator2_alert = Find(by=By.XPATH, value="//div[@class='viator_1formError parentFormform1 formError']")
+    viator3_alert = Find(by=By.XPATH, value="//div[@class='viator_2formError parentFormform1 formError']")
+    viator4_alert = Find(by=By.XPATH, value="//div[@class='viator_3formError parentFormform1 formError']")
 
     def select(self, web_element, option):
         Select(web_element).select_by_visible_text(option)
