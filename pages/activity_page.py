@@ -31,7 +31,7 @@ class AddEditActivityPage(BasePage):
     switchers1 = Finds(by=By.XPATH, value="//div[@class='col-xs-12 col-sm-12 col-md-4 col-lg-4 demo'][1]//div[@class='switch-button-button']")
     switchers2 = Finds(by=By.XPATH,value="//div[@class='col-xs-12 col-sm-12 col-md-4 col-lg-4 demo'][2]//div[@class='switch-button-button']")
     switcher_minimum_enforce = Find(by=By.XPATH,value="//div[@class='col-xs-12 col-sm-12 col-md-4 col-lg-4 demo'][3]//div[@class='switch-button-button']")
-    add_ticket_type = Find(by=By.XPATH, value="//a[text()='+ Add a Ticket Type']")
+    add_ticket_type = Find(by=By.XPATH, value="//a[@ng-click='vm.addNewPrice()']")
     first_ticket_type = Find(by=By.XPATH, value="//div[@ng-repeat='price in vm.activity.prices track by $index'][1]//input[@ng-model='price.priceName']")
     first_ticket_price = Find(by=By.XPATH, value="//div[@ng-repeat='price in vm.activity.prices track by $index'][1]//input[@ng-model='price.priceAmount']")
     first_ticket_viator = Find(by=By.XPATH, value="//div[@ng-repeat='price in vm.activity.prices track by $index'][1]//select[@ng-model='price.priceViator']")
