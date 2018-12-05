@@ -5,9 +5,10 @@ from selenium.webdriver.support.ui import Select
 from activity_hub_page import ActivityHubPage
 from activity_page import AddEditActivityPage, switcher_OFF
 import time
-from creds import admin_login, admin_password
+from creds import admin_login, admin_password, server, database, username, password
 from random import choice
 from string import digits
+import pyodbc
 
 class BaseTest(object):
     def teardown_class(self):
@@ -26,7 +27,7 @@ class Test_GODO600(BaseTest):
         page.open()
         page.add_activity_button.click() #STEP2
         page=AddEditActivityPage()
-        time.sleep(5)
+        time.sleep(15)
         assert page.switchers1[0].get_attribute("outerHTML") == switcher_OFF
         page.stop_no_sales.send_keys('-1')#STEP3
         page.minimum_not_met_alert.click()
@@ -80,6 +81,14 @@ class Test_GODO600(BaseTest):
         time.sleep(15)
         assert page.switchers1[0].get_attribute("outerHTML") == switcher_OFF
         assert page.stop_no_sales.get_attribute('value') == '1'
+        cnxn = pyodbc.connect(
+            'DRIVER={ODBC Driver 17 for SQL Server};SERVER=' + server + ';DATABASE=' + database + ';UID=' + username + ';PWD=' + password)# STEP7
+        cursor = cnxn.cursor()
+        cursor.execute("SELECT TOP 1 activity_stopbooking_hoursbefore, activity_stopbooking_midnightbefore, activity_name FROM activity ORDER BY activity_id DESC")
+        row = cursor.fetchone()
+        assert row[0] == 1
+        assert row[1] == 0
+        assert row[2] == NewActivityName
         page.switchers1[0].click()#STEP8
         assert page.switchers1[0].get_attribute("outerHTML") != switcher_OFF
         assert page.stop_no_sales.get_attribute('value') == ''
@@ -97,3 +106,8 @@ class Test_GODO600(BaseTest):
         time.sleep(15)
         assert page.switchers1[0].get_attribute("outerHTML") != switcher_OFF
         assert page.stop_no_sales.is_enabled() == False
+        cursor.execute("SELECT TOP 1 activity_stopbooking_hoursbefore, activity_stopbooking_midnightbefore, activity_name FROM activity ORDER BY activity_id DESC")#STEP10
+        row = cursor.fetchone()
+        assert row[0] == 0
+        assert row[1] == 1
+        assert row[2] == NewActivityName
