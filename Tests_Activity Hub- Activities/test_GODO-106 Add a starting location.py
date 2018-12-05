@@ -8,9 +8,11 @@ from string import digits
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.common.by import By
 import time
-from creds import admin_login, admin_password
+from creds import admin_login, admin_password, server, database, username, password
 from webium import BasePage, Finds
 from activity_page import AddEditActivityPage
+import pyodbc
+
 
 class BaseTest(object):
     def teardown_class(self):
@@ -79,3 +81,18 @@ class Test_GODO106(BaseTest):
         select = Select(page.starting_location)
         select.select_by_visible_text(NewLocationName)
         assert select.first_selected_option.text == NewLocationName
+        cnxn = pyodbc.connect(
+            'DRIVER={ODBC Driver 17 for SQL Server};SERVER=' + server + ';DATABASE=' + database + ';UID=' + username + ';PWD=' + password)
+        cursor = cnxn.cursor()
+        cursor.execute("SELECT TOP 1 * FROM location ORDER BY location_id DESC")
+        row = cursor.fetchone()
+        assert row[1] == 68  # company id
+        assert row[2] == NewLocationName
+        assert row[3] == NewLocationAddress1
+        assert row[4] == NewLocationAddress2
+        assert row[5] == NewLocationCity
+        assert row[6] == 'MT'#Location STATE
+        assert row[7] == 'USA'  # Location country
+        assert row[8] == NewLocationZipcode
+        assert row[9] == NewLocationDescription
+        assert row[11] == 1 #Location status
