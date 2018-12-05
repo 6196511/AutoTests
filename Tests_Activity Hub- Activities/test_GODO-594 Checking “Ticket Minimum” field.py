@@ -5,9 +5,10 @@ from selenium.webdriver.support.ui import Select
 from activity_hub_page import ActivityHubPage
 from activity_page import AddEditActivityPage
 import time
-from creds import admin_login, admin_password
+from creds import admin_login, admin_password, server, database, username, password
 from random import choice
 from string import digits
+import pyodbc
 
 class BaseTest(object):
     def teardown_class(self):
@@ -78,49 +79,9 @@ class Test_GODO594(BaseTest):
         page = AddEditActivityPage()
         time.sleep(15)
         assert page.ticket_minimum.get_attribute('value') == '1'
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        # page.save_button.click()
-        # time.sleep(5)
-        # page = ActivityHubPage()
-        # page.search_activity_field.send_keys(NewActivityName)
-        # time.sleep(5)
-        # page.activity_actions.click()
-        # text = page.activity_title.get_attribute("textContent")
-        # assert text == NewActivityName
-        # page.edit_activity.click()
-        # page = AddEditActivityPage()
-        # time.sleep(15)
-        # assert page.activity_name.get_attribute('value') == NewActivityName
-        # select = Select(page.activity_status)
-        # assert select.first_selected_option.text == NewActivityStatus
-        # select = Select(page.branch)
-        # assert select.first_selected_option.text == NewActivityBranch
-        # select = Select(page.starting_location)
-        # assert select.first_selected_option.text == NewActivityLocation
-        # select = Select(page.time_zone)
-        # assert select.first_selected_option.text == NewActivityTimezone
-        # assert page.cancellation_policy.get_attribute('value') == NewActivityCancellationPolicy
-        # assert page.activity_duration_minutes.get_attribute('value') == NewActivityDurationMinutes
-        # assert page.ticket_maximum.get_attribute('value') == NewActivityMaxTickets
-        # assert page.first_ticket_type.get_attribute('value') == NewActivityFirstTicketType
-        # assert page.first_ticket_price.get_attribute('value') == NewActivityFirstTicketPrice
-        # for i in range(0, len(page.switchers1)):
-        #     assert page.switchers1[i].get_attribute("outerHTML") == switcher_OFF
-        # for i in range(0, len(page.switchers2)):
-        #     assert page.switchers2[i].get_attribute("outerHTML") == switcher_OFF
-        # assert page.switcher_minimum_enforce.get_attribute("outerHTML") == switcher_OFF
-        # select = Select(page.stop_booking_sold)
-        # assert select.first_selected_option.text == NewActivityStopbookingSold
+        cnxn = pyodbc.connect(
+            'DRIVER={ODBC Driver 17 for SQL Server};SERVER=' + server + ';DATABASE=' + database + ';UID=' + username + ';PWD=' + password) #STEP8
+        cursor = cnxn.cursor()
+        cursor.execute("SELECT TOP 1 activity_mintickets FROM activity ORDER BY activity_id DESC")
+        row = cursor.fetchone()
+        assert row[0]==1
