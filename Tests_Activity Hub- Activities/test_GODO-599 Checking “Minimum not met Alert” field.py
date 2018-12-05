@@ -134,6 +134,7 @@ class Test_GODO599(BaseTest):
         cnxn = pyodbc.connect(
             'DRIVER={ODBC Driver 17 for SQL Server};SERVER=' + server + ';DATABASE=' + database + ';UID=' + username + ';PWD=' + password)#STEP8
         cursor = cnxn.cursor()
-        cursor.execute("SELECT TOP 1 activity_alert_minimumnotmet_hours FROM activity ORDER BY activity_id DESC")
+        cursor.execute("SELECT TOP 1 activity_alert_minimumnotmet_hours, activity_name FROM activity ORDER BY activity_id DESC")
         row = cursor.fetchone()
         assert row[0] == 1
+        assert row[1] == NewActivityName
