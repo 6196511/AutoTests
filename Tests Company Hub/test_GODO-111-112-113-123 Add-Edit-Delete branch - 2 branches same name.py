@@ -4,10 +4,10 @@ from Login import loginpage
 from branch_page import BranchPage, CustomerBranchPage
 from selenium.webdriver.support.ui import Select
 import time
-from creds import admin_login, admin_password
+from creds import admin_login, admin_password, server, database, username, password
 from random import choice
 from string import digits
-
+import pyodbc
 
 BranchNewNameList = []
 BranchEditedNameList =[]
@@ -77,6 +77,24 @@ class Test_GODO111_112_113_123(BaseTest):
         assert page.branch_email.get_attribute('value') == NewBranchEmail
         assert page.branch_phone1.get_attribute('value') == NewBranchPhone1
         assert page.branch_phone2.get_attribute('value') == NewBranchPhone2
+        cnxn = pyodbc.connect(
+            'DRIVER={ODBC Driver 17 for SQL Server};SERVER=' + server + ';DATABASE=' + database + ';UID=' + username + ';PWD=' + password)
+        cursor = cnxn.cursor()
+        cursor.execute("SELECT TOP 1 * FROM branch ORDER BY branch_id DESC")
+        row = cursor.fetchone()
+        assert row[1] == 68  # company id
+        assert row[2] == 2 #Timezone_ID
+        assert row[3] == BranchName
+        assert row[6] == NewBranchAddress1
+        assert row[7] == NewBranchAddress2
+        assert row[10] == NewBranchCity
+        assert row[11] == 'WA' #NewBranchState
+        assert row[12] == NewBranchZip
+        assert row[13] == 'USA' #BranchCountry
+        assert row[14] == NewBranchEmail
+        assert row[15] == NewBranchPhone1
+        assert row[16] == NewBranchPhone2
+
     def test_112(self):#EDIT BRANCH
         get_driver().maximize_window()
         page = loginpage()
@@ -153,6 +171,7 @@ class Test_GODO111_112_113_123(BaseTest):
         assert page.branch_email.get_attribute('value') == NewBranchEmail
         assert page.branch_phone1.get_attribute('value') == NewBranchPhone1
         assert page.branch_phone2.get_attribute('value') == NewBranchPhone2
+
     def test_113(self):#DELETE BRANCH
         get_driver().maximize_window()
         page = loginpage()
