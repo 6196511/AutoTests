@@ -7,7 +7,8 @@ from random import choice
 from string import digits
 from selenium.webdriver.support.ui import Select
 import time
-from creds import admin_login, admin_password
+from creds import admin_login, admin_password,server, database, username, password
+import pyodbc
 
 class BaseTest(object):
     def teardown_class(self):
@@ -132,3 +133,10 @@ class Test_GODO80(BaseTest):
         page.search_activity_field.send_keys(NewActivityName)
         time.sleep(10)
         assert page.is_element_present('activity_actions') == False
+        cnxn = pyodbc.connect(
+            'DRIVER={ODBC Driver 17 for SQL Server};SERVER=' + server + ';DATABASE=' + database + ';UID=' + username + ';PWD=' + password)
+        cursor = cnxn.cursor()
+        cursor.execute("SELECT TOP 1 activity_mintickets, activity_name FROM activity ORDER BY activity_id DESC")
+        cursor.execute("SELECT TOP 1 * FROM activity ORDER BY activity_id DESC")
+        row = cursor.fetchone()
+        assert row[6] != NewActivityName
