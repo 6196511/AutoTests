@@ -4,11 +4,11 @@ from Login import loginpage
 from selenium.webdriver.support.ui import Select
 from activity_hub_page import ActivityHubPage
 from activity_page import AddEditActivityPage, switcher_OFF
-import random
 import time
-from creds import admin_login, admin_password
+from creds import admin_login, admin_password,server, database, username, password
 from random import choice
 from string import digits
+import pyodbc
 
 NewFirstViatorType = "Adult"
 NewSecondViatorType = "Child"
@@ -96,6 +96,27 @@ class Test_GODO81_924(BaseTest):
         assert page.switcher_minimum_enforce.get_attribute("outerHTML") == switcher_OFF
         select = Select(page.stop_booking_sold)
         assert select.first_selected_option.text == NewActivityStopbookingSold
+        cnxn = pyodbc.connect(
+            'DRIVER={ODBC Driver 17 for SQL Server};SERVER=' + server + ';DATABASE=' + database + ';UID=' + username + ';PWD=' + password)#STEP8
+        cursor = cnxn.cursor()
+        cursor.execute("SELECT TOP 1 * FROM activity ORDER BY activity_id DESC")
+        row = cursor.fetchone()
+        assert row[1] == 68#company id
+        assert row[2] == 47#location_id
+        assert row[3] == 386#branch_id
+        assert row[4] == 9 #timezone_id
+        assert row[6] == NewActivityName
+        assert row[11] == NewActivityCancellationPolicy
+        assert row[14] == 0#Firstsalecloseevent
+        assert row[15] == 0  # StopBookingNoSales
+        assert row[16] == 15  # StopBookingSold
+        assert row[17] == 0  # StopBookingMidBefore
+        assert row[21] == 15 #Duration
+        assert row[32] == True #GuideUponSellout
+        assert row[33]==1 #ActivityStatus
+        assert row[36] == 0 #Tickets Minimum Enforce
+        assert row[37] == 0  # Viator
+        assert row[39] == 0  # 2-step Check In
 
     def test_924(self):
         page=ActivityHubPage() #STEP1
