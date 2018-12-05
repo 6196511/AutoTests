@@ -7,7 +7,8 @@ from random import choice
 from string import digits
 from selenium.webdriver.support.ui import Select
 import time
-from creds import admin_login, admin_password
+from creds import admin_login, admin_password, server, database, username, password
+import pyodbc
 
 class BaseTest(object):
     def teardown_class(self):
@@ -25,7 +26,7 @@ class Test_GODO599(BaseTest):
         page.open()
         page.add_activity_button.click()#STEP2
         page=AddEditActivityPage()
-        time.sleep(5)
+        time.sleep(15)
         for i in range(0, len(page.switchers1)):#STEP3
             if page.switchers1[i].get_attribute("outerHTML") != switcher_OFF:
                 page.switchers1[i].click()
@@ -130,3 +131,9 @@ class Test_GODO599(BaseTest):
         time.sleep(5)
         page = AddEditActivityPage()
         assert page.minimum_not_met_alert.get_attribute('value') == '1'
+        cnxn = pyodbc.connect(
+            'DRIVER={ODBC Driver 17 for SQL Server};SERVER=' + server + ';DATABASE=' + database + ';UID=' + username + ';PWD=' + password)#STEP8
+        cursor = cnxn.cursor()
+        cursor.execute("SELECT TOP 1 activity_alert_minimumnotmet_hours FROM activity ORDER BY activity_id DESC")
+        row = cursor.fetchone()
+        assert row[0] == 1
