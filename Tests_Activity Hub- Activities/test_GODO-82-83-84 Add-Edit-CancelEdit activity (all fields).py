@@ -8,7 +8,8 @@ from random import choice
 from string import digits
 from selenium.webdriver.support.ui import Select
 import time
-from creds import admin_login, admin_password
+from creds import admin_login, admin_password,server, database, username, password
+import pyodbc
 
 ActivityNameList = []
 
@@ -29,7 +30,7 @@ class Test_GODO82_83_84(BaseTest):
         page.add_activity_button.click()
         page=AddEditActivityPage()
         time.sleep(5)
-        for i in range(1, len(page.switchers1)):
+        for i in range(0, len(page.switchers1)):
             page.switchers1[i].click()
         for i in range(0, len(page.switchers2)):
             page.switchers2[i].click()
@@ -72,7 +73,8 @@ class Test_GODO82_83_84(BaseTest):
         page.ticket_maximum.send_keys(NewActivityMaxTickets )
         page.sell_out_alert.click()
         select = Select(page.sell_out_alert)
-        NewActivitySellOut = "80%"
+        NewActivitySellOutNumber = 80
+        NewActivitySellOut = str(NewActivitySellOutNumber)+'%'
         select.select_by_visible_text(NewActivitySellOut)
         page.alert_guide_upon_sellout.click()
         select = Select(page.alert_guide_upon_sellout)
@@ -86,8 +88,6 @@ class Test_GODO82_83_84(BaseTest):
         page.ticket_minimum.send_keys(NewActivityMinTickets)
         NewActivityNotmetAlert = '10'
         page.minimum_not_met_alert.send_keys(NewActivityNotmetAlert)
-        NewActivityStopbookingNoSales = '10'
-        page.stop_no_sales.send_keys(NewActivityStopbookingNoSales)
         NewActivityFirstTicketType = "Adult"
         page.first_ticket_type.send_keys(NewActivityFirstTicketType)
         NewActivityFirstTicketPrice = '9.99'
@@ -108,16 +108,17 @@ class Test_GODO82_83_84(BaseTest):
         NewActivityWhatBring = 'Just bring a lot of money.'
         page.what_bring.send_keys(NewActivityWhatBring )
         select = Select(page.review_redirect)
-        NewActivityStarsReview = "5 Stars"
+        NewActivityStarsReviewNumber = 5
+        NewActivityStarsReview = str(str(NewActivityStarsReviewNumber)+' Stars')
         select.select_by_visible_text(NewActivityStarsReview)
         page.review_website.send_keys(NewActivityURL)
         page.save_button.click()
         page = ActivityHubPage()
         page.search_activity_field.send_keys(NewActivityName)
         time.sleep(5)
-        page.activity_actions.click()
         text = page.activity_title.get_attribute("textContent")
         assert text == NewActivityName
+        page.activity_actions.click()
         page.edit_activity.click()
         page = AddEditActivityPage()
         time.sleep(15)
@@ -148,7 +149,7 @@ class Test_GODO82_83_84(BaseTest):
         assert select.first_selected_option.text == NewActivityStopbookingSold+' '
         assert page.ticket_minimum.get_attribute('value') == NewActivityMinTickets
         assert page.minimum_not_met_alert.get_attribute('value') == NewActivityNotmetAlert
-        assert page.stop_no_sales.get_attribute('value') == NewActivityStopbookingNoSales
+        assert page.stop_no_sales.is_enabled()==False
         assert page.first_ticket_type.get_attribute('value') == NewActivityFirstTicketType
         assert page.first_ticket_price.get_attribute('value') == NewActivityFirstTicketPrice
         select = Select(page.first_guide)
@@ -161,13 +162,47 @@ class Test_GODO82_83_84(BaseTest):
         select = Select(page.review_redirect)
         assert select.first_selected_option.text == NewActivityStarsReview
         assert page.review_website.get_attribute('value') == NewActivityURL
-        for i in range(1, len(page.switchers2)):
+        for i in range(0, len(page.switchers1)):
+             assert page.switchers1[i].get_attribute("outerHTML") != switcher_OFF
+        for i in range(0, len(page.switchers2)):
              assert page.switchers2[i].get_attribute("outerHTML") != switcher_OFF
-        assert page.switchers1[0].get_attribute("outerHTML") == switcher_OFF
-        assert page.switchers1[1].get_attribute("outerHTML") != switcher_OFF
         assert page.switcher_minimum_enforce.get_attribute("outerHTML") != switcher_OFF
         select = Select(page.first_ticket_viator)
         assert select.first_selected_option.text == NewActivityFirstViatorType
+        cnxn = pyodbc.connect(
+            'DRIVER={ODBC Driver 17 for SQL Server};SERVER=' + server + ';DATABASE=' + database + ';UID=' + username + ';PWD=' + password)#STEP8
+        cursor = cnxn.cursor()
+        cursor.execute("SELECT TOP 1 * FROM activity ORDER BY activity_id DESC")
+        row = cursor.fetchone()
+        assert row[1] == 68#company id
+        assert row[2] == 47#location_id
+        assert row[3] == 386#branch_id
+        assert row[4] == 9 #timezone_id
+        assert row[5] == 15  #color_id
+        assert row[6] == NewActivityName
+        assert row[7] == NewActivityDesription
+        assert row[8] == NewActivityWhatKnow
+        assert row[9] == NewActivityWhatBring
+        assert row[10] == NewActivityWhatIncluded
+        assert row[11] == NewActivityCancellationPolicy
+        assert row[12] == NewActivityURL
+        assert row[14] == 1#Firstsalecloseevent
+        assert row[15] == 0  # StopBookingNoSales
+        assert row[16] == 90  # StopBookingSold
+        assert row[17] == 1  # StopBookingMidBefore
+        assert (int(row[19])) == NewActivitySellOutNumber
+        assert row[20] == int(NewActivityNotmetAlert)
+        assert row[21] == 135 #Duration
+        assert row[22] == int(NewActivityMinTickets)
+        assert row[23] == int(NewActivityMaxTickets)
+        assert (int(row[25])) == int(NewActivitySalesTax)
+        assert row[27] == int(NewActivityStarsReviewNumber)
+        assert row[28] == NewActivityURL
+        assert row[32] == False #GuideUponSellout
+        assert row[33]==1 #ActivityStatus
+        assert row[36] == 1 #Tickets Minimum Enforce
+        assert row[37] == 1  # Viator
+        assert row[39] == 1  # 2-step Check In
 
     def test_83(self):
         page=ActivityHubPage()
@@ -238,7 +273,8 @@ class Test_GODO82_83_84(BaseTest):
         page.ticket_maximum.send_keys(NewActivityMaxTickets )
         page.sell_out_alert.click()
         select = Select(page.sell_out_alert)
-        NewActivitySellOut = "90%"
+        NewActivitySellOutNumber = 90
+        NewActivitySellOut = str(NewActivitySellOutNumber) + '%'
         select.select_by_visible_text(NewActivitySellOut)
         page.alert_guide_upon_sellout.click()
         select = Select(page.alert_guide_upon_sellout)
@@ -279,7 +315,8 @@ class Test_GODO82_83_84(BaseTest):
         page.what_bring.clear()
         page.what_bring.send_keys(NewActivityWhatBring )
         select = Select(page.review_redirect)
-        NewActivityStarsReview = "4 Stars"
+        NewActivityStarsReviewNumber = 4
+        NewActivityStarsReview = str(str(NewActivityStarsReviewNumber)+' Stars')
         select.select_by_visible_text(NewActivityStarsReview)
         page.review_website.clear()
         page.review_website.send_keys(NewActivityURL)
@@ -341,6 +378,40 @@ class Test_GODO82_83_84(BaseTest):
         select = Select(page.review_redirect)
         assert select.first_selected_option.text == NewActivityStarsReview
         assert page.review_website.get_attribute('value') == NewActivityURL
+        cnxn = pyodbc.connect(
+            'DRIVER={ODBC Driver 17 for SQL Server};SERVER=' + server + ';DATABASE=' + database + ';UID=' + username + ';PWD=' + password)#STEP8
+        cursor = cnxn.cursor()
+        cursor.execute("SELECT TOP 1 * FROM activity ORDER BY activity_id DESC")
+        row = cursor.fetchone()
+        assert row[1] == 68#company id
+        assert row[2] == 20#location_id
+        assert row[3] == 524#branch_id
+        assert row[4] == 6 #timezone_id
+        assert row[5] == 3  #color_id
+        assert row[6] == NewActivityName
+        assert row[7] == NewActivityDesription
+        assert row[8] == NewActivityWhatKnow
+        assert row[9] == NewActivityWhatBring
+        assert row[10] == NewActivityWhatIncluded
+        assert row[11] == NewActivityCancellationPolicy
+        assert row[12] == NewActivityURL
+        assert row[14] == 0#Firstsalecloseevent
+        assert row[15] == int(NewActivityStopbookingNoSales)  # StopBookingNoSales
+        assert row[16] == 120  # StopBookingSold
+        assert row[17] == 0  # StopBookingMidBefore
+        assert (int(row[19])) == NewActivitySellOutNumber
+        assert row[20] == int(NewActivityNotmetAlert)
+        assert row[21] == 1665 #Duration
+        assert row[22] == int(NewActivityMinTickets)
+        assert row[23] == int(NewActivityMaxTickets)
+        assert (int(row[25])) == int(NewActivitySalesTax)
+        assert row[27] == int(NewActivityStarsReviewNumber)
+        assert row[28] == NewActivityURL
+        assert row[32] == True #GuideUponSellout
+        assert row[33]==0 #ActivityStatus
+        assert row[36] == 0 #Tickets Minimum Enforce
+        assert row[37] == 0  # Viator
+        assert row[39] == 0  # 2-step Check In
 
     def test_84(self):
         page = ActivityHubPage()
@@ -561,3 +632,37 @@ class Test_GODO82_83_84(BaseTest):
         assert page.switcher_minimum_enforce.get_attribute("outerHTML") == switcher_OFF
         select = Select(page.first_ticket_viator)
         assert select.first_selected_option.text == OldActivityFirstViatorType
+        cnxn = pyodbc.connect(
+            'DRIVER={ODBC Driver 17 for SQL Server};SERVER=' + server + ';DATABASE=' + database + ';UID=' + username + ';PWD=' + password)#STEP8
+        cursor = cnxn.cursor()
+        cursor.execute("SELECT TOP 1 * FROM activity ORDER BY activity_id DESC")
+        row = cursor.fetchone()
+        assert row[1] == 68#company id
+        assert row[2] == 20#location_id
+        assert row[3] == 524#branch_id
+        assert row[4] == 6 #timezone_id
+        assert row[5] == 3  #color_id
+        assert row[6] == OldActivityName
+        assert row[7] == OldActivityDesription
+        assert row[8] == OldActivityWhatKnow
+        assert row[9] == OldActivityWhatBring
+        assert row[10] == OldActivityWhatIncluded
+        assert row[11] == OldActivityCancellationPolicy
+        assert row[12] == OldActivityURL
+        assert row[14] == 0#Firstsalecloseevent
+        assert row[15] == 2  # StopBookingNoSales
+        assert row[16] == 120  # StopBookingSold
+        assert row[17] == 0  # StopBookingMidBefore
+        assert (int(row[19])) == 90
+        assert row[20] == int(OldActivityNotmetAlert)
+        assert row[21] == 1665 #Duration
+        assert row[22] == int(OldActivityMinTickets)
+        assert row[23] == int(OldActivityMaxTickets)
+        assert (int(row[25])) == 15
+        assert row[27] == 4
+        assert row[28] == OldActivityURL
+        assert row[32] == True #GuideUponSellout
+        assert row[33]==0 #ActivityStatus
+        assert row[36] == 0 #Tickets Minimum Enforce
+        assert row[37] == 0  # Viator
+        assert row[39] == 0  # 2-step Check In
