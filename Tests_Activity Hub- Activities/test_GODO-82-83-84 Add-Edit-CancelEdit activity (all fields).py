@@ -100,7 +100,7 @@ class Test_GODO82_83_84(BaseTest):
         NewActivityFirstGuide = "Holly Flat"
         select.select_by_visible_text(NewActivityFirstGuide)
         select = Select(page.first_linked_activity)
-        NewActivityLinked = "AlertTest1"
+        NewActivityLinked = "test06102017"
         select.select_by_visible_text(NewActivityLinked)
         NewActivityWhatIncluded = 'Good mood.'
         page.what_included.send_keys(NewActivityWhatIncluded)
@@ -305,7 +305,7 @@ class Test_GODO82_83_84(BaseTest):
         NewActivityFirstGuide = "Joseph Super"
         select.select_by_visible_text(NewActivityFirstGuide)
         select = Select(page.first_linked_activity)
-        NewActivityLinked = "Test AT"
+        NewActivityLinked = "Test06122018"
         select.select_by_visible_text(NewActivityLinked)
         NewActivityWhatIncluded = 'Nothing.'
         page.what_included.clear()
