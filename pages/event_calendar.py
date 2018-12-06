@@ -26,6 +26,9 @@ class EventCalendarPage(BasePage):
     close_button = Find(by=By.XPATH, value="//i[@class='close-x fa fa-times pull-right visible-md visible-lg visible-xs visible-sm']")
     date_time_title = Find(by=By.XPATH, value="//span[@class='manifest-title-desc ng-binding']")
     activity_name_title = Find(by=By.XPATH, value="//span[@class='manifest-act-title ng-binding']")
+    customer_name_link = Find(by=By.XPATH, value="//a[contains(@href,'customer_information.aspx?customer_id')]")
+    email_link = Find(by=By.XPATH, value="//a[@ng-if='booking.customerEmail']")
+    phone_link = Find(by=By.XPATH, value="//a[contains(@ng-if,'booking.customerPhone1')]")
     guide_list = Find(by=By.XPATH, value="//select[@ng-model='ga.selectedItem']")
     save_guide = Find(by=By.XPATH, value="//button[@ng-click='vm.trySubmit(singleEventGuideAssignmentNoDetailsForm)']")
 
