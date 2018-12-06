@@ -12,6 +12,7 @@ from creds import admin_login, admin_password,server, database, username, passwo
 import pyodbc
 
 ActivityNameList = []
+ActivityIDList =[]
 
 class BaseTest(object):
     def teardown_class(self):
@@ -174,6 +175,7 @@ class Test_GODO82_83_84(BaseTest):
         cursor = cnxn.cursor()
         cursor.execute("SELECT TOP 1 * FROM activity ORDER BY activity_id DESC")
         row = cursor.fetchone()
+        ActivityIDList.append(row[0])
         assert row[1] == 68#company id
         assert row[2] == 47#location_id
         assert row[3] == 386#branch_id
@@ -383,6 +385,7 @@ class Test_GODO82_83_84(BaseTest):
         cursor = cnxn.cursor()
         cursor.execute("SELECT TOP 1 * FROM activity ORDER BY activity_id DESC")
         row = cursor.fetchone()
+        assert row[0] == ActivityIDList[0]
         assert row[1] == 68#company id
         assert row[2] == 20#location_id
         assert row[3] == 524#branch_id
@@ -637,6 +640,7 @@ class Test_GODO82_83_84(BaseTest):
         cursor = cnxn.cursor()
         cursor.execute("SELECT TOP 1 * FROM activity ORDER BY activity_id DESC")
         row = cursor.fetchone()
+        assert row[0] == ActivityIDList[0]
         assert row[1] == 68#company id
         assert row[2] == 20#location_id
         assert row[3] == 524#branch_id
