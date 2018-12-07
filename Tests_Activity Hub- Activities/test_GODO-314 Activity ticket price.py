@@ -21,7 +21,7 @@ class Test_GODO314(BaseTest):
         page.button.click()
         page=ActivityHubPage()
         page.open()
-        activity_partnames = ('AutoTest', 'test1', '3110', '25102017', 'TESTEDIT', 'REGRESSION', 'Regr')
+        activity_partnames = ('test1', '3110', '25102017', 'TESTEDIT', 'REGRESSION', 'Regr')
         activity_partname = random.choice(activity_partnames)
         page.search_activity_field.send_keys(activity_partname)
         time.sleep(5)
