@@ -31,6 +31,13 @@ class CustomerListPage(BasePage):
     city_info = Find(by=By.XPATH, value="//a[@editable-text='vm.customer.city']")
     state_info = Find(by=By.XPATH, value="//a[@editable-text='vm.customer.state']")
     zip_info = Find(by=By.XPATH, value="//a[@editable-text='vm.customer.zipcode']")
+    timeline_tickets_title = Find(by=By.XPATH, value="//*[@id='actions']/section/div[1]/div/h5")
+    timeline_event = Find(by=By.XPATH, value="//a[@class='dateLinkStyle']")
+    timeline_tickets = Find(by=By.XPATH, value="//a[contains(@href,'customerEvent_charge.aspx?customerEvent_id')]")
+    timeline_email_title = Find(by=By.XPATH, value="//*[@id='actions']/section/div[2]/div/h5")
+    activities_tab_link = Find(by=By.XPATH, value="//a[@href='#activities']")
+    activities_tab_title = Find(by=By.XPATH, value="//*[@id='activities']/div/h5/a")
+    activities_tickets = Find(by=By.XPATH, value="//p[@class='tab-pane-desc']")
 
 
 
