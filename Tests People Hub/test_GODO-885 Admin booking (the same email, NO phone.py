@@ -54,7 +54,7 @@ class Test_GODO885(BaseTest):
         time.sleep(5)
         page.datepicker_next_month.click()
         time.sleep(5)
-        EventDate = str(random.randint(2, 28)) #STEP4
+        EventDate = str(random.randint(2, 27)) #STEP4
         for i in range(0, len(page.dates)):
             if page.dates[i].get_attribute("textContent") == EventDate:
                 page.dates[i].click()
@@ -169,7 +169,7 @@ class Test_GODO885(BaseTest):
         time.sleep(5)
         page.datepicker_next_month.click()
         time.sleep(5)
-        EventDate2 = str(random.randint(2, 28))  # STEP18
+        EventDate2 = str(int(EventDate)+1)  # STEP18
         for i in range(0, len(page.dates)):
             if page.dates[i].get_attribute("textContent") == EventDate2:
                 page.dates[i].click()
@@ -296,22 +296,3 @@ class Test_GODO885(BaseTest):
         assert row[11] == None  # customer_phone_2
         assert row[12] == NewEmail
         assert row[17] == NewEmail  # CustomerKey
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
