@@ -48,7 +48,7 @@ class Test_GODO880(BaseTest):
         time.sleep(5)
         page.datepicker_next_month.click()
         time.sleep(5)
-        EventDate = str(random.randint(2, 30)) #STEP4
+        EventDate = str(random.randint(2, 28)) #STEP4
         for i in range(0, len(page.dates)):
             if page.dates[i].get_attribute("textContent") == EventDate:
                 page.dates[i].click()
