@@ -53,6 +53,7 @@ class AddEditActivityPage(BasePage):
     remove_second_linked_activity = Find(by=By.XPATH, value="//h2[text()='Linked Activities']/..//div[@ng-repeat='ga in vm.items track by $index'][2]//button[@ng-click='vm.removeItem($index)']")
     remove_third_linked_activity = Find(by=By.XPATH, value="//h2[text()='Linked Activities']/..//div[@ng-repeat='ga in vm.items track by $index'][3]//button[@ng-click='vm.removeItem($index)']")
     remove_fourth_linked_activity = Find(by=By.XPATH, value="//h2[text()='Linked Activities']/..//div[@ng-repeat='ga in vm.items track by $index'][4]//button[@ng-click='vm.removeItem($index)']")
+    tooltip_linked_activity = Find(by=By.XPATH, value="//h2[text()='Linked Activities']/..//i[@data-toggle='tooltip']")
     what_included = Find(by=By.XPATH, value="//textarea[@id='activityIncluded']")
     what_know = Find(by=By.XPATH, value="//textarea[@id='activityKnow']")
     what_bring = Find(by=By.XPATH, value="//textarea[@id='activityBring']")
