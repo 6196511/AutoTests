@@ -553,7 +553,7 @@ class Test_GODO82_83_84(BaseTest):
         NewActivityFirstGuide = "Peter Petrov"
         select.select_by_visible_text(NewActivityFirstGuide)
         select = Select(page.first_linked_activity)
-        NewActivityLinked = "Test MT"
+        NewActivityLinked = "Test MT Time"
         select.select_by_visible_text(NewActivityLinked)
         NewActivityWhatIncluded = 'All INCLUDED.'
         page.what_included.clear()
