@@ -31,6 +31,6 @@ class EventCalendarPage(BasePage):
     phone_link = Find(by=By.XPATH, value="//a[contains(@ng-if,'booking.customerPhone1')]")
     guide_list = Find(by=By.XPATH, value="//select[@ng-model='ga.selectedItem']")
     save_guide = Find(by=By.XPATH, value="//button[@ng-click='vm.trySubmit(singleEventGuideAssignmentNoDetailsForm)']")
-
+    event_status = Find(by=By.XPATH, value="//span[@ng-bind='manifest.getEventStatusName(manifest.selectedEvent.status)']")
 
 
