@@ -194,3 +194,74 @@ class Test_GODO510_512(BaseTest):
         assert select.first_selected_option.text == Activity2
         select = Select(page.third_linked_activity)
         assert select.first_selected_option.text == Activity3
+
+    def test_519(self):
+        page=ActivityHubPage()#STEP1
+        page.open()
+        page.search_activity_field.send_keys(Activity3)#STEP2
+        time.sleep(5)
+        page.activity_actions.click()
+        page.edit_activity.click()
+        page = AddEditActivityPage()
+        time.sleep(15)
+        page.remove_third_linked_activity.click()#STEP3
+        page.remove_second_linked_activity.click()
+        page.remove_first_linked_activity.click()
+        assert page.is_element_present('third_linked_activity')==False
+        assert page.is_element_present('second_linked_activity') == False
+        select = Select(page.first_linked_activity)
+        assert select.first_selected_option.text == '-- Select Activity --'
+        page.save_button.click()#STEP4
+        page = ActivityHubPage()
+        page.search_activity_field.send_keys(Activity1)  # STEP5
+        time.sleep(5)
+        page.activity_actions.click()
+        page.edit_activity.click()
+        page = AddEditActivityPage()
+        time.sleep(15)
+        select = Select(page.first_linked_activity)
+        assert select.first_selected_option.text == Activity2
+        select = Select(page.second_linked_activity)
+        assert select.first_selected_option.text == Activity4
+        select = Select(page.third_linked_activity)
+        assert select.first_selected_option.text == '-- Select Activity --'
+        page.cancel_button.click()  # STEP6
+        page = ActivityHubPage()
+        page.search_activity_field.send_keys(Activity2)  # STEP7
+        time.sleep(5)
+        page.activity_actions.click()
+        page.edit_activity.click()
+        page = AddEditActivityPage()
+        time.sleep(15)
+        select = Select(page.first_linked_activity)
+        assert select.first_selected_option.text == Activity1
+        select = Select(page.second_linked_activity)
+        assert select.first_selected_option.text == Activity4
+        select = Select(page.third_linked_activity)
+        assert select.first_selected_option.text == '-- Select Activity --'
+        page.cancel_button.click()  # STEP8
+        page = ActivityHubPage()
+        page.search_activity_field.send_keys(Activity3)  # STEP9
+        time.sleep(5)
+        page.activity_actions.click()
+        page.edit_activity.click()
+        page = AddEditActivityPage()
+        time.sleep(15)
+        select = Select(page.first_linked_activity)
+        assert select.first_selected_option.text == '-- Select Activity --'
+        assert page.is_element_present('second_linked_activity')==False
+        assert page.is_element_present('third_linked_activity') == False
+        page.cancel_button.click()  # STEP10
+        page = ActivityHubPage()
+        page.search_activity_field.send_keys(Activity4)  # STEP7
+        time.sleep(5)
+        page.activity_actions.click()
+        page.edit_activity.click()
+        page = AddEditActivityPage()
+        time.sleep(15)
+        select = Select(page.first_linked_activity)
+        assert select.first_selected_option.text == Activity1
+        select = Select(page.second_linked_activity)
+        assert select.first_selected_option.text == Activity2
+        select = Select(page.third_linked_activity)
+        assert select.first_selected_option.text == '-- Select Activity --'
