@@ -17,6 +17,8 @@ class EventCalendarPage(BasePage):
     date_picker = Find(by=By.XPATH, value="//i[@ng-model='calendar.customDate']")
     date_picker_next = Find(by=By.XPATH, value="//i[@class='glyphicon glyphicon-chevron-right']")
     day_button = Find(by=By.XPATH, value="//a[@ng-click='$event.preventDefault(); calendar.setDayView()']")
+    week_button = Find(by=By.XPATH, value="//a[@ng-click='$event.preventDefault(); calendar.setWeekView()']")
+    month_button = Find(by=By.XPATH, value="//a[@ng-click='$event.preventDefault(); calendar.setMonthView()']")
     day_date = Find(by=By.XPATH, value="//h3[@class='col-sm-5 col-md-4 cal_header ng-binding']")
     day_slots = Finds(EventTicket, By.XPATH, value="//div[@class='col-xs-12 cal_day_event']")
     days_date_picker = Finds(by=By.XPATH, value="//span[@class='ng-binding']")
@@ -32,5 +34,7 @@ class EventCalendarPage(BasePage):
     guide_list = Find(by=By.XPATH, value="//select[@ng-model='ga.selectedItem']")
     save_guide = Find(by=By.XPATH, value="//button[@ng-click='vm.trySubmit(singleEventGuideAssignmentNoDetailsForm)']")
     event_status = Find(by=By.XPATH, value="//span[@ng-bind='manifest.getEventStatusName(manifest.selectedEvent.status)']")
+    add_booking_button = Find(by=By.XPATH, value="//button[@ng-click='manifest.addBooking(manifest.eventId)']")
+    manifest_title = Find(by=By.XPATH, value="//div[@class='manifest-title-desc ng-binding']")
 
 
