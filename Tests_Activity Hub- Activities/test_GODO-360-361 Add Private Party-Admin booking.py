@@ -4,6 +4,8 @@ from Login import loginpage
 from selenium.webdriver.support.ui import Select
 from activity_hub_page import ActivityHubPage
 from activity_page import AddEditActivityPage, switcher_OFF
+from event_calendar import EventCalendarPage
+from admin_booking import AdminBookingPage
 import time
 from event_schelduler import EventScheldulerPage
 from creds import admin_login, admin_password,server, database, username, password
@@ -15,13 +17,15 @@ from dateutil.relativedelta import relativedelta
 from selenium.webdriver.support.wait import WebDriverWait
 import pyodbc
 
-ActivityNameList =[]
+ActivityNameList=[]
+DateList=[]
+TimeList=[]
 
 class BaseTest(object):
     def teardown_class(self):
         close_driver()
 
-class Test_GODO360(BaseTest):
+class Test_GODO360_361(BaseTest):
 
     def test_360(self):
         get_driver().maximize_window()
@@ -140,6 +144,9 @@ class Test_GODO360(BaseTest):
         page.next_button_calendar_begin.click()
         NewDateBegin = random.randint(8, 20)
         nextMonthDate = datetime.date.today() + relativedelta(months=1)
+        NewFullDateBegin = (nextMonthDate.strftime("%B") + ' ' + ''.join(str(NewDateBegin)))
+        DateList.append(NewDateBegin)
+        nextMonthDate = datetime.date.today() + relativedelta(months=1)
         for i in range(0, len(page.date_calendar)):
             if i + 1 == NewDateBegin:
                 page.date_calendar[i].click()
@@ -148,6 +155,8 @@ class Test_GODO360(BaseTest):
             break
         time.sleep(5)
         NewDateEnd = NewDateBegin + 7
+        DateList.append(NewDateEnd)
+        NewFullDateEnd = (nextMonthDate.strftime("%B") + ' ' + ''.join(str(NewDateEnd)))
         page.rep_end_field.click()
         page.next_button_calendar_enddate_rep.click()
         time.sleep(5)
@@ -169,6 +178,8 @@ class Test_GODO360(BaseTest):
         select = Select(page.rep_minute)
         select.select_by_visible_text(NewTimeMinutes)
         NewTimeAMPM = random.choice(('AM','PM'))
+        timeEvent = (NewTimeHours + ':' + ''.join(NewTimeMinutes) + ' ' + ''.join(NewTimeAMPM))
+        TimeList.append(timeEvent)
         select = Select(page.rep_ampm)
         select.select_by_visible_text(NewTimeAMPM)
         page.rep_add.click() #STEP15
@@ -178,3 +189,161 @@ class Test_GODO360(BaseTest):
         time.sleep(5)
         page=ActivityHubPage()
         assert get_driver().current_url==page.url
+
+    def test_361(self):
+        page = EventCalendarPage()
+        page.open()
+        time.sleep(2)
+        page.hide_events.click()
+        time.sleep(2)
+        select = Select(page.activity_name)
+        select.select_by_visible_text(ActivityNameList[0])
+        page.date_picker.click()
+        time.sleep(2)
+        page.date_picker_next.click()
+        EventDate = str(random.choice(DateList))
+        for i in range(0, len(page.days_date_picker)):
+            if page.days_date_picker[i].get_attribute("textContent") == EventDate:
+                page.days_date_picker[i].click()
+            else:
+                continue
+            break
+        page.day_button.click()
+        time.sleep(6)
+        nextMonthDate = datetime.date.today() + relativedelta(months=1)
+        FullEventDate = (nextMonthDate.strftime("%B") + ' ' + ''.join(EventDate))
+        assert str(FullEventDate) in page.date_header.get_attribute("textContent")
+        for ticket in page.day_slots:  # STEP25
+            for i in range(0, len(page.day_slots)):
+                if TimeList[0] in ticket.day_slot_time[i].get_attribute('textContent'):
+                    page.day_slots[i].click()
+                else:
+                    continue
+            break
+        time.sleep(6)
+        assert FullEventDate in page.date_time_title.get_attribute('textContent')
+        assert ActivityNameList[0] == page.activity_name_title.get_attribute('textContent')
+        assert TimeList[0] in page.date_time_title.get_attribute('textContent')
+        assert page.event_status.get_attribute("textContent") =='Pending' #STEP4
+        assert 'Ticket Sold: 0' in page.manifest_title.get_attribute("innerText")
+        page.add_booking_button.click()#STEP5
+        time.sleep(5)
+        page = AdminBookingPage()
+        time.sleep(5)
+        page.first_tickets_type.send_keys('1') #STEP6
+        page.enter_customer_information_button.click()#STEP7
+        time.sleep(5)
+        NewFirstName = 'James'
+        page.first_name.send_keys(NewFirstName)  # STEP8
+        NewLastName = 'James'
+        NewFullName = NewFirstName + ' ' + ''.join(NewLastName)
+        page.last_name.send_keys(NewLastName)
+        NewEmail = ('James@mailinator.com')
+        page.email_address.send_keys(NewEmail)
+        time.sleep(10)
+        page.complete_booking_button.click()
+        time.sleep(5)
+        wait = WebDriverWait(get_driver(), 15)
+        wait.until(lambda driver: page.is_element_present('payment_type_list'))
+        select = Select(page.payment_type_list)
+        PaymentType = "Cash"  # STEP9
+        select.select_by_visible_text(PaymentType)
+        page.cash_recieved.click()
+        page.submit_booking_button.click()
+        time.sleep(5)
+        assert page.final_alert.get_attribute("textContent") =='Booking Successful!'
+        page.final_alert_ok_button.click()# STEP10
+        page = EventCalendarPage() #STEP11
+        page.open()
+        time.sleep(2)
+        page.hide_events.click()
+        time.sleep(2)
+        select = Select(page.activity_name)
+        select.select_by_visible_text(ActivityNameList[0])
+        page.date_picker.click()
+        time.sleep(2)
+        page.date_picker_next.click()
+        for i in range(0, len(page.days_date_picker)):
+            if page.days_date_picker[i].get_attribute("textContent") == EventDate:
+                page.days_date_picker[i].click()
+            else:
+                continue
+            break
+        page.day_button.click()
+        time.sleep(6)
+        assert str(FullEventDate) in page.date_header.get_attribute("textContent")
+        for ticket in page.day_slots:  # STEP25
+            for i in range(0, len(page.day_slots)):
+                if TimeList[0] in ticket.day_slot_time[i].get_attribute('textContent'):
+                    page.day_slots[i].click()
+                else:
+                    continue
+            break
+        time.sleep(6)
+        assert FullEventDate in page.date_time_title.get_attribute('textContent')
+        assert ActivityNameList[0] == page.activity_name_title.get_attribute('textContent')
+        assert TimeList[0] in page.date_time_title.get_attribute('textContent')
+        assert page.event_status.get_attribute("textContent") == 'Pending'
+        assert 'Ticket Sold: 1' in page.manifest_title.get_attribute("innerText")
+        assert page.customer_name_link.get_attribute('textContent') == NewFullName
+        assert page.email_link.get_attribute('textContent') == NewEmail
+        page.add_booking_button.click()#STEP12
+        page = AdminBookingPage()
+        time.sleep(5)
+        page.first_tickets_type.send_keys('1') #STEP13
+        page.enter_customer_information_button.click()#STEP14
+        time.sleep(5)
+        NewFirstName = 'James'
+        page.first_name.send_keys(NewFirstName)  # STEP15
+        NewLastName = 'James'
+        NewFullName = NewFirstName + ' ' + ''.join(NewLastName)
+        page.last_name.send_keys(NewLastName)
+        NewEmail = ('James@mailinator.com')
+        page.email_address.send_keys(NewEmail)
+        time.sleep(10)
+        page.complete_booking_button.click()
+        time.sleep(5)
+        wait = WebDriverWait(get_driver(), 15)
+        wait.until(lambda driver: page.is_element_present('payment_type_list'))
+        select = Select(page.payment_type_list)
+        PaymentType = "Cash"  # STEP16
+        select.select_by_visible_text(PaymentType)
+        page.cash_recieved.click()
+        page.submit_booking_button.click()
+        time.sleep(5)
+        assert page.final_alert.get_attribute("textContent") =='Booking Successful!'
+        page.final_alert_ok_button.click()# STEP17
+        page = EventCalendarPage() #STEP18
+        page.open()
+        time.sleep(2)
+        page.hide_events.click()
+        time.sleep(2)
+        select = Select(page.activity_name)
+        select.select_by_visible_text(ActivityNameList[0])
+        page.date_picker.click()
+        time.sleep(2)
+        page.date_picker_next.click()
+        for i in range(0, len(page.days_date_picker)):
+            if page.days_date_picker[i].get_attribute("textContent") == EventDate:
+                page.days_date_picker[i].click()
+            else:
+                continue
+            break
+        page.day_button.click()
+        time.sleep(6)
+        assert str(FullEventDate) in page.date_header.get_attribute("textContent")
+        for ticket in page.day_slots:
+            for i in range(0, len(page.day_slots)):
+                if TimeList[0] in ticket.day_slot_time[i].get_attribute('textContent'):
+                    page.day_slots[i].click()
+                else:
+                    continue
+            break
+        time.sleep(6)
+        assert FullEventDate in page.date_time_title.get_attribute('textContent')
+        assert ActivityNameList[0] == page.activity_name_title.get_attribute('textContent')
+        assert TimeList[0] in page.date_time_title.get_attribute('textContent')
+        assert page.event_status.get_attribute("textContent") == 'Pending'
+        assert 'Tickets Sold: 2' in page.manifest_title.get_attribute("innerText")
+        assert page.customer_name_link.get_attribute('textContent') == NewFullName
+        assert page.email_link.get_attribute('textContent') == NewEmail
