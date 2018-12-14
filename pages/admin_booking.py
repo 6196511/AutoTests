@@ -43,6 +43,7 @@ class AdminBookingPage(BasePage):
     addons_list = Finds(AddonsList, by=By.XPATH, value="//div[@name='addonSelectionForm']//li")
     add_to_cart = Find(by=By.XPATH, value="//div[@name='addonSelectionForm']//button[text()='Add To Cart']")
     cancel_addon = Find(by=By.XPATH, value="//div[@name='addonSelectionForm']//button[text()='Cancel']")
+    alert_cancel_button = Find(by=By.XPATH, value="//div[@class='modal-footer']/button[text()='Cancel']")
     # Customer Info tab.
 
     first_name = Find(by=By.XPATH, value="//input[@placeholder='First Name']")
