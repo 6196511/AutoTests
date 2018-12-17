@@ -21,6 +21,7 @@ class EventCalendarPage(BasePage):
     month_button = Find(by=By.XPATH, value="//a[@ng-click='$event.preventDefault(); calendar.setMonthView()']")
     day_date = Find(by=By.XPATH, value="//h3[@class='col-sm-5 col-md-4 cal_header ng-binding']")
     day_slots = Finds(EventTicket, By.XPATH, value="//div[contains(@class,'cal_day_event')]")
+    event_tickets = Finds(by=By.XPATH, value="//div[@class='cal_week_event ng-scope']")
     days_date_picker = Finds(by=By.XPATH, value="//span[@class='ng-binding']")
     time = Finds(by=By.XPATH, value="//div[@class='cal_event_tickets_avail ng-binding']")
     date_header = Find (by=By.XPATH, value="//span[@class='cal-header-text ng-binding']")
