@@ -20,7 +20,7 @@ class EventCalendarPage(BasePage):
     week_button = Find(by=By.XPATH, value="//a[@ng-click='$event.preventDefault(); calendar.setWeekView()']")
     month_button = Find(by=By.XPATH, value="//a[@ng-click='$event.preventDefault(); calendar.setMonthView()']")
     day_date = Find(by=By.XPATH, value="//h3[@class='col-sm-5 col-md-4 cal_header ng-binding']")
-    day_slots = Finds(EventTicket, By.XPATH, value="//div[@class='col-xs-12 cal_day_event']")
+    day_slots = Finds(EventTicket, By.XPATH, value="//div[contains(@class,'cal_day_event')]")
     days_date_picker = Finds(by=By.XPATH, value="//span[@class='ng-binding']")
     time = Finds(by=By.XPATH, value="//div[@class='cal_event_tickets_avail ng-binding']")
     date_header = Find (by=By.XPATH, value="//span[@class='cal-header-text ng-binding']")
@@ -36,5 +36,6 @@ class EventCalendarPage(BasePage):
     event_status = Find(by=By.XPATH, value="//span[@ng-bind='manifest.getEventStatusName(manifest.selectedEvent.status)']")
     add_booking_button = Find(by=By.XPATH, value="//button[@ng-click='manifest.addBooking(manifest.eventId)']")
     manifest_title = Find(by=By.XPATH, value="//div[@class='manifest-title-desc ng-binding']")
+
 
 
