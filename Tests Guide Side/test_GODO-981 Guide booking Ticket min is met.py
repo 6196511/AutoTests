@@ -17,8 +17,7 @@ EventHeaderDateTimeList =[]
 
 class BaseTest(object):
     def teardown_class(self):
-        pass
-        # close_driver()
+        close_driver()
 
 class Test_GODO981(BaseTest):
     def test_981(self):
