@@ -39,6 +39,7 @@ class Test_GODO864(BaseTest):
         else:
             if page.switcher_minimum_enforce.get_attribute("outerHTML") == switcher_OFF:
                 page.switcher_minimum_enforce.click()
+                time.sleep(2)
                 assert page.switcher_minimum_enforce.get_attribute("outerHTML") != switcher_OFF#Tickets Minimum Enforce
             if page.ticket_minimum.get_attribute('value')!='3':
                 page.ticket_minimum.clear()
