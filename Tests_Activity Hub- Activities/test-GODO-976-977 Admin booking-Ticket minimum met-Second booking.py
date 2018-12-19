@@ -38,17 +38,19 @@ class Test_GODO976_977(BaseTest):
         page.edit_activity.click()
         page = AddEditActivityPage()
         time.sleep(15)
-        if page.switcher_minimum_enforce.get_attribute("outerHTML") != switcher_OFF and page.ticket_minimum =='3' and page.switchers2[0].get_attribute("outerHTML")== switcher_OFF: #First Sale Closes Event:
+        if page.switcher_minimum_enforce.get_attribute("outerHTML") != switcher_OFF and page.ticket_minimum.get_attribute('value') =='3' and page.switchers2[0].get_attribute("outerHTML")== switcher_OFF: #First Sale Closes Event:
             page.cancel_button.click()
         else:
             if page.switcher_minimum_enforce.get_attribute("outerHTML") == switcher_OFF:
                 page.switcher_minimum_enforce.click()
+                time.sleep(2)
                 assert page.switcher_minimum_enforce.get_attribute("outerHTML") != switcher_OFF#Tickets Minimum Enforce
-            if page.ticket_minimum!='3':
+            if page.ticket_minimum.get_attribute('value')!='3':
                 page.ticket_minimum.clear()
                 page.ticket_minimum.send_keys('3')
             if page.switchers2[0].get_attribute("outerHTML")!= switcher_OFF:
                 page.switchers2[0].click()
+                time.sleep(2)
                 assert page.switchers2[0].get_attribute("outerHTML")== switcher_OFF#First Sale Closes Event:
             page.save_button.click()
         time.sleep(5)
