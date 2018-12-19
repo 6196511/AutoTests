@@ -30,9 +30,13 @@ class GuidePage(BasePage):
     next_month = Find(by=By.XPATH, value="//button[@class='btn btn-default btn-sm pull-right uib-right']")
     profile_dropdown = Find(by=By.XPATH, value='//a[@data-toggle="dropdown"]')
     logout_button = Find(by=By.XPATH, value='//*[@id="wrapper"]/div[2]/div[2]/div/div/ul/li[3]/ul/li[5]/a')
+    add_booking = Find(by=By.XPATH, value="//button[contains(@ng-click,'drawer.open')]")
+    event_tickets = Finds(by=By.XPATH, value="//div[@class='cal_week_event ng-scope']")
+    search_field = Find(by=By.XPATH, value='//input[@ng-change="calendar.search()"]')
+    customer_tickets = Find(by=By.XPATH, value='//*[@id="dtEventDetails"]/tbody/tr[1]/td[2]/b')
 
 class GuideRequestOffPage (BasePage):
-    url = 'https://dev.godo.io/g_requestOff.aspx'
+    url = 'https://ci004.godo.io/g_requestOff.aspx'
     company_drop_down = Find(by=By.XPATH, value="//select[@id='guideCompany_id']")
     start_date = Find(by=By.XPATH, value="//input[@id='start']")
     calendar_next_month = Finds(by=By.XPATH, value="//th[@class='next']")
@@ -45,4 +49,5 @@ class GuideRequestOffPage (BasePage):
     pop_up_notification = Find(by=By.XPATH, value="//div[@class='bootbox-body']")
     pop_up_OK = Find(by=By.XPATH, value="/html/body/div[5]/div/div/div[2]/button")
     request_entry = Finds(by=By.XPATH, value="//tr[@class='gradeX']")
+
 
