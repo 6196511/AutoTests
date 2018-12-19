@@ -145,17 +145,15 @@ class Test_GODO982(BaseTest):
         time.sleep(5)
         page.event_tickets[0].click()
         for i in range(0, len(page.event_tickets)):#STEP7
-            if '(3)' not in page.customer_tickets.get_attribute("innerText"):
+            if '(3)' in page.customer_tickets.get_attribute("innerText") and page.date_time_title.get_attribute('textContent') == EventHeaderDateTimeList[0]:
+                time.sleep(5)
+                page.add_booking.click()
+            else:
                 get_driver().back()
                 time.sleep(5)
                 page.event_tickets[i + 1].click()
                 time.sleep(5)
                 continue
-            else:
-                time.sleep(7)
-                assert page.date_time_title.get_attribute('textContent') == EventHeaderDateTimeList[0]
-                page.add_booking.click()
-            break
         time.sleep(5)
         page.add_booking.click()#STEP8
         page = AdminBookingPage()
