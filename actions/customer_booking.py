@@ -8,13 +8,17 @@ from pages.customer_booking import CustomerBookingPage
 
 class CustomerActions:
 
-    def __init__(self, app):
+    def __init__(self, app, domain):
         self.driver = app.driver
         self.booking = None
+        self.domain = domain
+        self.url = ""
 
     def open_page(self, tickets):
-        self.booking = CustomerBookingPage(driver=self.driver, url=tickets.URL_tickets)
+        self.url = self.domain + tickets.URL_tickets
+        self.booking = CustomerBookingPage(driver=self.driver, url=self.url)
         self.booking.open()
+        self.booking.close_alert()
 
     def select_tickets_buttons(self, tickets):
         if tickets.first_tickets_type is not None:
@@ -49,7 +53,8 @@ class CustomerActions:
     def select_date(self, tickets):
         wait(lambda: self.booking.calendar.is_displayed(), )
         self.booking._driver.execute_script(
-            "$('#datepicker').datepicker('setDate', new Date(%s, %s-1, %s))" % (tickets.year, tickets.month, tickets.day))
+            "$('#datepicker').datepicker('setDate', new Date(%s, %s-1, %s))" % (tickets.year, tickets.month,
+                                                                                tickets.day))
         self.booking.click_date(tickets.day)
         self.booking.next_button_2.click()
 
@@ -59,8 +64,7 @@ class CustomerActions:
         self.booking.next_button_3.click()
 
     def time_is_unavailable(self, time):
-        print(self.booking.get_time_list())
-        assert time not in self.booking.get_time_list(), self.booking.get_time_list()
+        assert time not in self.booking.get_time_list()
 
     def fill_info(self, tickets):
         self.booking.first_name_input.send_keys(tickets.first_name)
@@ -71,13 +75,11 @@ class CustomerActions:
         self.answer_questions()
         self.booking.empty_space_fourth_page.click()
         self.booking.scroll_down()
-        sleep(1)
         self.booking.next_button_4.click()
 
     def skip_addons(self):
         if self.booking.addons_present():
             wait(lambda: self.booking.next_button_5.is_displayed() and self.booking.next_button_5.is_enabled())
-            sleep(1)
             self.booking.next_button_5.click()
 
     def apply_valid_promo_code(self, tickets):
@@ -88,8 +90,8 @@ class CustomerActions:
         self.booking.promo_code_button.click()
         wait(lambda: self.booking.discount_pop_up.is_displayed(), timeout_seconds=15,
              waiting_for="discount notification.")
-        assert self.booking.discount_pop_up.text == "Your promo code (%s) was applied." % tickets.promo_code, \
-            "Wrong notification: %s" % self.booking.discount_pop_up.text
+        expected_notification = "Your promo code ({}) was applied.".format(tickets.promo_code)
+        assert expected_notification == self.booking.discount_pop_up.text
         self.booking.discount_pop_up_ok_button.click()
 
     def apply_invalid_promo_code(self, tickets):
@@ -98,59 +100,53 @@ class CustomerActions:
         self.booking.promo_code_button.click()
         wait(lambda: self.booking.discount_pop_up.is_displayed(), timeout_seconds=15,
              waiting_for="discount notification.")
-        assert self.booking.discount_pop_up.text == "The code is invalid", "Wrong notification: %s" \
-                                                                           % self.booking.discount_pop_up.text
+        assert "The code is invalid" == self.booking.discount_pop_up.text
         self.booking.discount_pop_up_ok_button.click()
 
     def redeem_gift_certificate(self, tickets):
-        sleep(2)
+        wait(lambda: len(self.booking.total_price.text) > 0, timeout_seconds=15)
         self.booking.gift_certificate_input.send_keys(tickets.gift_certificate_code)
         wait(lambda: self.booking.gift_certificate_button.is_enabled())
         self.booking.gift_certificate_button.click()
         wait(lambda: self.booking.discount_pop_up.is_displayed(), timeout_seconds=15,
              waiting_for="discount notification.")
-        assert self.booking.discount_pop_up.text == "Your gift certificate (%s) was applied." % tickets.gift_certificate_code, \
-            "Wrong notification: %s" % self.booking.discount_pop_up.text
+        expected_notification = "Your gift certificate ({}) was applied.".format(tickets.gift_certificate_code)
+        assert expected_notification == self.booking.discount_pop_up.text
         self.booking.discount_pop_up_ok_button.click()
 
     def redeem_invalid_gift_certificate(self, tickets):
-        sleep(2)
+        wait(lambda: len(self.booking.total_price.text) > 0, timeout_seconds=15)
         self.booking.gift_certificate_input.send_keys(tickets.gift_certificate_code)
         wait(lambda: self.booking.gift_certificate_button.is_enabled())
         self.booking.gift_certificate_button.click()
         wait(lambda: self.booking.discount_pop_up.is_displayed(), timeout_seconds=15,
              waiting_for="discount notification.")
-        assert self.booking.discount_pop_up.text == "This code of gift certificate (%s) is not valid. Please make" \
-            " sure you spelled the code you were given correctly." % tickets.gift_certificate_code, \
-            "Wrong notification: %s" % self.booking.discount_pop_up.text
+        expected_notification = "This code of gift certificate ({}) is not valid. Please make sure you spelled " \
+                                "the code you were given correctly.".format(tickets.gift_certificate_code)
+        assert expected_notification == self.booking.discount_pop_up.text
         self.booking.discount_pop_up_ok_button.click()
 
     def verify_payment_page(self, tickets):
         wait(lambda: len(self.booking.checkout_activity.text) > 0, timeout_seconds=15)
-        assert self.booking.checkout_activity.text == tickets.activity, self.booking.checkout_activity.text
+        assert tickets.activity == self.booking.checkout_activity.text
         month = month_name[int(tickets.month)]
-        date = "%s %s, %s" % (month, tickets.day, tickets.year)
+        date = "{} {}, {}".format(month, tickets.day, tickets.year)
         wait(lambda: self.booking.checkout_date.is_displayed())
-        assert self.booking.checkout_date.text == date, "Wrong date: %s" % self.booking.checkout_date.text
-        assert self.booking.tickets_cost.text == tickets.ticket_total, "Wrong ticket cost on the payment page! '%s'" % \
-                                                                       self.booking.tickets_cost.text
+        assert date == self.booking.checkout_date.text
+        assert tickets.ticket_total == self.booking.tickets_cost.text
         taxes_fees = float(tickets.taxes) + float(tickets.booking_fee)
-        assert self.booking.tax.text == "%.2f" % taxes_fees, "Wrong Taxes & Fees on the payment page! '%s'" % \
-                                                             self.booking.tax.text
+        assert "{:.2f}".format(taxes_fees) == self.booking.tax.text
         if tickets.discount != "0.00":
             wait(lambda: len(self.booking.checkout_discount.text) > 0, timeout_seconds=5)
-            assert self.booking.checkout_discount.text == tickets.discount, "Wrong discount on the payment page! '%s' " \
-            "but expected '%s'" % (self.booking.checkout_discount.text, tickets.discount)
-        assert self.booking.total_price.text == tickets.grand_total, "Wrong grand total on the payment page! '%s'" % \
-                                                                     self.booking.total_price.text
+            assert tickets.discount == self.booking.checkout_discount.text
+        assert tickets.grand_total == self.booking.total_price.text
 
     def submit_declined_card(self, tickets):
         self.booking.enter_cc_info(tickets.declined_card_number, tickets.card_date, tickets.card_cvc, tickets.card_zip)
         wait(lambda: self.booking.next_button_6.is_enabled())
         self.booking.next_button_6.click()
         wait(lambda: len(self.booking.payment_notification.text) > 0, timeout_seconds=100)
-        assert self.booking.payment_notification.text == "Credit card declined: please try again.",\
-            "Wrong text of the final alert: '%s'" % self.booking.payment_notification.text
+        assert "Credit card declined: please try again." == self.booking.payment_notification.text
 
     def make_payment(self, tickets):
         if tickets.payment_type is None:
@@ -173,15 +169,15 @@ class CustomerActions:
     def verify_summary_details(self, tickets):
         wait(lambda: self.booking.customer_information.is_displayed(), timeout_seconds=60,
              waiting_for="Summary Detais is displayed")
-        assert self.booking.customer_information.text == (tickets.first_name + ' ' + tickets.last_name), "Wrong customer!"
-        assert self.booking.zip_information.text == tickets.zip_code, "Wrong zip code!"
-        assert self.booking.phone_information.text == tickets.phone, "Wrong phone number!"
-        assert self.booking.email_information.text == tickets.email, "Wrong email!"
-        assert self.booking.ticket_total.text == ("$" + tickets.ticket_total), "Summary Details: Wrong ticket total!"
-        assert self.booking.booking_fee.text == ("$" + tickets.booking_fee), "Summary Details: Wrong booking fee!"
-        assert self.booking.discount.text == ("$" + tickets.discount), "Summary Details: Wrong discount!"
-        assert self.booking.tax_information.text == ("$" + tickets.taxes), "Summary Details: Wrong tax!"
-        assert self.booking.grand_total.text == ("$" + tickets.grand_total), "Summary Details: Wrong grand total!"
+        assert tickets.first_name + ' ' + tickets.last_name == self.booking.customer_information.text
+        assert tickets.zip_code == self.booking.zip_information.text
+        assert tickets.phone == self.booking.phone_information.text
+        assert tickets.email == self.booking.email_information.text
+        assert "$" + tickets.ticket_total == self.booking.ticket_total.text
+        assert "$" + tickets.booking_fee == self.booking.booking_fee.text
+        assert "$" + tickets.discount == self.booking.discount.text
+        assert "$" + tickets.taxes == self.booking.tax_information.text
+        assert "$" + tickets.grand_total == self.booking.grand_total.text
 
     def answer_questions(self):
         for input in self.booking.question_inputs:

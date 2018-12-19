@@ -19,7 +19,9 @@ class Day(WebElement):
 class CalendarPage(BasePage):
 
     days_list = Finds(Day, by=By.XPATH, value="//div[@class='cal_month_day ng-scope']")
-    without_booking = Find(by=By.XPATH, value="//input[@id='hide-without-booking']")
+    without_booking = Find(by=By.XPATH, value="//label[@for='hide-without-booking']")
+    preloader_image = Find(by=By.XPATH, value="//img[@src='/assets/images/preloader.gif']")
+    view_all_links = Finds(by=By.XPATH, value=".//a[text()='[View All]']")
 
 
 ######  Event manifest drawer.  ######
@@ -45,6 +47,7 @@ class EventManifest(BasePage):
     event_title = Find(by=By.XPATH, value="//span[@class='manifest-act-title ng-binding']")
     event_date = Find(by=By.XPATH, value="//span[@class='manifest-title-desc ng-binding'][1]")
     event_status = Find(by=By.XPATH, value="//span[@class='manifest-title-desc']/span")
+    loader_widget = Find(by=By.XPATH, value="//div[@ng-show='vm.isLoading']")
 
     actions_button = Find(by=By.XPATH, value="//button[contains(text(), 'Actions')]")
     edit_event = Find(by=By.XPATH, value="//a[text()='Edit Event']")
@@ -79,7 +82,7 @@ class CustomerEventPage(BasePage):
     name = Find(by=By.XPATH, value="//div[@id='customereventchargeinfohtml']/div[1]/a")
     tickets_table = Finds(TicketsTable, by=By.XPATH, value="//h4[text()='Ticket Information']/../table[1]/tbody/tr")
     ticket_total = Find(by=By.XPATH, value="//td[text()='Ticket Total:']/../td[2]")
-    addon = Find(by=By.XPATH, value="//td[text()='Add On(s) Price:']/../td[2]")
+    addon = Find(by=By.XPATH, value="//td[text()='Add-On(s) Price:']/../td[2]")
     discount = Find(by=By.XPATH, value="//td[text()='Discount:']/../td[2]")
     gift_certificate = Find(by=By.XPATH, value="//td[text()='Gift certificate applied:']/../td[2]")
     booking_fee = Find(by=By.XPATH, value="//td[text()='Booking Fee']/../td[2]")

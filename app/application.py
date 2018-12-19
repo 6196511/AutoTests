@@ -1,22 +1,23 @@
 import webium.settings
 from selenium import webdriver
 
-from actions.admin_booking import AdminBooking
-from actions.certificate import CertificateActions
 from actions.activity_hub import ActivityHub
-from actions.people_hub import PeopleHub
-from actions.groupons import Groupons
 from actions.addons import Addons
-from app.session import SessionHelper
+from actions.admin_booking import AdminBooking
+from actions.calendar import Calendar
+from actions.certificate import CertificateActions
 from actions.customer_booking import CustomerActions
 from actions.customer_certificate import CustomerCertActions
-from actions.calendar import Calendar
+from actions.groupons import Groupons
+from actions.people_hub import PeopleHub
 from actions.rain_checks import RainChecks
+from actions.waiting import Waiting
+from app.session import SessionHelper
 
 
 class Application:
 
-    def __init__(self, browser):
+    def __init__(self, browser, domain, credentials):
         if browser == "chrome":
             self.driver = webdriver.Chrome()
         elif browser == "firefox":
@@ -24,13 +25,15 @@ class Application:
         elif browser == "ie":
             self.driver = webdriver.Ie()
         else:
-            raise ValueError("Unrecognized browser %s" % browser)
+            raise ValueError("Unrecognized browser {}".format(browser))
         self.driver.maximize_window()
-        self.driver.implicitly_wait(15)
-        webium.settings.wait_timeout = 5
-        self.session = SessionHelper(self)
-        self.customer_booking = CustomerActions(self)
-        self.customer_certs = CustomerCertActions(self)
+        self.driver.implicitly_wait(30)
+        self.driver.set_script_timeout(30)
+        self.driver.set_page_load_timeout(60)
+        webium.settings.wait_timeout = 15
+        self.session = SessionHelper(self, domain, credentials)
+        self.customer_booking = CustomerActions(self, domain=domain)
+        self.customer_certs = CustomerCertActions(self, domain=domain)
         self.booking = AdminBooking(self)
         self.certificate = CertificateActions(self)
         self.activity_hub = ActivityHub(self)
@@ -39,6 +42,7 @@ class Application:
         self.addons = Addons(self)
         self.calendar = Calendar(self)
         self.rain_checks = RainChecks(self)
+        self.waiting = Waiting(self)
 
     def destroy(self):
         self.driver.quit()
@@ -52,3 +56,8 @@ class Application:
 
     def current_url(self):
         return self.driver.current_url
+
+    def refresh_page(self):
+        button = self.session.navigation_bar.main_actions_drop_down
+        self.driver.refresh()
+        self.waiting.for_staleness(element=button, timeout=5)

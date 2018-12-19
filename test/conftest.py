@@ -20,8 +20,8 @@ def app(request):
         with open(config_file) as f:
             target = json.load(f)
     if fixture is None or not fixture.is_valid():
-        fixture = Application(browser=browser)
-    fixture.session.ensure_login(login=target['login'], password=target['password'])
+        fixture = Application(browser=browser, domain=target['domain'], credentials=target)
+    fixture.session.ensure_login(user="admin")
     return fixture
 
 
@@ -35,17 +35,21 @@ def call_center(request):
         with open(config_file) as f:
             target = json.load(f)
     if fixture is None or not fixture.is_valid():
-        fixture = CallCenter(browser=browser)
-    fixture.session.ensure_login(login=target['login_call_center'], password=target['password_call_center'])
-    fixture.session.login_to_test_company(company=target['company'])
+        fixture = CallCenter(browser=browser, domain=target['domain'], credentials=target)
+    fixture.session.ensure_login(user="call_center")
     return fixture
 
 
 @pytest.fixture(scope="module")
 def customer(request):
     global fixture
+    global target
     browser = request.config.getoption("--browser")
-    fixture = Customer(browser=browser)
+    if target is None:
+        config_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), request.config.getoption("--target"))
+        with open(config_file) as f:
+            target = json.load(f)
+    fixture = Customer(browser=browser, domain=target['domain'])
     yield fixture
     fixture.destroy()
 
@@ -57,6 +61,16 @@ def stop(request):
         fixture.destroy()
     request.addfinalizer(fin)
     return fixture
+
+
+# @pytest.fixture(autouse=True)
+# def take_screenshot(request):
+#     yield
+#     if request.node.
+#
+#
+#             .node.rep_call.failed:
+#         print(">>>>>>>> Screenshot <<<<<<<<<<")
 
 
 def pytest_addoption(parser):

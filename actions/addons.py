@@ -35,9 +35,8 @@ class Addons:
         self.addon_page.select(self.addon_page.addon_status, addons.addon_status)
         self.addon_page.save_addon.click()
         wait(lambda: self.addon_page.pop_up.is_displayed())
-        assert self.addon_page.pop_up.text == "New add-on has been successfully added."
+        assert "New add-on has been successfully added." == self.addon_page.pop_up.text
         self.addon_page.pop_up_ok_button.click()
-        # self.addon_page.wait_redirection()
 
     def get_addon_name(self, addons):
         today = datetime.date.today().isoformat()
@@ -49,39 +48,45 @@ class Addons:
     def find_addon(self, addons):
         self.activity_addons.search_feild.clear()
         self.activity_addons.search_feild.send_keys(addons.addon_name)
-        assert self.activity_addons.name.text == addons.addon_name
-        assert self.activity_addons.description.text == addons.addon_description
-        assert self.activity_addons.price.text == "$" + addons.addon_price
-        assert self.activity_addons.status.text == addons.addon_status
+        assert addons.addon_name == self.activity_addons.name.text
+        assert addons.addon_description == self.activity_addons.description.text
+        assert "$" + addons.addon_price == self.activity_addons.price.text
+        assert addons.addon_status == self.activity_addons.status.text
 
     def delete_addon(self, addons):
         self.find_addon(addons)
         self.activity_addons.delete_button.click()
         wait(lambda: self.activity_addons.pop_up.is_displayed())
-        assert self.activity_addons.pop_up.text == "Are you sure you want to delete %s?" % addons.addon_name
+        expected_notification = "Are you sure you want to delete {}?".format(addons.addon_name)
+        assert expected_notification == self.activity_addons.pop_up.text
         self.activity_addons.pop_up_ok_button.click()
+        wait(lambda: not self.activity_addons.pop_up.is_displayed())
         sleep(2)
 
     def verify_deletion(self, addons):
         self.activity_addons.search_feild.send_keys(addons.addon_name)
-        assert self.activity_addons.name.text == "No matching records found"
+        assert "No matching records found" == self.activity_addons.name.text
 
     def delete_addon_cancel(self, addons):
         self.find_addon(addons)
         self.activity_addons.delete_button.click()
         wait(lambda: self.activity_addons.pop_up.is_displayed())
-        assert self.activity_addons.pop_up.text == "Are you sure you want to delete %s?" % addons.addon_name
+        expected_notification = "Are you sure you want to delete {}?".format(addons.addon_name)
+        assert expected_notification == self.activity_addons.pop_up.text
         self.activity_addons.pop_up_cancel_button.click()
+        wait(lambda: not self.activity_addons.pop_up.is_displayed())
         sleep(2)
 
     def add_type(self, addons):
         self.activity_addons.edit_button.click()
         self.fill_type_form(addons)
-        self.addon_page.save_type.click()
-        sleep(2)
+        save_type_button = self.addon_page.save_type
+        save_type_button.click()
+        wait(lambda: self.addon_page.add_type_button.is_displayed())
 
     def fill_type_form(self, addons):
         self.addon_page.add_type_button.click()
+        wait(lambda: self.addon_page.save_type.is_displayed())
         sleep(2)
         self.addon_page.select(self.addon_page.addon_select, addons.addon_name)
         self.addon_page.type_name.send_keys(addons.type_name)
@@ -93,6 +98,7 @@ class Addons:
         self.activity_addons.edit_button.click()
         self.fill_type_form(addons)
         self.addon_page.cancel_type.click()
+        wait(lambda: self.addon_page.add_type_button.is_displayed())
         sleep(2)
 
     def delete_type(self, addons):
@@ -114,25 +120,26 @@ class Addons:
                 item.delete.click()
                 break
         wait(lambda: self.addon_page.pop_up.is_displayed())
-        assert self.addon_page.pop_up.text == "Are you sure you want to remove this add-on type?"
+        expected_notification = "Are you sure you want to remove this add-on type?"
+        assert expected_notification == self.addon_page.pop_up.text
 
     def check_type_table(self, addons, count):
         for item in self.addon_page.addon_types_table:
             if item.name.text == addons.type_name:
-                assert item.price.text == addons.type_price, item.price.text
-                assert item.status.text == addons.type_status, item.status.text
+                assert addons.type_price == item.price.text
+                assert addons.type_status == item.status.text
                 count += 1
         return count
 
     def check_type_present(self, addons):
         count = 0
         count = self.check_type_table(addons, count)
-        assert count == 1
+        assert 1 == count
 
     def check_type_not_present(self, addons):
         count = 0
         count = self.check_type_table(addons, count)
-        assert count == 0
+        assert 0 == count
 
     def get_activity_list(self, addons):
         activity_list = addons.activity.split(", ")
@@ -147,6 +154,7 @@ class Addons:
             wait(lambda: self.addon_page.select_activity.is_displayed())
             self.addon_page.select(self.addon_page.select_activity, activity)
             self.addon_page.save_activity.click()
+            wait(lambda: self.addon_page.select_activity.is_displayed())
         sleep(2)
 
     def add_activity_cancel(self, addons):
@@ -176,7 +184,8 @@ class Addons:
                 row.delete.click()
                 break
         wait(lambda: len(self.addon_page.pop_up.text) > 0)
-        assert self.addon_page.pop_up.text == "Are you sure you want to delete?", "Alert: '%s'" % self.addon_page.pop_up.text
+        expected_notification = "Are you sure you want to delete?"
+        assert expected_notification == self.addon_page.pop_up.text
 
     def verify_activity_present(self, addons):
         sleep(2)
@@ -185,17 +194,17 @@ class Addons:
         for row in added_activities:
             if row.activity.text == addons.activity:
                 count += 1
-        assert count == 1, "Activity is deleted %s" % count
+        assert 1 == count
 
     def verify_activity_not_present(self, addons):
         sleep(2)
         added_activities = self.addon_page.activity_table
         for row in added_activities:
-            assert row.activity.text != addons.activity
+            assert addons.activity != row.activity.text
 
     def verify_activity_table(self, addons):
         added_activities = self.addon_page.activity_table
-        assert len(added_activities) == len(addons.activity)
+        assert len(addons.activity) == len(added_activities)
         for row in added_activities:
             assert row.activity.text in addons.activity
             assert row.addon.text in addons.addon_name

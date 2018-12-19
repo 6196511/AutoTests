@@ -7,7 +7,7 @@ from actions.customer_certificate import CustomerCertActions
 
 class Customer:
 
-    def __init__(self, browser):
+    def __init__(self, browser, domain):
         if browser == "chrome":
             self.driver = webdriver.Chrome()
         elif browser == "firefox":
@@ -15,12 +15,14 @@ class Customer:
         elif browser == "ie":
             self.driver = webdriver.Ie()
         else:
-            raise ValueError("Unrecognized browser %s" % browser)
+            raise ValueError("Unrecognized browser {}".format(browser))
         self.driver.maximize_window()
-        self.driver.implicitly_wait(15)
-        webium.settings.wait_timeout = 5
-        self.booking = CustomerActions(self)
-        self.certificate = CustomerCertActions(self)
+        self.driver.implicitly_wait(30)
+        self.driver.set_script_timeout(30)
+        self.driver.set_page_load_timeout(60)
+        webium.settings.wait_timeout = 15
+        self.booking = CustomerActions(self, domain)
+        self.certificate = CustomerCertActions(self, domain)
 
     def destroy(self):
         self.driver.quit()

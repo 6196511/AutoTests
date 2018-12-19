@@ -47,7 +47,7 @@ def test_customer_booking_with_unexisting_cert(app, order):
     app.customer_booking.skip_addons()
     app.customer_booking.redeem_invalid_gift_certificate(order)
     app.customer_booking.verify_payment_page(order)
-    app.session.go_to_admin()
+    app.session.login_as_admin()
     app.calendar.select_event(order)
     app.calendar.verify_event_manifest(order)
     app.calendar.verify_customer_event_customer(order)
@@ -70,7 +70,7 @@ def test_customer_booking_with_certs(app, order):
     app.customer_booking.verify_payment_page(order)
     app.customer_booking.make_payment(order)
     app.customer_booking.verify_summary_details(order)
-    app.session.go_to_admin()
+    app.session.login_as_admin()
     app.certificate.navigate_to()
     app.certificate.find_by_code(order)
     app.certificate.verify_remain_amount(order)
@@ -201,7 +201,7 @@ def test_419(app, order):
 @pytest.mark.parametrize("order", admin_data[31:32], ids=[repr(x) for x in admin_data[31:32]])
 def test_428(app, order):
     """Event Pop-Up - Cancel guest."""
-    app.booking.refresh_page()
+    app.refresh_page()
     app.calendar.navigate_to()
     app.calendar.show_events_without_booking()
     app.calendar.pick_event(order)

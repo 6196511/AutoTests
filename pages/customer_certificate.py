@@ -1,4 +1,5 @@
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.select import Select
@@ -60,12 +61,11 @@ class CustomerCertPage(BasePage):
         self._driver.switch_to.frame(self.stripe)
         wait(lambda: self.card_number_input.is_enabled())
         attempts = 20
+        card_number_size = 16
         for attempt in range(1, attempts):
-            self.card_number_input.clear()
-            wait(lambda: self.card_number_input.is_enabled())
+            for number in range(0, card_number_size):
+                self.card_number_input.send_keys(Keys.BACK_SPACE)
             self.card_number_input.send_keys(card_number)
-            self.card_date_input.clear()
-            wait(lambda: self.card_date_input.is_enabled())
             self.card_date_input.send_keys(card_date)
             actual_value_card = self.card_number_input.get_attribute('value')
             actual_value_card = actual_value_card.replace(" ", "")

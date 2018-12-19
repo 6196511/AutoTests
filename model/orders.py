@@ -67,6 +67,7 @@ class Orders:
         self.cert_card_date = kwargs.get('cert_card_date')
         self.cert_card_cvc = kwargs.get('cert_card_cvc')
         self.cert_card_zip = kwargs.get('cert_card_zip')
+        self.bug = kwargs.get('bug')
 
     def __repr__(self):
-        return self.id_testdata
+        return self.id_testdata if self.bug is None else self.id_testdata + " " + self.bug

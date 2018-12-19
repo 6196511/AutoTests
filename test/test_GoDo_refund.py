@@ -1,13 +1,11 @@
-from time import sleep
-
 import pytest
-from data.orders import admin_data, customer_data
+from data.orders import admin_data, customer_data, get_ids
 
 
-@pytest.mark.parametrize("order", admin_data[20:21], ids=[repr(x) for x in admin_data[20:21]])
+@pytest.mark.parametrize("order", admin_data[20:21], ids=get_ids)
 def test_full_refund_cash_100(app, order):
     """Full refund (Cash) 100%."""
-    app.booking.refresh_page()
+    app.refresh_page()
     app.booking.select_event(order)
     app.booking.fill_out_customer_info(order)
     app.booking.select_payment_method(order)
@@ -18,10 +16,10 @@ def test_full_refund_cash_100(app, order):
     app.calendar.full_refund_cash_100(order)
 
 
-@pytest.mark.parametrize("order", admin_data[21:22], ids=[repr(x) for x in admin_data[21:22]])
+@pytest.mark.parametrize("order", admin_data[21:22], ids=get_ids)
 def test_full_refund_cash_50_190(app, order):
     """Full refund (Cash) 50%."""
-    app.booking.refresh_page()
+    app.refresh_page()
     app.booking.select_event(order)
     app.booking.fill_out_customer_info(order)
     app.booking.select_payment_method(order)
@@ -32,10 +30,10 @@ def test_full_refund_cash_50_190(app, order):
     app.calendar.full_refund_cash_50(order)
 
 
-@pytest.mark.parametrize("order", admin_data[23:24], ids=[repr(x) for x in admin_data[23:24]])
+@pytest.mark.parametrize("order", admin_data[23:24], ids=get_ids)
 def test_406(app, order):
     """Charge customer's due (cash)."""
-    app.booking.refresh_page()
+    app.refresh_page()
     app.booking.select_event(order)
     app.booking.fill_out_customer_info(order)
     app.booking.select_payment_method(order)
@@ -48,10 +46,10 @@ def test_406(app, order):
                             status='Request Complete: "Booked"', charge_status="Received")
 
 
-@pytest.mark.parametrize("order", admin_data[24:25], ids=[repr(x) for x in admin_data[24:25]])
+@pytest.mark.parametrize("order", admin_data[24:25], ids=get_ids)
 def test_450(app, order):
     """Charge customer's due (credit card)."""
-    app.booking.refresh_page()
+    app.refresh_page()
     app.booking.select_event(order)
     app.booking.fill_out_customer_info(order)
     app.booking.select_payment_method(order)
@@ -64,10 +62,10 @@ def test_450(app, order):
                             status='Request Complete: "CHARGED"', charge_status="Charged")
 
 
-@pytest.mark.parametrize("order", admin_data[25:26], ids=[repr(x) for x in admin_data[25:26]])
+@pytest.mark.parametrize("order", admin_data[25:26], ids=get_ids)
 def test_451(app, order):
     """Charge customer's due (check)."""
-    app.booking.refresh_page()
+    app.refresh_page()
     app.booking.select_event(order)
     app.booking.fill_out_customer_info(order)
     app.booking.select_payment_method(order)
@@ -79,16 +77,16 @@ def test_451(app, order):
                             button_name="Accept Check, Adjust Booking", button_name_after="Booking Complete",
                             status='Request Complete: "Booked"', charge_status="Received, Not Cleared")
 
-
-@pytest.mark.parametrize("order", admin_data[26:27], ids=[repr(x) for x in admin_data[26:27]])
+# @pytest.mark.repeat(300)
+@pytest.mark.parametrize("order", admin_data[26:27], ids=get_ids)
 def test_421(app, order):
     """Event Pop-Up - Add booking."""
 
     # At least 1 guest should be booked on the event before start the test.
 
-    app.booking.refresh_page()
+    app.refresh_page()
     app.calendar.select_event(order)
-    app.calendar.click_add_booking_button(order)
+    app.calendar.click_add_booking_button()
     app.booking.select_tickets(order)
     app.booking.fill_out_customer_info(order)
     app.booking.select_payment_method(order)
@@ -98,19 +96,19 @@ def test_421(app, order):
     app.calendar.verify_event_manifest(order)
     app.calendar.verify_customer_event_admin(order)
 
-
-@pytest.mark.parametrize("order", admin_data[27:29], ids=[repr(x) for x in admin_data[27:29]])
+@pytest.mark.repeat(30)
+@pytest.mark.parametrize("order", admin_data[27:29], ids=get_ids)
 def test_cancel_event(app, order):
     """Event Pop-Up - Cancel Event without/with booking."""
-    app.booking.refresh_page()
+    app.refresh_page()
     app.calendar.navigate_to()
     app.calendar.show_events_without_booking()
     app.calendar.pick_event(order)
-    app.calendar.cancel_event()
-    app.calendar.verify_event_status(status="Cancelled")
+    # app.calendar.cancel_event()
+    # app.calendar.verify_event_status(status="Cancelled")
 
 
-@pytest.mark.parametrize("order", customer_data[16:17], ids=[repr(x) for x in customer_data[16:17]])
+@pytest.mark.parametrize("order", customer_data[16:17], ids=get_ids)
 def test_413(app, order):
     """Cancelled event should not be allowed for booking (customer-facing)."""
     app.customer_booking.open_page(order)
@@ -119,18 +117,18 @@ def test_413(app, order):
     app.customer_booking.time_is_unavailable(time="08:40 PM - 09:40 PM")
 
 
-@pytest.mark.parametrize("order", admin_data[28:29], ids=[repr(x) for x in admin_data[28:29]])
+@pytest.mark.parametrize("order", admin_data[28:29], ids=get_ids)
 def test_414(app, order):
     """Cancelled event should not be allowed for booking (admin)."""
-    app.booking.refresh_page()
+    app.refresh_page()
     app.booking.select_activity_and_day(order)
     app.booking.verify_time_list(time="10:00 AM CT")
 
 
-@pytest.mark.parametrize("order", admin_data[29:31], ids=[repr(x) for x in admin_data[29:31]])
+@pytest.mark.parametrize("order", admin_data[29:31], ids=get_ids)
 def test_close_event(app, order):
     """Event Pop-Up - Close bookings for Event without/with booking."""
-    app.booking.refresh_page()
+    app.refresh_page()
     app.calendar.navigate_to()
     app.calendar.show_events_without_booking()
     app.calendar.pick_event(order)
@@ -138,7 +136,7 @@ def test_close_event(app, order):
     app.calendar.verify_event_status(status="Closed")
 
 
-@pytest.mark.parametrize("order", customer_data[17:18], ids=[repr(x) for x in customer_data[17:18]])
+@pytest.mark.parametrize("order", customer_data[17:18], ids=get_ids)
 def test_417(app, order):
     """Closed event should not be allowed for booking (customer-facing)."""
     app.customer_booking.open_page(order)
@@ -147,10 +145,10 @@ def test_417(app, order):
     app.customer_booking.time_is_unavailable(time="10:00 AM - 12:30 PM")
 
 
-@pytest.mark.parametrize("order", admin_data[30:31], ids=[repr(x) for x in admin_data[30:31]])
+@pytest.mark.parametrize("order", admin_data[30:31], ids=get_ids)
 def test_419(app, order):
     """Event Pop-Up - Re-Open closed booking."""
-    app.booking.refresh_page()
+    app.refresh_page()
     app.calendar.navigate_to()
     app.calendar.show_events_without_booking()
     app.calendar.pick_event(order)
@@ -158,14 +156,14 @@ def test_419(app, order):
     app.calendar.verify_event_status(status="Pending")
 
 
-@pytest.mark.parametrize("order", admin_data[31:32], ids=[repr(x) for x in admin_data[31:32]])
+@pytest.mark.parametrize("order", admin_data[31:32], ids=get_ids)
 def test_428(app, order):
     """Event Pop-Up - Cancel guest."""
-    app.booking.refresh_page()
+    app.refresh_page()
     app.calendar.navigate_to()
     app.calendar.show_events_without_booking()
     app.calendar.pick_event(order)
-    app.calendar.click_add_booking_button(order)
+    app.calendar.click_add_booking_button()
     app.booking.select_tickets(order)
     app.booking.wait_pricing_table_updating()
     app.booking.fill_out_customer_info(order)
@@ -178,14 +176,14 @@ def test_428(app, order):
     app.calendar.no_such_guest(order)
 
 
-@pytest.mark.parametrize("order", admin_data[32:33], ids=[repr(x) for x in admin_data[32:33]])
+@pytest.mark.parametrize("order", admin_data[32:33], ids=get_ids)
 def test_434(app, order):
     """Event Pop-Up - Rain check."""
-    app.booking.refresh_page()
+    app.refresh_page()
     app.calendar.navigate_to()
     app.calendar.show_events_without_booking()
     app.calendar.pick_event(order)
-    app.calendar.click_add_booking_button(order)
+    app.calendar.click_add_booking_button()
     app.booking.select_tickets(order)
     app.booking.wait_pricing_table_updating()
     app.booking.fill_out_customer_info(order)
@@ -199,14 +197,14 @@ def test_434(app, order):
     app.rain_checks.verify_table(order)
 
 
-@pytest.mark.parametrize("order", admin_data[33:34], ids=[repr(x) for x in admin_data[33:34]])
+@pytest.mark.parametrize("order", admin_data[33:34], ids=get_ids)
 def test_468(app, order):
     """Event Pop-Up - Rain check. Cancel button check."""
-    app.booking.refresh_page()
+    app.refresh_page()
     app.calendar.navigate_to()
     app.calendar.show_events_without_booking()
     app.calendar.pick_event(order)
-    app.calendar.click_add_booking_button(order)
+    app.calendar.click_add_booking_button()
     app.booking.select_tickets(order)
     app.booking.wait_pricing_table_updating()
     app.booking.fill_out_customer_info(order)
@@ -219,14 +217,14 @@ def test_468(app, order):
     app.calendar.verify_event_manifest(order)
 
 
-@pytest.mark.parametrize("order", admin_data[34:35], ids=[repr(x) for x in admin_data[34:35]])
+@pytest.mark.parametrize("order", admin_data[34:35], ids=get_ids)
 def test_470(app, order):
     """Event Pop-Up - Cancel guest. Cancel button check."""
-    app.booking.refresh_page()
+    app.refresh_page()
     app.calendar.navigate_to()
     app.calendar.show_events_without_booking()
     app.calendar.pick_event(order)
-    app.calendar.click_add_booking_button(order)
+    app.calendar.click_add_booking_button()
     app.booking.select_tickets(order)
     app.booking.wait_pricing_table_updating()
     app.booking.fill_out_customer_info(order)
@@ -239,7 +237,7 @@ def test_470(app, order):
     app.calendar.verify_event_manifest(order)
 
 
-@pytest.mark.parametrize("order", customer_data[18:19], ids=[repr(x) for x in customer_data[18:19]])
+@pytest.mark.parametrize("order", customer_data[18:19], ids=get_ids)
 def test_500(app, order):
     """Stop booking after first sale via customer facing."""
     app.customer_booking.open_page(order)
@@ -251,7 +249,7 @@ def test_500(app, order):
     app.customer_booking.verify_payment_page(order)
     app.customer_booking.make_payment(order)
     app.customer_booking.verify_summary_details(order)
-    app.session.go_to_admin()
+    app.session.login_as_admin()
     app.calendar.select_event(order)
     app.calendar.verify_event_status(status="Closed")
     app.calendar.verify_event_manifest(order)
@@ -262,7 +260,7 @@ def test_500(app, order):
     app.customer_booking.time_is_unavailable(time="10:40 AM - 11:25 AM")
 
 
-@pytest.mark.parametrize("order", customer_data[19:20], ids=[repr(x) for x in customer_data[19:20]])
+@pytest.mark.parametrize("order", customer_data[19:20], ids=get_ids)
 def test_453(app, order):
     """Event Pop-Up - Refund. Cancel button check."""
     app.customer_booking.open_page(order)
@@ -274,7 +272,7 @@ def test_453(app, order):
     app.customer_booking.verify_payment_page(order)
     app.customer_booking.make_payment(order)
     app.customer_booking.verify_summary_details(order)
-    app.session.go_to_admin()
+    app.session.login_as_admin()
     app.calendar.select_event(order)
     app.calendar.refund_cancel(order)
     app.calendar.verify_event_manifest(order)

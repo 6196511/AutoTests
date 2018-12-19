@@ -1,9 +1,9 @@
 import datetime
 
 import pandas as pd
+import pytest
 
 from model.orders import Orders
-
 
 df1 = pd.read_excel("../data/orders.xlsx", "Admin payment types", dtype=str, keep_default_na=False)
 df2 = pd.read_excel("../data/orders.xlsx", "Admin declines", dtype=str, keep_default_na=False)
@@ -34,7 +34,6 @@ df26 = pd.read_excel("../data/orders.xlsx", "Center valid discounts", dtype=str,
 df27 = pd.read_excel("../data/orders.xlsx", "Center invalid discounts", dtype=str, keep_default_na=False)
 df28 = pd.read_excel("../data/orders.xlsx", "Center booking with certificate", dtype=str, keep_default_na=False)
 
-
 excel_dict1 = df1.to_dict(orient='records')
 excel_dict2 = df2.to_dict(orient='records')
 excel_dict3 = df3.to_dict(orient='records')
@@ -63,7 +62,6 @@ excel_dict25 = df25.to_dict(orient='records')
 excel_dict26 = df26.to_dict(orient='records')
 excel_dict27 = df27.to_dict(orient='records')
 excel_dict28 = df28.to_dict(orient='records')
-
 
 admin_data = []
 admin_declines = []
@@ -94,9 +92,8 @@ center_valid_codes = []
 center_invalid_codes = []
 center_booking_with_certificates = []
 
-
 today = datetime.date.today()
-purchase_date = today + datetime.timedelta(days=2)  # Tickets will be booked on tomorrow.
+purchase_date = today + datetime.timedelta(days=1)  # If 1 tickets will be booked on tomorrow.
 
 
 def extract_test_data(testdata, excel_dict):
@@ -110,7 +107,14 @@ def extract_test_data(testdata, excel_dict):
         for key in item:
             if item[key] == "":
                 item[key] = None
-        testdata.append(Orders(**item))
+        if item.get('bug') is not None:
+            testdata.append(pytest.mark.xfail(Orders(**item)))
+        else:
+            testdata.append(Orders(**item))
+
+
+def get_ids(val):
+    return repr(val)
 
 
 extract_test_data(admin_data, excel_dict1)

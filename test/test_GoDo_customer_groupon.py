@@ -1,11 +1,11 @@
 import pytest
-from data.orders import customer_groupons
+from data.orders import customer_groupons, get_ids
 
 
-@pytest.mark.parametrize("order", customer_groupons[:8], ids=[repr(x) for x in customer_groupons[:8]])
+@pytest.mark.parametrize("order", customer_groupons[:8], ids=get_ids)
 def test_customer_booking_with_groupons(app, order):
     """Booking tickets via customer with groupon."""
-    app.booking.refresh_page()
+    app.refresh_page()
     app.groupons.navigate_to()
     app.groupons.get_code(order)
     app.customer_booking.open_page(order)
@@ -20,10 +20,10 @@ def test_customer_booking_with_groupons(app, order):
     app.customer_booking.verify_summary_details(order)
 
 
-@pytest.mark.parametrize("order", customer_groupons[8:13], ids=[repr(x) for x in customer_groupons[8:13]])
+@pytest.mark.parametrize("order", customer_groupons[8:13], ids=get_ids)
 def test_customer_booking_with_invalid_groupons(app, order):
     """Booking tickets via customer with invalid groupon."""
-    app.booking.refresh_page()
+    app.refresh_page()
     app.groupons.navigate_to()
     app.groupons.get_code(order)
     app.customer_booking.open_page(order)
@@ -38,10 +38,10 @@ def test_customer_booking_with_invalid_groupons(app, order):
     app.customer_booking.verify_summary_details(order)
 
 
-@pytest.mark.parametrize("order", customer_groupons[13:14], ids=[repr(x) for x in customer_groupons[13:14]])
+@pytest.mark.parametrize("order", customer_groupons[13:14], ids=get_ids)
 def test_customer_booking_with_nonexistent_groupons(app, order):
     """Booking tickets via customer with nonexistent groupon."""
-    app.booking.refresh_page()
+    app.refresh_page()
     app.customer_booking.open_page(order)
     app.customer_booking.select_tickets_buttons(order)
     app.customer_booking.select_date(order)
@@ -54,10 +54,10 @@ def test_customer_booking_with_nonexistent_groupons(app, order):
     app.customer_booking.verify_summary_details(order)
 
 
-@pytest.mark.parametrize("order", customer_groupons[14:15], ids=[repr(x) for x in customer_groupons[14:15]])
+@pytest.mark.parametrize("order", customer_groupons[14:15], ids=get_ids)
 def test_customer_booking_with_redeemed_groupon(app, order):
     """Groupon. Customer Facing. Trying to apply the same code twice."""
-    app.booking.refresh_page()
+    app.refresh_page()
     app.groupons.navigate_to()
     app.groupons.get_redeemed_code(order)
     app.customer_booking.open_page(order)
@@ -75,7 +75,7 @@ def test_customer_booking_with_redeemed_groupon(app, order):
 data = customer_groupons[0:5] + customer_groupons[7:12] + customer_groupons[13:15]
 
 
-@pytest.mark.parametrize("order", data, ids=[repr(x) for x in data])
+@pytest.mark.parametrize("order", data, ids=get_ids)
 def test_event_manifest_verification(app, order):
     """Checking booked tickets in the event manifest and customer event page."""
     app.calendar.select_event(order)

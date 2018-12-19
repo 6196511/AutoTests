@@ -1,10 +1,13 @@
 from time import sleep
 
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support.ui import Select
+from selenium.webdriver.support.wait import WebDriverWait
 from webium import BasePage, Find, Finds
 from webium.wait import wait
+from selenium.webdriver.support import expected_conditions as EC
 
 
 class AddonsList(WebElement):
@@ -31,6 +34,7 @@ class AdminBookingPage(BasePage):
     name_third_tickets_type = Find(by=By.XPATH, value="//div[@class='form-group']//tbody/tr[3]/td[1]")
     name_fourth_tickets_type = Find(by=By.XPATH, value="//div[@class='form-group']//tbody/tr[4]/td[1]")
     datepicker = Find(by=By.ID, value="datepicker_1")
+    available_days = Finds(by=By.XPATH, value="//*[@id='datepicker_1']//*[contains(@class, 'available')]")
     time = Find(by=By.XPATH, value="//select[@ng-options='item as item.time for item in vm.times']")
     custom_price = Find(by=By.XPATH, value="//input[@name='custom-price']")
     promo_code_input = Find(by=By.XPATH, value="//input[@name='promo-code']")
@@ -43,6 +47,8 @@ class AdminBookingPage(BasePage):
     addons_list = Finds(AddonsList, by=By.XPATH, value="//div[@name='addonSelectionForm']//li")
     add_to_cart = Find(by=By.XPATH, value="//div[@name='addonSelectionForm']//button[text()='Add To Cart']")
     cancel_addon = Find(by=By.XPATH, value="//div[@name='addonSelectionForm']//button[text()='Cancel']")
+    order_cart = Find(by=By.XPATH, value="//div[@class='cart-eventbox']")
+
     # Customer Info tab.
 
     first_name = Find(by=By.XPATH, value="//input[@placeholder='First Name']")
@@ -79,13 +85,12 @@ class AdminBookingPage(BasePage):
     grand_total = Find(by=By.XPATH, value="//tr[contains(@ng-show, 'grandTotal')]/td[2]")
 
     def select_activity(self, activity):
-        sleep(2)
         Select(self.activity_list).select_by_visible_text(activity)
-        sleep(2)
+        sleep(2)  # Added because of bug #2545.
 
     def select_date(self, year, month, day):
-        wait(lambda: self.grand_total.text != '$0.00', timeout_seconds=30, waiting_for="Waiting until the pricing table is updated.")
-        sleep(2)
+        wait(lambda: len(self.available_days) > 0, timeout_seconds=10,
+             waiting_for="Waiting for available days appears.")
         self._driver.execute_script(
             "$('#datepicker_1').datepicker('setDate', new Date(%s, %s-1, %s));" % (year, month, day))
 
@@ -96,9 +101,7 @@ class AdminBookingPage(BasePage):
         return Select(self.time).options
 
     def click_enter_customer_information(self):
-        self._driver.execute_script("$('pageslide').animate({ scrollTop: '2000px' })")
-        wait(lambda: self.enter_customer_information_button.is_displayed())
-        sleep(1)
+        self._driver.execute_script("arguments[0].scrollIntoView();", self.enter_customer_information_button)
         self.enter_customer_information_button.click()
 
     def select_payment_type(self, payment_type):
@@ -110,13 +113,12 @@ class AdminBookingPage(BasePage):
         wait(lambda: self.stripe.is_enabled())
         self._driver.switch_to.frame(self.stripe)
         wait(lambda: self.card_number_input.is_enabled())
-        attempts = 10
-        for attempt in range(1, attempts):
-            self.card_number_input.clear()
-            wait(lambda: self.card_number_input.is_enabled())
+        attempts = 50
+        card_number_size = 16
+        for attempt in range(0, attempts):
+            for number in range(0, card_number_size):
+                self.card_number_input.send_keys(Keys.BACK_SPACE)
             self.card_number_input.send_keys(card_number)
-            self.card_date_input.clear()
-            wait(lambda: self.card_date_input.is_enabled())
             self.card_date_input.send_keys(card_date)
             actual_value_card = self.card_number_input.get_attribute('value')
             actual_value_card = actual_value_card.replace(" ", "")
@@ -160,3 +162,6 @@ class AdminBookingPage(BasePage):
 
     def get_options(self, web_element):
         return Select(web_element).options
+
+    def wait_pop_up_closed(self):
+        WebDriverWait(self._driver, 10).until(EC.staleness_of(self.discount_pop_up))

@@ -59,20 +59,19 @@ class PeopleHub:
 
     def find_guide_by_email(self, guides):
         self.people_hub_page.search_input.send_keys(guides.email)
-        assert self.people_hub_page.name.text == guides.first_name + " " + guides.last_name
-        assert self.people_hub_page.phone_number.text == guides.phone_number
-        assert self.people_hub_page.email.text == guides.email
+        assert guides.first_name + " " + guides.last_name == self.people_hub_page.name.text
+        assert guides.phone_number == self.people_hub_page.phone_number.text
+        assert guides.email == self.people_hub_page.email.text
 
     def delete_guide(self, guides):
         self.people_hub_page.delete.click()
         wait(lambda: self.people_hub_page.pop_up.is_displayed())
-        assert self.people_hub_page.pop_up.text == "Are you sure you want to delete %s %s?" % (guides.first_name,
-                                            guides.last_name), "Wrong alert: %s" % self.people_hub_page.pop_up.text
+        expected_notification = "Are you sure you want to delete {} {}?".format(guides.first_name, guides.last_name)
+        assert expected_notification == self.people_hub_page.pop_up.text
         self.people_hub_page.pop_up_ok_button.click()
         sleep(1)
         wait(lambda: self.people_hub_page.pop_up.is_displayed())
-        assert self.people_hub_page.pop_up.text == "Guide deleted successfully!", \
-            "Wrong alert: %s" % self.people_hub_page.pop_up.text
+        assert "Guide deleted successfully!" == self.people_hub_page.pop_up.text
         self.people_hub_page.pop_up_ok_button.click()
         sleep(2)
 
@@ -81,36 +80,35 @@ class PeopleHub:
         guides.username = username
         email = username + "@mailinator.com"
         guides.email = email
-        print(username)
 
     def verify_guides_details(self, guides):
         self.people_hub_page.edit.click()
         wait(lambda: len(self.add_guide_page.username.text) > 0)
-        assert self.add_guide_page.username.text == guides.username
-        assert self.add_guide_page.first_name.text == guides.first_name
-        assert self.add_guide_page.last_name.text == guides.last_name
-        assert self.add_guide_page.email.text == guides.email
-        assert self.add_guide_page.get_selected_value(self.add_guide_page.timezone) == guides.timezone
-        assert self.add_guide_page.phone_number.text == guides.phone_number
+        assert guides.username == self.add_guide_page.username.text
+        assert guides.first_name == self.add_guide_page.first_name.text
+        assert guides.last_name == self.add_guide_page.last_name.text
+        assert guides.email == self.add_guide_page.email.text
+        assert guides.timezone == self.add_guide_page.get_selected_value(self.add_guide_page.timezone)
+        assert guides.phone_number == self.add_guide_page.phone_number.text
         if guides.secondary_phone_number is not None:
-            assert self.add_guide_page.secondary_phone_number.text == guides.secondary_phone_number
+            assert guides.secondary_phone_number == self.add_guide_page.secondary_phone_number.text
         if guides.emergency_contact is not None:
-            assert self.add_guide_page.emergency_contact.text == guides.emergency_contact
+            assert guides.emergency_contact == self.add_guide_page.emergency_contact.text
         if guides.hire_date is not None:
-            assert self.add_guide_page.hire_date.text == guides.hire_date
+            assert guides.hire_date == self.add_guide_page.hire_date.text
         if guides.end_date is not None:
-            assert self.add_guide_page.end_date.text == guides.end_date
+            assert guides.end_date == self.add_guide_page.end_date.text
         if guides.bank_name is not None:
-            assert self.add_guide_page.bank_name.text == guides.bank_name
+            assert guides.bank_name == self.add_guide_page.bank_name.text
         if guides.account_type is not None:
-            assert self.add_guide_page.account_type.text == guides.account_type
+            assert guides.account_type == self.add_guide_page.account_type.text
         if guides.bank_routing_number is not None:
-            assert self.add_guide_page.bank_routing_number.text == guides.bank_routing_number
+            assert guides.bank_routing_number == self.add_guide_page.bank_routing_number.text
         if guides.account_number is not None:
-            assert self.add_guide_page.account_number.text == guides.account_number
-        assert self.add_guide_page.get_selected_value(self.add_guide_page.pay_rate_type) == guides.pay_rate_type
+            assert guides.account_number == self.add_guide_page.account_number.text
+        assert guides.pay_rate_type == self.add_guide_page.get_selected_value(self.add_guide_page.pay_rate_type)
         if guides.trained_activities is not None:
-            assert self.add_guide_page.trained_activity.text == guides.trained_activities
+            assert guides.trained_activities == self.add_guide_page.trained_activity.text
 
     def add_guide_with_invalid_username(self, guides):
         self.add_guide_form()
@@ -118,7 +116,7 @@ class PeopleHub:
         self.add_guide_page.empty_space.click()
         wait(lambda: len(self.add_guide_page.bootstrap_alert.text) > 0)
         print(self.add_guide_page.bootstrap_alert.text)
-        assert self.add_guide_page.bootstrap_alert.text == "Username (%s) not valid." % guides.username
+        assert "Username ({}) not valid.".format(guides.username) == self.add_guide_page.bootstrap_alert.text
 
     def import_guide(self, guides):
         self.add_guide_form()
@@ -136,7 +134,8 @@ class PeopleHub:
 
     def find_imported_guide(self, guides):
         self.find_by_name(guides)
-        assert self.people_hub_page.name.text == guides.first_name + " " + guides.last_name + " (pending)"
+        expected_name = guides.first_name + " " + guides.last_name + " (pending)"
+        assert expected_name == self.people_hub_page.name.text
 
     def find_by_name(self, guides):
         self.people_hub_page.search_input.send_keys(guides.first_name + " " + guides.last_name)
@@ -155,9 +154,9 @@ class PeopleHub:
         self.add_guide_page.i_import_button.click()
 
     def verify_error_messages(self, wording, quantity):
-        assert len(self.add_guide_page.error_messages) == quantity
+        assert quantity == len(self.add_guide_page.error_messages)
         for notification in self.add_guide_page.error_messages:
-            assert notification.text == wording
+            assert wording == notification.text
 
     def edit_guide_activity(self, activity):
         self.people_hub_page.edit.click()

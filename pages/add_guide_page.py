@@ -20,7 +20,7 @@ class AddGuidePage(BasePage):
     first_name = Find(TextField, by=By.XPATH, value="//div[label/text()='First Name ']/input")
     last_name = Find(TextField, by=By.XPATH, value="//div[label/text()='Last Name ']/input")
     email = Find(TextField, by=By.XPATH, value="//div[label/text()='Email ']/input")
-    timezone = Find(TextField, by=By.XPATH, value="//div[label/text()='Timezone ']/select")
+    timezone = Find(TextField, by=By.XPATH, value="//select[@ng-model='vm.selectedTimezone']")
     phone_number = Find(TextField, by=By.XPATH, value="//div[label/text()='Phone Number ']/input")
     secondary_phone_number = Find(TextField, by=By.XPATH, value="//div[label/text()='Secondary Contact Phone ']/input")
     emergency_contact = Find(TextField, by=By.XPATH, value="//div[label/text()='Emergency Contact']/input")

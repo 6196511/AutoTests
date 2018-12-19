@@ -12,10 +12,8 @@ class CompanyList(WebElement):
 
 class LoginPage(BasePage):
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(url='https://dev.godo.io', *args, **kwargs)    # For testing on DEV
-        # super().__init__(url='https://do.godo.io', *args, **kwargs)   # For testing on LIVE
-        # super().__init__(url='https://ci005.godo.io', *args, **kwargs)  # For testing on CI005
+    def __init__(self, domain, *args, **kwargs):
+        super().__init__(url=domain, *args, **kwargs)
 
     # Base login page.
 
@@ -34,3 +32,6 @@ class LoginPage(BasePage):
             if title == company:
                 item.login_button.click()
                 break
+
+    def get_url(self):
+        return self._driver.current_url

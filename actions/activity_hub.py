@@ -21,7 +21,6 @@ class ActivityHub:
         self.activity_hub.add_activity_button.click()
         self.fill_out_form(activity)
         sleep(100)
-        # self.activity_page.save_button.click()
 
     def fill_out_form(self, activity):
         sleep(5)
@@ -82,4 +81,4 @@ class ActivityHub:
 
     def verify_trained_guides(self, name):
         wait(lambda: len(self.activity_page.activity_name.get_attribute('value')) > 0)
-        assert self.activity_page.get_selected_value(self.activity_page.first_guide) == name
+        assert name == self.activity_page.get_selected_value(self.activity_page.first_guide)

@@ -1,7 +1,7 @@
-from time import sleep
-
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.remote.webelement import WebElement
+from selenium.webdriver.support import expected_conditions as EC
 from webium.wait import wait
 from webium import BasePage, Find, Finds
 
@@ -26,11 +26,6 @@ class CustomerBookingPage(BasePage):
                              value="//div[@class='row content'][3]//button[@class='upButton']")
     fourth_plus_button = Find(by=By.XPATH,
                              value="//div[@class='row content'][4]//button[@class='upButton']")
-    # first_tickets_type_input = Find(by=By.XPATH, value="//div[@class='row'][1]//input")
-    # second_tickets_type_input = Find(by=By.XPATH, value="//div[@class='row'][2]//input")
-    # third_tickets_type_input = Find(by=By.XPATH, value="//div[@class='row'][3]//input")
-    # fourth_tickets_type_input = Find(by=By.XPATH, value="//div[@class='row'][4]//input")
-    # empty_space_first_page = Find(by=By.XPATH, value="//h4[text()='Step 1/5: Pick Tickets']")
 
     # Titles under the pictures.
     first_tickets_name = Find(by=By.XPATH, value="//div[@class='row content'][1]//div[@class='ticket-name']")
@@ -48,7 +43,8 @@ class CustomerBookingPage(BasePage):
     # Step 2/5: Choose Date.
 
     calendar = Find(by=By.ID, value="datepicker")
-    datepicker = Finds(by=By.XPATH, value="//div[@class='ui-datepicker-group ui-datepicker-group-first']//td[contains(@class, 'undefined') and not(contains(@class, 'disabled'))]")
+    datepicker = Finds(by=By.XPATH, value="//div[@class='ui-datepicker-group ui-datepicker-group-first']//td" +
+                                          "[contains(@class, 'undefined') and not(contains(@class, 'disabled'))]")
     next_button_2 = Find(by=By.XPATH, value="//button[@id='calenderbtn']")
 
     # Step 3/5: Choose Time.
@@ -119,7 +115,7 @@ class CustomerBookingPage(BasePage):
             button.click()
 
     def pick_this_time(self, time):
-        sleep(2)
+        wait(lambda: len(self.available_time_list) > 0)
         for item in self.available_time_list:
             label = item.available_time.text
             if label.startswith(time):
@@ -127,11 +123,11 @@ class CustomerBookingPage(BasePage):
                 break
 
     def get_time_list(self):
-        sleep(1)
-        list = []
+        wait(lambda: len(self.available_time_list) > 0)
+        time_list = []
         for item in self.available_time_list:
-            list.append(item.available_time.text)
-        return list
+            time_list.append(item.available_time.text)
+        return time_list
 
     def click_date(self, day):
         for item in self.datepicker:
@@ -144,12 +140,11 @@ class CustomerBookingPage(BasePage):
         self._driver.switch_to.frame(self.stripe)
         wait(lambda: self.card_number_input.is_enabled())
         attempts = 20
+        card_number_size = 16
         for attempt in range(1, attempts):
-            self.card_number_input.clear()
-            wait(lambda: self.card_number_input.is_enabled())
+            for number in range(0, card_number_size):
+                self.card_number_input.send_keys(Keys.BACK_SPACE)
             self.card_number_input.send_keys(card_number)
-            self.card_date_input.clear()
-            wait(lambda: self.card_date_input.is_enabled())
             self.card_date_input.send_keys(card_date)
             actual_value_card = self.card_number_input.get_attribute('value')
             actual_value_card = actual_value_card.replace(" ", "")
@@ -191,3 +186,8 @@ class CustomerBookingPage(BasePage):
             return False
         else:
             return True
+
+    def close_alert(self):
+        alert = EC.alert_is_present()
+        if alert(self._driver):
+            self._driver.switch_to_alert().accept()

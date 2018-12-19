@@ -23,8 +23,7 @@ class RainChecks:
     def verify_table(self, order):
         self.navigate_to()
         wait(lambda: self.rain_checks_page.page_title.text == "Rain Checks")
-        assert self.rain_checks_page.event_name.text == order.activity, self.rain_checks_page.event_name.text
-        assert self.rain_checks_page.guest.text == order.first_name + " " + order.last_name, self.rain_checks_page.guest.text
-        assert self.rain_checks_page.email.text == order.email
-        assert self.rain_checks_page.phone.text == order.phone
-        print(self.rain_checks_page.date.text)
+        assert order.activity == self.rain_checks_page.event_name.text
+        assert order.first_name + " " + order.last_name == self.rain_checks_page.guest.text
+        assert order.email == self.rain_checks_page.email.text
+        assert order.phone == self.rain_checks_page.phone.text

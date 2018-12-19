@@ -1,5 +1,5 @@
-from webium import BasePage, Find, Finds
 from selenium.webdriver.common.by import By
+from webium import BasePage, Find, Finds
 
 
 class NavigationBar(BasePage):
@@ -15,6 +15,8 @@ class NavigationBar(BasePage):
     sell_gift_certificates = Find(by=By.CSS_SELECTOR, value="[href = 'giftcertificate.aspx']")
     add_a_booking = Find(by=By.XPATH, value="//*[@class='nav navbar-nav navbar-right']//a[text()='Add a Booking']")
     calendar = Find(by=By.XPATH, value="//li/a[@href='event_calendar.aspx']")
+    profile_pic = Find(by=By.XPATH, value="//li[@class='dropdown top-menu-item-xs']//span/img")
+    profile_pics = Finds(by=By.XPATH, value="//li[@class='dropdown top-menu-item-xs']//span/img")
 
     # Your Hubs navigation bar.
 
