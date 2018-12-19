@@ -44,7 +44,10 @@ class AddEditActivityPage(BasePage):
     fourth_ticket_type = Find(by=By.XPATH, value="//div[@ng-repeat='price in vm.activity.prices track by $index'][4]//input[@ng-model='price.priceName']")
     fourth_ticket_price = Find(by=By.XPATH, value="//div[@ng-repeat='price in vm.activity.prices track by $index'][4]//input[@ng-model='price.priceAmount']")
     fourth_ticket_viator = Find(by=By.XPATH, value="//div[@ng-repeat='price in vm.activity.prices track by $index'][4]//select[@ng-model='price.priceViator']")
-    first_guide = Find(by=By.XPATH, value="//h2[text()='Guides']/..//select")
+    first_guide = Find(by=By.XPATH, value="//h2[text()='Guides']/..//div[@ng-repeat='ga in vm.items track by $index'][1]//select[@ng-model='ga.selectedItem']")
+    second_guide = Find(by=By.XPATH, value="//h2[text()='Guides']/..//div[@ng-repeat='ga in vm.items track by $index'][2]//select[@ng-model='ga.selectedItem']")
+    third_guide = Find(by=By.XPATH, value="//h2[text()='Guides']/..//div[@ng-repeat='ga in vm.items track by $index'][3]//select[@ng-model='ga.selectedItem']")
+    fourth_guide = Find(by=By.XPATH, value="//h2[text()='Guides']/..//div[@ng-repeat='ga in vm.items track by $index'][3]//select[@ng-model='ga.selectedItem']")
     first_linked_activity = Find(by=By.XPATH, value="//h2[text()='Linked Activities']/..//div[@ng-repeat='ga in vm.items track by $index'][1]//select[@ng-model='ga.selectedItem']")
     second_linked_activity = Find(by=By.XPATH, value="//h2[text()='Linked Activities']/..//div[@ng-repeat='ga in vm.items track by $index'][2]//select[@ng-model='ga.selectedItem']")
     third_linked_activity = Find(by=By.XPATH, value="//h2[text()='Linked Activities']/..//div[@ng-repeat='ga in vm.items track by $index'][3]//select[@ng-model='ga.selectedItem']")
@@ -81,4 +84,3 @@ class AddEditActivityPage(BasePage):
 
     def get_selected_value(self, web_element):
         return Select(web_element).first_selected_option.text
-
