@@ -3,7 +3,7 @@ from webium import BasePage, Find, Finds
 
 
 class EditCompanyPage(BasePage):
-    url = 'https://dev.godo.io/company_information.aspx'
+    url = 'https://ci004.godo.io/company_information.aspx'
     internal_pwd_field = Find(by=By.XPATH, value="//input[@name='internal_password']")
     company_name_field = Find(by=By.XPATH, value="//input[@id='company_name']")
     company_email = Find(by=By.XPATH, value="//input[@id='branch_master_email']")
@@ -16,10 +16,12 @@ class EditCompanyPage(BasePage):
     time_zone_list = Find(by=By.XPATH, value="//select[@id='branch_master_timezone']")
     state_list = Find(by=By.XPATH, value="//select[@id='branch_master_state']")
     address1_field = Find(by=By.XPATH, value="//input[@id='branch_master_address_1']")
-    addcompany_button = Find(by=By.XPATH, value="//button[@id='id_submit']")
+    viator_checkbox = Find(by=By.XPATH, value="//input[@id='company_useviator']")
+    viator_supplierID = Find(by=By.XPATH, value="//input[@id='company_viatorsupplier']")
+    save_button = Find(by=By.XPATH, value="//button[@ng-click='vm.editCompany($event)']")
 
 class AddCompanyPage(BasePage):
-    url = 'https://dev.godo.io/sa_addNewCompany.aspx'
+    url = 'https://ci004.godo.io/sa_addNewCompany.aspx'
     internal_pwd_field = Find(by=By.XPATH, value="//input[@name='internal_password']")
     company_name_field = Find(by=By.XPATH, value="//input[@id='company_name']")
     company_email = Find(by=By.XPATH, value="//input[@id='branch_master_email']")

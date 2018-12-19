@@ -3,7 +3,7 @@ from webium import BasePage, Find, Finds
 
 
 class BranchPage(BasePage):
-    url = 'https://dev.godo.io/branch.aspx'
+    url = 'https://ci004.godo.io/branch.aspx'
     add_branch_button = Find(by=By.XPATH, value="//button[@id='addBranch']")
     branch_name_field = Find(by=By.XPATH, value="//input[@id='branch_name']")
     timezone_list = Find(by=By.XPATH, value="//select[@id='timezone_id']")

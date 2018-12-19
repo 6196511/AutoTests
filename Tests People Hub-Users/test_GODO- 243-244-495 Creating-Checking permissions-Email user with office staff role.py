@@ -28,8 +28,12 @@ from random import choice
 from string import digits
 from selenium.webdriver.common.by import By
 from webium import BasePage, Find
+from fakemailgenerator_page import FakeMailGeneratorPage
 
+
+CompanyName = 'GoDo Manual Testing Company'
 email_list = []
+email_local_list=[]
 fullname_list = []
 username_list = []
 pwd_list = []
@@ -45,7 +49,7 @@ class BaseTest(object):
          close_driver()
 
 
-class Test_GODO243_244(BaseTest):
+class Test_GODO243_244_495(BaseTest):
     def test_243(self):
         get_driver().maximize_window()
         page = loginpage()
@@ -71,7 +75,10 @@ class Test_GODO243_244(BaseTest):
         fullname_list.append(NewFullName)
         NewPhone1 = ('' + ''.join(choice(digits) for i in range(10)))
         page.phone1_field.send_keys(NewPhone1)
-        NewEmail = ('' + ''.join(choice(digits) for i in range(10)) + '@mailinator.com')
+        NewEmailILocal = '' + ''.join(choice(digits) for i in range(10))
+        email_local_list.append(NewEmailILocal)
+        NewEmailDomain = '@cuvox.de'
+        NewEmail = (NewEmailILocal + NewEmailDomain)
         page.email_field.send_keys(NewEmail)
         email_list.append(NewEmail)
         select = Select(page.role_list)
@@ -128,8 +135,28 @@ class Test_GODO243_244(BaseTest):
             else:
                 continue
         assert L ==L1
-        print(username_list)
-        print(pwd_list)
+
+    def test_495(self):
+        get_driver().maximize_window()
+        page = FakeMailGeneratorPage()
+        page.open()
+        page.inbox_field.clear()
+        page.inbox_field.send_keys(email_local_list[0])
+        page.domain_list.click()
+        time.sleep(2)
+        page.cuvox_domain.click()
+        time.sleep(10)
+        assert page.from_field.get_attribute('textContent') == '"GoDo" <email_admin@email.godo.io>'
+        assert page.to_field.get_attribute('textContent') == email_list[0]
+        assert page.subject_field.get_attribute('textContent') == 'You have been added as an admin for '+''.join(CompanyName)
+        get_driver().switch_to_frame('emailFrame')
+        assert page.body_field.get_attribute('innerText') == ''.join(
+            fullname_list[0]) + ',\nWelcome to GoDo. You have been added as an admin for ' + ''.join(
+            CompanyName) + '.\n\nTo log in, go to:\nhttps://ci004.godo.io/ \n\nAnd use this information:\n\nLOGIN: ' + ''.join(
+            username_list[0]) + '\nPASSWORD: ' + ''.join(
+            pwd_list[0]) + '\n\n\n\n\xa0\nThank you, \nThe ' + ''.join(
+            CompanyName) + ' Team \xa0 \n\xa0 \n\xa0 \n\xa0 \n'
+        
     def test_244(self):
         get_driver().maximize_window()
         page = loginpage()

@@ -8,4 +8,4 @@ class MarketingHubPage(BasePage):
     
 class DiscountPage(BasePage):
     
-    url = 'https://dev.godo.io/discount.aspx'    
+    url = 'https://ci004.godo.io/discount.aspx'    

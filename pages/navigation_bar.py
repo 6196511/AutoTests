@@ -4,7 +4,7 @@ from webium import BasePage, Find, Finds
 
 class NavigationBar(BasePage):
 
-    url = 'https://dev.godo.io/dashboard.aspx'
+    url = 'https://ci004.godo.io/dashboard.aspx'
     godo_lodo = Find(by=By.XPATH, value="//a[@class = 'logo']")
     navigation_bar = Finds(by=By.XPATH, value="//ul[@class='nav navbar-nav navbar-right']")
     time_tracker = Find(by=By.XPATH, value="//div[@class = 'switch-button-background']")

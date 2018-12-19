@@ -48,7 +48,7 @@ class AdminBookingPage(BasePage):
     add_to_cart = Find(by=By.XPATH, value="//div[@name='addonSelectionForm']//button[text()='Add To Cart']")
     cancel_addon = Find(by=By.XPATH, value="//div[@name='addonSelectionForm']//button[text()='Cancel']")
     order_cart = Find(by=By.XPATH, value="//div[@class='cart-eventbox']")
-
+    alert_cancel_button = Find(by=By.XPATH, value="//div[@class='modal-footer']/button[text()='Cancel']")
     # Customer Info tab.
 
     first_name = Find(by=By.XPATH, value="//input[@placeholder='First Name']")
@@ -58,10 +58,17 @@ class AdminBookingPage(BasePage):
     zip_code = Find(by=By.XPATH, value="//input[@ng-model='bookingdrawer.customer.zipcode']")
     empty_space = Find(by=By.XPATH, value="//label[text()='Zip Code ']")
     complete_booking_button = Find(by=By.XPATH, value="//button[contains(text(), 'Complete Booking')]")
+    add_address_button = Find(by=By.XPATH, value="//button[@ng-click='bookingdrawer.toggleAddressInfo()']")
+    address1_field = Find(by=By.XPATH, value="//input[@id='customer_address_1']")
+    address2_field = Find(by=By.XPATH, value="//input[@id='customer_address_2']")
+    city_field = Find(by=By.XPATH, value="//input[@id='customer_city']")
+    country_list = Find(by=By.XPATH, value="//select[@ng-model='bookingdrawer.selectedCountry']")
+    state_list = Find(by=By.XPATH, value="//select[@ng-model='bookingdrawer.selectedState']")
 
     # Payment tab.
 
     channel_list = Find(by=By.XPATH, value="//select[@name='channel']")
+    channel_list_options = Finds(by=By.TAG_NAME, value="OPTION")
     payment_type_list = Find(by=By.XPATH, value="//select[@ng-model='bookingdrawer.paymentType']")
     credit_card_list = Find(by=By.XPATH, value="//select[@ng-model='bookingdrawer.preselectedCard']")
     stripe = Find(by=By.XPATH, value="//iframe[@name='__privateStripeFrame4']")

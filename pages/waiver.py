@@ -11,7 +11,7 @@ from selenium.webdriver.remote.webelement import WebElement
 
 class WaiverAddPage(BasePage):
 
-    url = 'https://dev.godo.io/waiver.aspx'
+    url = 'https://ci004.godo.io/waiver.aspx'
     add_waiver_button = Find(by=By.XPATH, value="//button[text()='New Waiver']")
     ok_confirm_button = Find(by=By.XPATH, value="//button[text()='Ok']")
     logo_checkbox = Find(by=By.XPATH, value="//input[@name='chkCompanyLogo']")

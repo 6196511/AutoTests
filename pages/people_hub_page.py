@@ -3,7 +3,7 @@ from webium import BasePage, Find
 
 
 class PeopleHubPage(BasePage):
-    url = 'https://dev.godo.io/user_hub.aspx'
+    url = 'https://ci004.godo.io/user_hub.aspx'
     add_guide_button = Find(by=By.XPATH, value="//h2[text()='Add Guide']")
     edit_guide_button = Find(by=By.XPATH, value="//i[@class='fa fa-edit fa-lg']")
     your_customer_button = Find(by=By.XPATH, value="//h2[text()='Your Customers']")

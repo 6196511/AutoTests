@@ -28,13 +28,17 @@ from random import choice
 from string import digits
 from selenium.webdriver.common.by import By
 from webium import BasePage, Find
+from fakemailgenerator_page import FakeMailGeneratorPage
 
+
+CompanyName = 'GoDo Manual Testing Company'
 email_list = []
+email_local_list=[]
 fullname_list = []
 username_list = []
 pwd_list = []
-permission_1 = 'View Invoice'
-permission_2 = 'Edit Guides Information'
+permission_1 = 'Edit Customers Information'
+permission_2 = 'Edit Company Info Pages'
 no_permission_msg = 'ERROR: You do not have permission to view this page. Please log in under a user that has proper permission.'
 
 class NoPermission(BasePage):
@@ -45,8 +49,8 @@ class BaseTest(object):
          close_driver()
 
 
-class Test_GODO245_246(BaseTest):
-    def test_245(self):
+class Test_GODO247_248_497(BaseTest):
+    def test_247(self):
         get_driver().maximize_window()
         page = loginpage()
         page.open()
@@ -57,7 +61,7 @@ class Test_GODO245_246(BaseTest):
         page = EmployeePage()
         page.open()
         page.add_new_user.click()
-        NewUserName = ("autotest245_" + ''.join(choice(digits) for i in range(4)))
+        NewUserName = ("autotest247_" + ''.join(choice(digits) for i in range(4)))
         page.username_field.send_keys(NewUserName)
         username_list.append(NewUserName)
         NewUserPassword = ('' + ''.join(choice(digits) for i in range(8)) + 'qwer')
@@ -65,17 +69,20 @@ class Test_GODO245_246(BaseTest):
         pwd_list.append(NewUserPassword)
         NewFirstName = "AutoTest"
         page.first_name_field.send_keys(NewFirstName)
-        NewLastName = '245'
+        NewLastName = '247'
         page.last_name_field.send_keys(NewLastName)
         NewFullName = NewFirstName+' '+ ''.join(NewLastName)
         fullname_list.append(NewFullName)
         NewPhone1 = ('' + ''.join(choice(digits) for i in range(10)))
         page.phone1_field.send_keys(NewPhone1)
-        NewEmail = ('' + ''.join(choice(digits) for i in range(10)) + '@mailinator.com')
+        NewEmailILocal = '' + ''.join(choice(digits) for i in range(10))
+        email_local_list.append(NewEmailILocal)
+        NewEmailDomain = '@cuvox.de'
+        NewEmail = (NewEmailILocal + NewEmailDomain)
         page.email_field.send_keys(NewEmail)
         email_list.append(NewEmail)
         select = Select(page.role_list)
-        NewRole = "Lead Guide"
+        NewRole = "Guide"
         select.select_by_visible_text(NewRole)
         select = Select(page.payroll_type_list)
         NewPayrollType = "weekly"
@@ -130,7 +137,30 @@ class Test_GODO245_246(BaseTest):
         assert L ==L1
         print(username_list)
         print(pwd_list)
-    def test_246(self):
+
+    def test_497(self):
+        get_driver().maximize_window()
+        page = FakeMailGeneratorPage()
+        page.open()
+        page.inbox_field.clear()
+        page.inbox_field.send_keys(email_local_list[0])
+        page.domain_list.click()
+        time.sleep(2)
+        page.cuvox_domain.click()
+        time.sleep(10)
+        assert page.from_field.get_attribute('textContent') == '"GoDo" <email_admin@email.godo.io>'
+        assert page.to_field.get_attribute('textContent') == email_list[0]
+        assert page.subject_field.get_attribute('textContent') == 'You have been added as an admin for '+''.join(CompanyName)
+        get_driver().switch_to_frame('emailFrame')
+        assert page.body_field.get_attribute('innerText') == ''.join(
+            fullname_list[0]) + ',\nWelcome to GoDo. You have been added as an admin for ' + ''.join(
+            CompanyName) + '.\n\nTo log in, go to:\nhttps://ci004.godo.io/ \n\nAnd use this information:\n\nLOGIN: ' + ''.join(
+            username_list[0]) + '\nPASSWORD: ' + ''.join(
+            pwd_list[0]) + '\n\n\n\n\xa0\nThank you, \nThe ' + ''.join(
+            CompanyName) + ' Team \xa0 \n\xa0 \n\xa0 \n\xa0 \n'        
+        
+
+    def test_248(self):
         get_driver().maximize_window()
         page = loginpage()
         page.open()
@@ -141,9 +171,9 @@ class Test_GODO245_246(BaseTest):
         page = EmployeePage() #STEP2
         page.open()
         time.sleep(2)
-        assert page.is_element_present('add_new_user') == True
         page = NoPermission()
-        assert page.is_element_present('no_permission_alert') == False
+        assert page.is_element_present('no_permission_alert') == True
+        assert page.no_permission_alert.get_attribute('outerText') == no_permission_msg
         page = ActivityHubPage() #STEP3
         page.open()
         time.sleep(2)
@@ -159,109 +189,92 @@ class Test_GODO245_246(BaseTest):
         page.open()
         time.sleep(2)
         page = NoPermission()
-        assert page.is_element_present('no_permission_alert') == False
+        assert page.is_element_present('no_permission_alert') == True
+        assert page.no_permission_alert.get_attribute('outerText') == no_permission_msg
         page = WaiverAddPage() #STEP 6
         page.open()
         time.sleep(2)
         page = NoPermission()
-        assert page.is_element_present('no_permission_alert') == False
+        assert page.is_element_present('no_permission_alert') == True
+        assert page.no_permission_alert.get_attribute('outerText') == no_permission_msg
         page = DiscountPage() #STEP 7
         page.open()
         time.sleep(2)
         page = NoPermission()
-        assert page.is_element_present('no_permission_alert') == False
+        assert page.is_element_present('no_permission_alert') == True
+        assert page.no_permission_alert.get_attribute('outerText') == no_permission_msg
         page = GrouponPage() #STEP 8
         page.open()
         time.sleep(2)
         page = NoPermission()
-        assert page.is_element_present('no_permission_alert') == False
+        assert page.is_element_present('no_permission_alert') == True
+        assert page.no_permission_alert.get_attribute('outerText') == no_permission_msg
         page = CertificatePage() #STEP 9
         page.open()
         time.sleep(2)
-        assert page.is_element_present('add_new_certificate_button') == True
         page = NoPermission()
-        assert page.is_element_present('no_permission_alert') == False
-        page = InvoicePage() #STEP 10
+        assert page.is_element_present('no_permission_alert') == True
+        assert page.no_permission_alert.get_attribute('outerText') == no_permission_msg
+        page = InvoicePageV2() #STEP 10
         page.open()
         time.sleep(2)
         page = NoPermission()
-        assert page.is_element_present('no_permission_alert') ==True
-        assert page.no_permission_alert.get_attribute('outerText') == no_permission_msg
-        page = InvoicePageV2() #STEP 11 BLOCKED
-        page.open() 
-        time.sleep(2)
-        page = NoPermission()
-        assert page.is_element_present('no_permission_alert') ==True
-        assert page.no_permission_alert.get_attribute('outerText') == no_permission_msg
-        page = PeopleHubPage() #STEP 12
+        assert page.is_element_present('no_permission_alert') ==False
+        page = PeopleHubPage() #STEP 11
         page.open()
         time.sleep(2)
         assert page.is_element_present('add_guide_button') == True
         page = NoPermission()
         assert page.is_element_present('no_permission_alert') == False
-        page = PeopleHubPage()  # STEP 12.1
-        page.add_guide_button.click()
-        time.sleep(2)
-        page = NoPermission()
-        assert page.is_element_present('no_permission_alert') ==True
-        assert page.no_permission_alert.get_attribute('outerText') == no_permission_msg
-        page = PeopleHubPage()  # STEP 12.2
-        page.open()
-        time.sleep(2)
-        page.edit_guide_button.click()
-        time.sleep(2)
-        page = NoPermission()
-        assert page.is_element_present('no_permission_alert') ==True
-        assert page.no_permission_alert.get_attribute('outerText') == no_permission_msg
-        page = GuidePayrollPage() #STEP 13
+        page = GuidePayrollPage() #STEP 12
         page.open()
         time.sleep(2)
         page = NoPermission()
         assert page.is_element_present('no_permission_alert') ==True
         assert page.no_permission_alert.get_attribute('outerText') == no_permission_msg
-        page = ChannelPayrollPage() #STEP 14
+        page = ChannelPayrollPage() #STEP 13
         page.open()
         time.sleep(2)
-        assert page.is_element_present('channel_payment_due') == True
         page = NoPermission()
-        assert page.is_element_present('no_permission_alert') == False
-        page = EventCalendarPage()#STEP 15
+        assert page.is_element_present('no_permission_alert') ==True
+        assert page.no_permission_alert.get_attribute('outerText') == no_permission_msg
+        page = EventCalendarPage()#STEP 14
         page.open()
         assert page.is_element_present('date_picker') == True
         page = NoPermission()
         assert page.is_element_present('no_permission_alert') ==False
-        page = GuideBulAssignmentPage() #STEP 16
+        page = GuideBulAssignmentPage() #STEP 15
         page.open()
         time.sleep(2)
         page = NoPermission()
         assert page.is_element_present('no_permission_alert') == False
-        page = AddStartingLocationPage()#STEP 17
+        page = AddStartingLocationPage()#STEP 16
         page.open()
         assert page.is_element_present('location_name') == True
         page = NoPermission()
         assert page.is_element_present('no_permission_alert') ==False
-        page = TaxesReportPage() #STEP 18
+        page = TaxesReportPage() #STEP 17
         page.open()
         time.sleep(2)
         page = NoPermission()
         assert page.is_element_present('no_permission_alert') == False
-        page = AnalyticsDashboardPage() #STEP 19
+        page = AnalyticsDashboardPage() #STEP 18
         page.open()
         time.sleep(2)
         page = NoPermission()
         assert page.is_element_present('no_permission_alert') == False
-        page = EditCompanyPage()#STEP 20
+        page = EditCompanyPage()#STEP 19
         page.open()
-        assert page.is_element_present('company_name_field') == True
         page = NoPermission()
-        assert page.is_element_present('no_permission_alert') ==False
-        page = SelfProfilePage()#STEP 21
+        assert page.is_element_present('no_permission_alert') ==True
+        assert page.no_permission_alert.get_attribute('outerText') == no_permission_msg
+        page = SelfProfilePage()#STEP 20
         page.open()
         assert page.is_element_present('first_name_field') == True
         page = NoPermission()
         assert page.is_element_present('no_permission_alert') ==False
-        page = CustomerListPage()#STEP 22
+        page = CustomerListPage()#STEP 21
         page.open()
-        assert page.is_element_present('add_customer_button') == True
         page = NoPermission()
-        assert page.is_element_present('no_permission_alert') ==False
+        assert page.is_element_present('no_permission_alert') ==True
+        assert page.no_permission_alert.get_attribute('outerText') == no_permission_msg

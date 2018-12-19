@@ -3,7 +3,7 @@ from webium import BasePage, Find, Finds
 
 
 class AddStartingLocationPage(BasePage):
-    url = 'https://dev.godo.io/location_information.aspx'
+    url = 'https://ci004.godo.io/location_information.aspx'
     location_name = Find(by=By.XPATH, value="//input[@id='location_name']")
     location_address_1 = Find(by=By.XPATH, value="//input[@id='location_address_1']")
     location_address_2 = Find(by=By.XPATH, value="//input[@id='location_address_2']")

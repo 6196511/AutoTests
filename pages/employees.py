@@ -3,7 +3,7 @@ from webium import BasePage, Find, Finds
 
 
 class EmployeePage(BasePage):
-    url = 'https://dev.godo.io/administrator.aspx'
+    url = 'https://ci004.godo.io/administrator.aspx'
     user_entry = Finds(by=By.XPATH, value="//tr[@class='ng-scope odd']|//tr[@class='ng-scope even']")
     edit_user_button = Find(by=By.XPATH, value="//i[@class='fa fa-edit']")
     delete_user_button = Find(by=By.XPATH, value="//i[@class='fa fa-remove']")
