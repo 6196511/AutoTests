@@ -39,3 +39,5 @@ class EventCalendarPage(BasePage):
     add_booking_button = Find(by=By.XPATH, value="//button[@ng-click='manifest.addBooking(manifest.eventId)']")
     manifest_title = Find(by=By.XPATH, value="//div[@class='manifest-title-desc ng-binding']")
     manifest_tickets = Find(by=By.XPATH, value="/html/body/pageslide[1]/div/div/div/div[2]/div/div[2]")
+    info_pop_up = Find(by=By.XPATH, value="//div[@class='modal-body ng-binding']")
+    OK_info_pop_up = Find(by=By.XPATH, value="//button[@ng-click='vm.cancel()']")
