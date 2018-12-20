@@ -44,6 +44,8 @@ class AdminBookingPage(BasePage):
     add_to_cart = Find(by=By.XPATH, value="//div[@name='addonSelectionForm']//button[text()='Add To Cart']")
     cancel_addon = Find(by=By.XPATH, value="//div[@name='addonSelectionForm']//button[text()='Cancel']")
     alert_cancel_button = Find(by=By.XPATH, value="//div[@class='modal-footer']/button[text()='Cancel']")
+    date_current_booking = Find(by=By.XPATH, value="/html/body/pageslide[2]/div/div/div[2]/div[1]/div[2]/div/div/div[1]/div/div/span")
+    time_current_booking = Find(by=By.XPATH, value="//div[@class='cart-date ng-binding']")
     # Customer Info tab.
 
     first_name = Find(by=By.XPATH, value="//input[@placeholder='First Name']")
@@ -168,3 +170,4 @@ class AdminBookingPage(BasePage):
 
     def get_options(self, web_element):
         return Select(web_element).options
+
