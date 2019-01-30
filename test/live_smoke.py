@@ -1,4 +1,3 @@
-from time import sleep
 import pytest
 from data.live_smoke import *
 from data.guides import guides
