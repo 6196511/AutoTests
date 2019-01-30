@@ -100,7 +100,7 @@ def test_admin_booking_with_redeemed_groupon(app, order):
     app.booking.submit_successful_booking()
 
 
-data = admin_groupons[:5] + admin_groupons[7:8] + admin_groupons[10:14] + admin_groupons[17:18] + admin_groupons[19:22]
+data = admin_groupons[:5] + admin_groupons[7:8] + admin_groupons[10:14] + admin_groupons[19:22]
 
 
 @pytest.mark.parametrize("order", data, ids=get_ids)

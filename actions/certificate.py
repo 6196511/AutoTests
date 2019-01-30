@@ -131,10 +131,12 @@ class CertificateActions:
         self.certificate_page.charge_type_label.click()
 
     def navigate_to(self):
+        self.app.waiting.for_page_loaded()
         if "/giftcertificate.aspx" not in self.app.current_url():
-            wait(lambda: self.navigation_bar.main_actions_drop_down is not None, timeout_seconds=20)
-            self.navigation_bar.main_actions_drop_down.click()
-            self.navigation_bar.sell_gift_certificates.click()
+            self.navigation_bar.main_tab.click()
+            self.navigation_bar.sell_tickets.click()
+            wait(lambda: self.navigation_bar.expanded_list)
+            self.navigation_bar.gift_certificates.click()
         elif self.certificate_page.certificate_pop_up() is True:
             self.certificate_page.click_cancel_button()
 

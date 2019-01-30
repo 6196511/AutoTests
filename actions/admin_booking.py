@@ -49,9 +49,12 @@ class AdminBooking:
         self.booking_page.wait_pop_up_closed()
 
     def navigate_to(self):
-        wait(lambda: self.navigation_bar.main_actions_drop_down is not None, timeout_seconds=20)
-        self.navigation_bar.main_actions_drop_down.click()
-        self.navigation_bar.add_a_booking.click()
+        wait(lambda: self.navigation_bar.main_tab is not None, timeout_seconds=20)
+        wait(lambda: not self.navigation_bar.page_loader_wrapper.is_displayed(), timeout_seconds=20)
+        self.navigation_bar.main_tab.click()
+        self.navigation_bar.sell_tickets.click()
+        wait(lambda: self.navigation_bar.expanded_list)
+        self.navigation_bar.add_booking.click()
 
     def select_tickets(self, tickets):
         if tickets.first_tickets_type is not None:
@@ -114,9 +117,7 @@ class AdminBooking:
     def select_addon(self, order):
         self.booking_page.addons_link.click()
         wait(lambda: len(self.booking_page.addons_list) > 0)
-        print(order.addon_name)
         for addon in self.booking_page.addons_list:
-            print(addon.name.text)
             if addon.name.text.startswith(order.addon_name):
                 addon.checkbox.click()
                 self.booking_page.select(addon.type_list, order.addon_type)
@@ -138,7 +139,6 @@ class AdminBooking:
                 addon.checkbox.click()
                 options = self.booking_page.get_options(addon.type_list)
                 for opt in options:
-                    print(opt.text)
                     assert order.addon_type != opt.text
         self.booking_page.cancel_addon.click()
 

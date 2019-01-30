@@ -35,7 +35,7 @@ class AddGuidePage(BasePage):
     trained_activity_remove = Find(by=By.XPATH, value="//div[@name='itemForm'][1]//button")
     save_button = Find(by=By.XPATH, value="//button[contains(text(),'Save')]")
     cancel_button = Find(by=By.XPATH, value="//button[text()='Cancel']")
-    empty_space = Find(by=By.XPATH, value="//label")
+    empty_space = Find(by=By.XPATH, value="(//h2)[2]")
 
     import_guide_button = Find(by=By.XPATH, value="//button[text()='Import Guide']")
     i_username = Find(by=By.XPATH, value="//div[@class='modal-content']//input[@placeholder='Username']")

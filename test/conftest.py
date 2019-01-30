@@ -63,16 +63,6 @@ def stop(request):
     return fixture
 
 
-# @pytest.fixture(autouse=True)
-# def take_screenshot(request):
-#     yield
-#     if request.node.
-#
-#
-#             .node.rep_call.failed:
-#         print(">>>>>>>> Screenshot <<<<<<<<<<")
-
-
 def pytest_addoption(parser):
     parser.addoption("--browser", action="store", default="chrome")
     parser.addoption("--target", action="store", default="target.json")

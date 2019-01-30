@@ -19,6 +19,7 @@ class Calendar:
 
     def navigate_to(self):
         self.navigation_bar.calendar.click()
+        self.app.waiting.for_page_loaded()
 
     def pick_event(self, order):
         wait(lambda: len(self.calendar_page.days_list) == 28)
@@ -26,22 +27,14 @@ class Calendar:
         our_date = "{} {}".format(month[:3], order.day)
         for day in self.calendar_page.days_list:
             if day.date.text == our_date:
-                print("date >>>> " + day.date.text)
                 if day.is_element_present('view_all'):
                     day.view_all.click()
-                    print("click >>> view all")
                     wait(lambda: len(day.events_list) > 5)
-                # wait(lambda: len(day.events_list) > 5, timeout_seconds=60)
                 for event in day.events_list:
-                    print(event.activity_name.text)
-                    print(event.time.text)
                     if event.activity_name.text == order.activity and event.time.text.startswith(order.time.lstrip("0")):
-                        print("target >>> " + event.activity_name.text)
-                        print("target >>> " + event.time.text)
                         event.activity_name.click()
-                        print("click!!!")
                         break
-        wait(lambda: len(self.event_manifest.event_title.text) > 0, timeout_seconds=30)
+                break
 
     def select_event(self, order):
         if not self.event_manifest.is_element_present('event_title'):
@@ -294,8 +287,6 @@ class Calendar:
                                 "the event without a refund."
         assert expected_notification == self.event_manifest.pop_up.text
         self.event_manifest.pop_up_ok_button.click()
-        # self.app.waiting.for_staleness(self.event_manifest.event_title)
-
         sleep(2)
 
     def cancel_guest_cancel(self, order):
@@ -342,7 +333,6 @@ class Calendar:
         for guest in self.event_manifest.guests_list:
             list_of_guests.append(guest.name.text)
         expected_name = order.first_name + " " + order.last_name
-        print(list_of_guests)
         assert expected_name not in list_of_guests
 
     def no_current_bookings(self):

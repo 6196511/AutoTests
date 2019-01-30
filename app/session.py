@@ -70,17 +70,18 @@ class SessionHelper:
             current_profile = self.navigation_bar.profile_pic.get_attribute("src")
             if "admin_profile" in current_profile:
                 return "admin"
-            elif "guide_profile" in current_profile:
-                return "guide"
-            elif "defaults" in current_profile:
-                return "call_center"
-            else:
-                print(current_profile)
+            # elif "guide_profile" in current_profile:
+            #     return "guide"
+            # elif "defaults" in current_profile:
+            #     return "call_center"
+            # else:
+            #     print(current_profile)
         except NoSuchElementException:
             return "There is no profile pic on the page."
 
     def wait_for_company_opened(self):
-        wait(lambda: self.which_profile() == "call_center", timeout_seconds=60)
+        wait(lambda: self.which_profile() == "admin", timeout_seconds=60)
+        # wait(lambda: self.which_profile() == "call_center", timeout_seconds=60)
 
     def is_login_page(self):
         return "login.aspx" in self.login_page.get_url()
@@ -101,5 +102,5 @@ class SessionHelper:
         self.navigation_bar.logout.click()
 
     def sell_certificate(self):
-        self.navigation_bar.main_actions_drop_down.click()
-        self.navigation_bar.sell_gift_certificates.click()
+        self.navigation_bar.main_tab.click()
+        self.navigation_bar.gift_certificates.click()

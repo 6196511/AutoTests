@@ -17,4 +17,6 @@ class Waiting:
     def for_invisibility(self, element, timeout=webium.settings.wait_timeout):
         wait(lambda: not element.is_displayed(), timeout_seconds=timeout)
 
+    def for_page_loaded(self):
+        wait(lambda: self.app.session.navigation_bar.page_loader_wrapper.get_attribute('style') == "display: none;")
 

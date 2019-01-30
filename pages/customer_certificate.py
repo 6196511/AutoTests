@@ -38,7 +38,7 @@ class CustomerCertPage(BasePage):
     # Payment page
 
     full_charge = Find(TextField, by=By.XPATH, value="//input[@id='charge_full_amount']")
-    stripe = Find(by=By.XPATH, value="//iframe[@name='__privateStripeFrame3']")
+    stripe = Find(by=By.XPATH, value="//iframe[@name='__privateStripeFrame4']")
     card_number_input = Find(by=By.XPATH, value="//input[@name='cardnumber']")
     card_date_input = Find(by=By.XPATH, value="//input[@name='exp-date']")
     card_cvc_input = Find(by=By.XPATH, value="//input[@name='cvc']")

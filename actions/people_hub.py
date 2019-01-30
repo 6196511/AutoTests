@@ -17,8 +17,10 @@ class PeopleHub:
         self.add_guide_page = AddGuidePage(driver=self.driver)
 
     def navigate_to(self):
-        self.navigation_bar.sitemap.click()
-        wait(lambda: self.navigation_bar.people_hub.is_displayed())
+        wait(lambda: self.navigation_bar.main_tab is not None, timeout_seconds=20)
+        self.navigation_bar.main_tab.click()
+        self.navigation_bar.people.click()
+        wait(lambda: self.navigation_bar.expanded_list)
         self.navigation_bar.people_hub.click()
 
     def add_guide(self, guides):
@@ -53,12 +55,16 @@ class PeopleHub:
         self.add_guide_page.save_button.click()
 
     def add_guide_form(self):
-        self.navigate_to()
-        self.people_hub_page.add_guide_button.click()
-        sleep(2)
+        wait(lambda: self.navigation_bar.main_tab is not None, timeout_seconds=20)
+        self.navigation_bar.main_tab.click()
+        self.navigation_bar.people.click()
+        wait(lambda: self.navigation_bar.expanded_list)
+        self.navigation_bar.add_guide.click()
+        wait(lambda: not self.navigation_bar.page_loader_wrapper.is_displayed(), timeout_seconds=20)
 
     def find_guide_by_email(self, guides):
         self.people_hub_page.search_input.send_keys(guides.email)
+        wait(lambda: len(self.people_hub_page.name.text) > 0)
         assert guides.first_name + " " + guides.last_name == self.people_hub_page.name.text
         assert guides.phone_number == self.people_hub_page.phone_number.text
         assert guides.email == self.people_hub_page.email.text
@@ -120,25 +126,31 @@ class PeopleHub:
 
     def import_guide(self, guides):
         self.add_guide_form()
+        wait(lambda: not self.navigation_bar.page_loader_wrapper.is_displayed(), timeout_seconds=20)
         self.add_guide_page.import_guide_button.click()
         self.add_guide_page.i_username.send_keys(guides.username)
         self.add_guide_page.select(self.add_guide_page.i_pay_type, guides.pay_rate_type)
         self.add_guide_page.i_rate.send_keys(guides.rate)
         self.add_guide_page.i_import_button.click()
+        sleep(2)
 
     def import_guide_username_only(self, guides):
         self.add_guide_form()
         self.add_guide_page.import_guide_button.click()
         self.add_guide_page.i_username.send_keys(guides.username)
         self.add_guide_page.i_import_button.click()
+        sleep(2)
 
     def find_imported_guide(self, guides):
+        sleep(2)
         self.find_by_name(guides)
+        sleep(2)
         expected_name = guides.first_name + " " + guides.last_name + " (pending)"
         assert expected_name == self.people_hub_page.name.text
 
     def find_by_name(self, guides):
         self.people_hub_page.search_input.send_keys(guides.first_name + " " + guides.last_name)
+        sleep(2)
 
     def verify_alert(self):
         self.add_guide_page.verify_alert("Guide not found")

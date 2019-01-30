@@ -44,6 +44,6 @@ class CallCenter:
         return self.driver.current_url
 
     def refresh_page(self):
-        button = self.session.navigation_bar.main_actions_drop_down
+        menu = self.session.navigation_bar.main_tab
         self.driver.refresh()
-        self.waiting.for_staleness(element=button, timeout=5)
+        self.waiting.for_staleness(element=menu, timeout=5)

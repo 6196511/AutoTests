@@ -5,7 +5,7 @@ from webium import BasePage, Find, Finds
 
 class GrouponList(WebElement):
     groupon_name = Find(by=By.XPATH, value="./td[2]")
-    edit_button = Find(by=By.XPATH, value="td[5]/a")
+    edit_button = Find(by=By.XPATH, value="./td[5]/a")
 
 
 class CodeList(WebElement):
@@ -17,7 +17,10 @@ class GrouponPage(BasePage):
 
     url = 'https://ci004.godo.io/integration_groupon.aspx'  
     import_codes = Find(by=By.XPATH, value="//div[@name='inputCodeForm']//button")
-    groupon_list = Finds(GrouponList, by=By.XPATH, value="//tbody/tr")
+    # groupon_list = Finds(GrouponList, by=By.XPATH, value="//tbody/tr")
+    groupon_list = Finds(GrouponList, by=By.XPATH, value="//div[@id='main-content']//tbody//tr")
+
+
     details = Find(by=By.XPATH, value="//a[text()='Details']")
     view_redemptions = Find(by=By.XPATH, value="//a[text()='View Redemptions']")
     view_codes = Find(by=By.XPATH, value="//a[text()='View Codes']")

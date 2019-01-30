@@ -76,7 +76,7 @@ class CustomerBookingPage(BasePage):
     gift_certificate_button = Find(by=By.XPATH, value="//input[@id='redeemBtnCode']")
     discount_pop_up = Find(by=By.XPATH, value="//div[@class='bootbox-body']")
     discount_pop_up_ok_button = Find(by=By.XPATH, value="//button[@class='btn btn-primary']")
-    stripe = Find(by=By.XPATH, value="//iframe[@name='__privateStripeFrame3']")
+    stripe = Find(by=By.XPATH, value="//iframe[@name='__privateStripeFrame4']")
     card_number_input = Find(by=By.XPATH, value="//input[@name='cardnumber']")
     card_date_input = Find(by=By.XPATH, value="//input[@name='exp-date']")
     card_cvc_input = Find(by=By.XPATH, value="//input[@name='cvc']")

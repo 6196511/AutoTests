@@ -19,10 +19,13 @@ class Addons:
         self.addon_page = AddonPage(driver=self.driver)
 
     def navigate_to(self):
-        self.navigation_bar.sitemap.click()
-        wait(lambda: self.navigation_bar.marketing_hub.is_displayed())
-        self.navigation_bar.activity_hub.click()
-        self.activity_hub.addons_button.click()
+        wait(lambda: not self.navigation_bar.page_loader_wrapper.is_displayed(), timeout_seconds=20)
+        wait(lambda: self.navigation_bar.main_tab is not None, timeout_seconds=20)
+        self.navigation_bar.main_tab.click()
+        self.navigation_bar.activities.click()
+        wait(lambda: self.navigation_bar.expanded_list)
+        self.navigation_bar.addons.click()
+        wait(lambda: not self.navigation_bar.page_loader_wrapper.is_displayed(), timeout_seconds=20)
 
     def create_addon(self, addons):
         self.navigate_to()
@@ -79,6 +82,7 @@ class Addons:
 
     def add_type(self, addons):
         self.activity_addons.edit_button.click()
+        wait(lambda: not self.navigation_bar.page_loader_wrapper.is_displayed(), timeout_seconds=20)
         self.fill_type_form(addons)
         save_type_button = self.addon_page.save_type
         save_type_button.click()

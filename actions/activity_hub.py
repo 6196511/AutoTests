@@ -66,8 +66,11 @@ class ActivityHub:
         self.activity_page.review_redirect.send_keys(activity.review_redirect)
 
     def navigate_to(self):
-        self.navigation_bar.sitemap.click()
-        wait(lambda: self.navigation_bar.activity_hub.is_displayed())
+        wait(lambda: not self.navigation_bar.page_loader_wrapper.is_displayed(), timeout_seconds=20)
+        wait(lambda: self.navigation_bar.main_tab is not None, timeout_seconds=20)
+        self.navigation_bar.main_tab.click()
+        self.navigation_bar.activities.click()
+        wait(lambda: self.navigation_bar.expanded_list)
         self.navigation_bar.activity_hub.click()
 
     def find_activity_by_name(self, activity):
@@ -77,6 +80,7 @@ class ActivityHub:
         self.find_activity_by_name(activity)
         sleep(2)
         self.activity_hub.activity_actions.click()
+        sleep(2)
         self.activity_hub.edit_activity.click()
 
     def verify_trained_guides(self, name):

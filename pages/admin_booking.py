@@ -28,7 +28,9 @@ class AdminBookingPage(BasePage):
     second_tickets_type = Find(by=By.XPATH, value="//div[@name='tickets']//tr[2]//input")
     third_tickets_type = Find(by=By.XPATH, value="//div[@name='tickets']//tr[3]//input")
     fourth_tickets_type = Find(by=By.XPATH, value="//div[@name='tickets']//tr[4]//input")
-    empty_space_first_tab = Find(by=By.XPATH, value="//h1[text()='Add Booking']")
+
+    empty_space_first_tab = Find(by=By.XPATH, value="//h5[text()='Event Details']")
+
     name_first_tickets_type = Find(by=By.XPATH, value="//div[@class='form-group']//tbody/tr[1]/td[1]")
     name_second_tickets_type = Find(by=By.XPATH, value="//div[@class='form-group']//tbody/tr[2]/td[1]")
     name_third_tickets_type = Find(by=By.XPATH, value="//div[@class='form-group']//tbody/tr[3]/td[1]")
@@ -49,6 +51,7 @@ class AdminBookingPage(BasePage):
     cancel_addon = Find(by=By.XPATH, value="//div[@name='addonSelectionForm']//button[text()='Cancel']")
     order_cart = Find(by=By.XPATH, value="//div[@class='cart-eventbox']")
     alert_cancel_button = Find(by=By.XPATH, value="//div[@class='modal-footer']/button[text()='Cancel']")
+
     # Customer Info tab.
 
     first_name = Find(by=By.XPATH, value="//input[@placeholder='First Name']")
@@ -56,8 +59,8 @@ class AdminBookingPage(BasePage):
     email_address = Find(by=By.XPATH, value="//input[@ng-model='bookingdrawer.customer.email']")
     phone_number = Find(by=By.XPATH, value="//input[@placeholder='Phone Number']")
     zip_code = Find(by=By.XPATH, value="//input[@ng-model='bookingdrawer.customer.zipcode']")
-    empty_space = Find(by=By.XPATH, value="//label[text()='Zip Code ']")
-    complete_booking_button = Find(by=By.XPATH, value="//button[contains(text(), 'Complete Booking')]")
+    empty_space = Find(by=By.XPATH, value="//label[text()='Zip Code']")
+    complete_booking_button = Find(by=By.XPATH, value="//button[normalize-space(text())='Complete Booking']")
     add_address_button = Find(by=By.XPATH, value="//button[@ng-click='bookingdrawer.toggleAddressInfo()']")
     address1_field = Find(by=By.XPATH, value="//input[@id='customer_address_1']")
     address2_field = Find(by=By.XPATH, value="//input[@id='customer_address_2']")
@@ -77,7 +80,7 @@ class AdminBookingPage(BasePage):
     card_cvc_input = Find(by=By.XPATH, value="//input[@name='cvc']")
     card_zip_input = Find(by=By.XPATH, value="//input[@name='postal']")
     cash_recieved = Find(by=By.XPATH, value="//input[@name='money-in-hand']")
-    submit_booking_button = Find(by=By.XPATH, value="//div[contains(text(), 'Submit Booking')]")
+    submit_booking_button = Find(by=By.XPATH, value="//button[contains(text(), 'Submit Booking')]")
     final_alert = Find(by=By.XPATH, value="//div[@class='modal-body ng-binding']")
     final_alert_ok_button = Find(by=By.XPATH, value="//div[@class='modal-footer']/button[text()='Ok']")
 
@@ -109,6 +112,7 @@ class AdminBookingPage(BasePage):
 
     def click_enter_customer_information(self):
         self._driver.execute_script("arguments[0].scrollIntoView();", self.enter_customer_information_button)
+        sleep(2)
         self.enter_customer_information_button.click()
 
     def select_payment_type(self, payment_type):
