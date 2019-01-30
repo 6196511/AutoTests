@@ -52,6 +52,8 @@ class AdminBookingPage(BasePage):
     order_cart = Find(by=By.XPATH, value="//div[@class='cart-eventbox']")
     alert_cancel_button = Find(by=By.XPATH, value="//div[@class='modal-footer']/button[text()='Cancel']")
 
+    date_current_booking = Find(by=By.XPATH, value="/html/body/pageslide[2]/div/div/div[2]/div[1]/div[2]/div/div/div[1]/div/div/span")
+    time_current_booking = Find(by=By.XPATH, value="//div[@class='cart-date ng-binding']")
     # Customer Info tab.
 
     first_name = Find(by=By.XPATH, value="//input[@placeholder='First Name']")

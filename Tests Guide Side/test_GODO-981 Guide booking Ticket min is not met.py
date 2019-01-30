@@ -1,4 +1,4 @@
-ffrom webium.driver import get_driver
+from webium.driver import get_driver
 from webium.driver import close_driver
 from Login import loginpage
 from event_calendar import EventCalendarPage
@@ -14,6 +14,8 @@ from creds import admin_login, admin_password, guide_flat_login, guide_flat_pass
 ActivityName= 'Tickets Minimum Enforce'
 GuideName = 'Holly Flat'
 EventHeaderDateTimeList =[]
+DateList = []
+TimeList = []
 
 class BaseTest(object):
     def teardown_class(self):
@@ -74,9 +76,12 @@ class Test_GODO981(BaseTest):
                 EventHeaderDateTimeList.append(page.date_time_title.get_attribute('textContent'))
                 page.add_booking_button.click()
             break
+        print(EventHeaderDateTimeList[0])
         time.sleep(5)
         page = AdminBookingPage()
         time.sleep(5)
+        TimeList.append(page.time_current_booking.get_attribute('textContent'))
+        DateList.append(page.date_current_booking.get_attribute('textContent'))
         page.first_tickets_type.send_keys('3')
         time.sleep(5)
         assert page.final_alert.get_attribute(
@@ -143,24 +148,31 @@ class Test_GODO981(BaseTest):
         time.sleep(5)
         page.search_field.send_keys(ActivityName)
         time.sleep(5)
-        page.event_tickets[0].click()
+        EventDate = DateList[0].partition(' ')[2]
         for i in range(0, len(page.event_tickets)):#STEP7
-            if '(3)' in page.customer_tickets.get_attribute("innerText") and page.date_time_title.get_attribute('textContent') == EventHeaderDateTimeList[0]:
-                time.sleep(5)
-                page.add_booking.click()
+            page.event_tickets[i].click()
+            time.sleep(10)
+            if EventDate in page.date_time_title.get_attribute('textContent'):
+                if TimeList[0] in page.date_time_title.get_attribute('textContent'):
+                    break
+                else:
+                    get_driver().back()
+                    time.sleep(5)
+                    i += 1
+                    continue
             else:
                 get_driver().back()
                 time.sleep(5)
-                page.event_tickets[i + 1].click()
-                time.sleep(5)
+                i +=1
                 continue
+        assert '(3)' in page.customer_tickets.get_attribute("innerText")
+        page.add_booking.click()  # STEP8
         time.sleep(5)
-        page.add_booking.click()#STEP8
         page = AdminBookingPage()
-        page.second_tickets_type.send_keys('1')#STEP9
+        page.second_tickets_type.send_keys('1')  # STEP9
         time.sleep(5)
         assert page.final_alert.get_attribute(
             "textContent") == 'Minimum number of tickets (5 tickets) for the event has not been met yet. Do you want to continue?'
-        page.alert_cancel_button.click()#STEP10
+        page.alert_cancel_button.click()  # STEP10
         time.sleep(5)
         assert page.is_element_present('enter_customer_information_button') == False

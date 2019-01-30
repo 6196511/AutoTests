@@ -14,6 +14,8 @@ from creds import admin_login, admin_password, guide_flat_login, guide_flat_pass
 ActivityName= 'Tickets Minimum Enforce'
 GuideName = 'Holly Flat'
 EventHeaderDateTimeList =[]
+DateList = []
+TimeList = []
 CC_Number = '4242424242424242'
 ExpDate = '1020'
 CVC = '303'
@@ -85,6 +87,8 @@ class Test_GODO983(BaseTest):
         time.sleep(5)
         page = AdminBookingPage()
         time.sleep(5)
+        TimeList.append(page.time_current_booking.get_attribute('textContent'))
+        DateList.append(page.date_current_booking.get_attribute('textContent'))
         page.first_tickets_type.send_keys('5')
         time.sleep(5)
         page.enter_customer_information_button.click()
@@ -147,17 +151,24 @@ class Test_GODO983(BaseTest):
         time.sleep(5)
         page.search_field.send_keys(ActivityName)#STEP1
         time.sleep(5)
-        page.event_tickets[0].click()
-        for i in range(0, len(page.event_tickets)):
-            if '(5)' in page.customer_tickets.get_attribute("innerText") and page.date_time_title.get_attribute('textContent') == EventHeaderDateTimeList[0]:
-                time.sleep(5)
-                page.add_booking.click()
+        EventDate = DateList[0].partition(' ')[2]
+        for i in range(0, len(page.event_tickets)):  # STEP7
+            page.event_tickets[i].click()
+            time.sleep(10)
+            if EventDate in page.date_time_title.get_attribute('textContent'):
+                if TimeList[0] in page.date_time_title.get_attribute('textContent'):
+                    break
+                else:
+                    get_driver().back()
+                    time.sleep(5)
+                    i += 1
+                    continue
             else:
                 get_driver().back()
                 time.sleep(5)
-                page.event_tickets[i + 1].click()
-                time.sleep(5)
+                i += 1
                 continue
+        assert '(5)' in page.customer_tickets.get_attribute("innerText")
         time.sleep(5)
         page.add_booking.click()#STEP2
         page = AdminBookingPage()
